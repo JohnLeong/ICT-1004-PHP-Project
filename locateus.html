@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!--To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.-->
+
+<html>
+    <head>
+        <title>Zenith - Locate Us</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!--BootStrap 4 CSS-->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+        <!--Website Main CSS-->
+        <link rel="stylesheet" href="css/zenithMainStyle.css" />
+
+        <!--Favicon for browser tab-->
+        <link rel="shortcut icon" href="img/zshoe-icon.png"/>
+
+        <!--Icons for Web-->
+        <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+        <!--SEO-->
+        <meta name="description" content="Buy high-quality shoes at great prices. Zenith offers a large variety of shoes from popular brands and provides world-wide shipping.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+        <?php
+        include 'inc/header.php';
+        ?>
+        <main>
+            <div class="container-fluid">
+                <h2>Our location</h2>
+                <div class="row">
+                    <div class="mapouter">
+                        <div class="gmap_canvas">
+                            <iframe width="1000" height="500" id="gmap_canvas" src="https://maps.google.com/maps?q=sit%20nyp&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <article class="locate-article">
+                        <div class="col-md-12">
+                            <h3>Our stores</h3>
+                            <ul id="locate_list">
+
+                                <li class="locate_list_item">
+                                    <a class="locate_link" href="https://en.wikipedia.org/wiki/Yio_Chu_Kang" rel="external nofollow">Yio Chu Kang</a>
+                                    <img src="img/location_yck.jpg" alt="location_yio_chu_kang">
+                                </li>
+                                <li class="locate_list_item">
+                                    <a class="locate_link" href="https://en.wikipedia.org/wiki/Ang_Mo_Kio" rel="external nofollow">Ang Mo Kio</a>
+                                    <img src="img/location_amk.jpg" alt="location_ang_mo_kio">
+                                </li>
+                                <li class="locate_list_item">
+                                    <a class="locate_link" href="https://en.wikipedia.org/wiki/Tampines" rel="external nofollow">Tampines</a>
+                                    <img src="img/location_tampines.jpg" alt="location_tampines">
+                                </li>
+                                <li class="locate_list_item">
+                                    <a class="locate_link" href="https://en.wikipedia.org/wiki/Jurong_East" rel="external nofollow">Jurong East</a>
+                                    <img src="img/location_jurong.jpg" alt="location_jurong_east">
+                                </li>
+                                <li class="locate_list_item">
+                                    <a class="locate_link" href="https://en.wikipedia.org/wiki/Orchard_Central" rel="external nofollow">Orchard Central</a>
+                                    <img src="img/location_orchard.jpg" alt="location_orchard">
+                                </li>
+                            </ul>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </main>
+        <?php
+        include 'inc/footer.php';
+        ?>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    </body>   
+</html>
+
+<!--Credits
+    Location Images
+        https://en.wikipedia.org/wiki/
+        
+-->
