@@ -125,8 +125,6 @@ and open the template in the editor.
                                     
                             echo "<h2>Login successful!</h2>";
                             echo "<h4>Welcome back, " . $first_name . $last_name . ".</h4>";
-                            
-                            
                             ?>
                             <input class="btn btn-default" type="button" value="Return to home" 
                                    onclick="window.location.href = '../index.php'" />
