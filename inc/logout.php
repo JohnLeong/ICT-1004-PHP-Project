@@ -1,11 +1,6 @@
 <?php
-    session_start();
-
-    if (isset($_SESSION['fname'])) {
-        session_destroy();
-
-        echo "<script>location.href='index.php'</script>";
-    } else {
-        echo "<script>location.href='index.php'</script>";
-    }
+session_start();
+session_unset();
+session_destroy();
+header("Location: ../index.php");
 ?>

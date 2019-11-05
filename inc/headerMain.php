@@ -1,3 +1,7 @@
+<?php
+    session_start();
+?>
+
 <!-- 
 To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
@@ -47,21 +51,39 @@ and open the template in the editor.
     <br>
     <br>
     <!--Promo line-->
-    <div class="backingForPromo">
-        <p class="promoStatment">
-            Too expensive? <a href="register.php">Sign up</a> with us to get a 10% Discount for your first purchase!
-        </p>
-    </div>
-
-    <!--Login + Shopping Cart-->
-    <div>
-        <p class="loggerNCart">
-            <b>
-                <a href="shoppingcart.php" >Shopping Cart <i class="fas fa-shopping-cart"></i></a> |
-                <a href="login.php" >Login <i class="fas fa-sign-in-alt"></i></a>
-            </b>
-        </p>
-    </div>
+    <?php
+    if (!empty($_SESSION["member_id"])) {
+        echo ' <div>
+                <p class="loggerNCart">
+                    <b>
+                        <form action="inc/logout.php" method="post">
+                            <button type="submit" name="logout-submit">Logout</button>
+                        <form>
+                        <a href="shoppingcart.php" >Shopping Cart <i class="fas fa-shopping-cart"></i></a>
+                    </b>
+                </p>
+            </div>';
+    }
+    else {
+        echo '
+            <div class="backingForPromo">
+                <p class="promoStatment">
+                    Too expensive? <a href="register.php">Sign up</a> with us to get a 10% Discount for your first purchase!
+                </p>
+            </div>
+    
+            <!--Login + Shopping Cart-->
+            <div>
+                <p class="loggerNCart">
+                    <b>
+                        <a href="shoppingcart.php" >Shopping Cart <i class="fas fa-shopping-cart"></i></a> |
+                        <a href="login.php" >Login <i class="fas fa-sign-in-alt"></i></a>
+                    </b>
+                </p>
+            </div> ';
+    }
+    
+    ?>
     <!--Header -->
     <div>
         <br>

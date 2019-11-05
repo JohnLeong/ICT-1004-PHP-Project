@@ -113,8 +113,14 @@ and open the template in the editor.
                     <div class="form-group">
                         <?php
                         if ($success) {
+                            session_start();
+                            $_SESSION['member_id'] = $row['member_id'];
+                            $_SESSION['fname'] = $row['fname'];
+                                    
                             echo "<h2>Login successful!</h2>";
                             echo "<h4>Welcome back, " . $first_name . $last_name . ".</h4>";
+                            
+                            
                             ?>
                             <input class="btn btn-default" type="button" value="Return to home" 
                                    onclick="window.location.href = 'index.php'" />

@@ -149,8 +149,8 @@ and open the template in the editor.
                             echo "<h4>Thanks for signing up " . $first_name . ".</h4>";
                             saveMemberToDB($first_name, $last_name, $email, $password);
                             ?>
-                            <input class="btn btn-default" type="button" value="Login" 
-                                   onclick="window.location.href='register.php'" />
+                            <input class="btn btn-default" type="button" value="Login Now" 
+                                   onclick="window.location.href='login.php'" />
                             <input class="btn btn-default" type="button" value="Home" 
                                    onclick="window.location.href='index.php'" />
 

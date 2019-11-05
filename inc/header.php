@@ -1,3 +1,7 @@
+<?php
+    session_start();
+?>
+
 <!--
 To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
@@ -46,13 +50,16 @@ and open the template in the editor.
     </nav>
     <br>
     <br>
+    
     <!--Promo line-->
     <div class="backingForPromo">
         <p class="promoStatment">
             Too expensive? <a href="register.php">Sign up</a> with us to get a 10% Discount for your first purchase!
         </p>
     </div>
-
+    <?php
+    echo "Welcome, '{$_SESSION['fname']}";
+    ?>
     <!--Login + Shopping Cart-->
     <div>
         <p class="loggerNCart">
