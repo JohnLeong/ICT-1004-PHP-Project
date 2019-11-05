@@ -30,52 +30,44 @@ and open the template in the editor.-->
         ?>
         <main>
             <div class="registering">
-                <form action="/action_page.php">
-                    <div class="container">
-                        <h2>Register</h2>
-                        <p>Please fill up this form to create an account.</p>
-                        <hr>
-
-                        <label for="email"><b>Email&#42;</b></label>
-                        <input type="text" placeholder="Enter Email" name="email" required>
-
-                        <label for="psw"><b>Password&#42;</b> (min. 8 character)</label>
-                        <input type="password" placeholder="Enter Password" name="psw" required>
-
-                        <label for="psw-repeat"><b>Repeat Password&#42;</b> (min. 8 character)</label>
-                        <input type="password" placeholder="Repeat Password" name="psw-repeat" required>
-
-                        <label for="fname"><b>First Name</b></label>
-                        <input type="text" placeholder="Enter First Name" name="fname">
-
-                        <label for="lname"><b>Last Name&#42;</b></label>
-                        <input type="text" placeholder="Enter Last Name" name="lname" required>
-
-                        <label for="uname"><b>Username&#42;</b></label>
-                        <input type="text" placeholder="Enter Username" name="uname" required>
-
-                        <label for="gender"><b>Gender&#42;</b></label>
-                        <div class="row" id="genderbox">
-                            <div class="col-2">
-
-                                <label><input type="radio" name="gender" value="m" required>  Male</label>
-                            </div>
-                            <div class="col-4">
-
-                                <label><input type="radio" name="gender" value="f">  Female</label>
-                            </div>
+                <div class="container">
+                    <h2>Register</h2>
+                    <p>Please fill up this form to create an account.</p>
+                    <hr>
+                    <form action="register_process.php" name="myForm" onsubmit="return validateForm()" method="POST">
+                        <div class="form-group">
+                            <label for="fna">First Name:</label>
+                            <input type="text" name="first_name" class="form-control" required id="fna">
+                        </div>
+                        <div class="form-group">
+                            <label for="lna">Last Name:</label>
+                            <input type="text" name="last_name" class="form-control" required id="lna" >
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" name="email" class="form-control" required id="email" >
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password:</label>
+                            <input type="password" placeholder="Password" id="password" required name="password" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="cpw">Confirm Password:</label>
+                            <input type="password" placeholder="Confirm Password" id="confirm_password" required name="confirm_password" class="form-control" id="cpw" >
+                        </div>
+                        <p style="color:red"><i>&#42;Required Fields</i></p>
+                        <div class="checkbox">
+                            <label><input type="checkbox" required > Agree to our <a href="#">Terms & Privacy</a></label>
                         </div>
                         <hr>
-                        <p style="color:red"><i>&#42;Required Fields</i></p>
-                        <p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
-
                         <button type="submit" class="registerbtn">Register</button>
-                    </div>
+                    </form>
 
-                    <div class="container signin">
-                        <p>Already have an account? <a href="login.php">Sign in</a>.</p>
-                    </div>
-                </form>
+                </div>
+
+                <div class="container signin">
+                    <p>Already have an account? <a href="login.php">Sign in</a>.</p>
+                </div>
             </div>
         </main>
         <?php

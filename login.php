@@ -37,15 +37,14 @@ and open the template in the editor.-->
                     <div class="col">
                         <div class="col-lg-10" >
                             <h2>LOGIN</h2>
-                            <form class="form-signin" name="loginForm" action="login.html">
-                                <div class="form-label-group">
-                                    <label for="inputEmail">Email Address:</label>
-                                    <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required>
+                            <form class="form-signin" name="loginForm" action="login_process.php" name="myForm" onsubmit="return validateForm()" method="POST">
+                                <div class="form-group">
+                                    <label for="email">Email:</label>
+                                    <input type="email" name="email" class="form-control" required id="email" >
                                 </div>
-
-                                <div class="form-label-group">
-                                    <label for="inputPassword">Password:</label>
-                                    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                                <div class="form-group">
+                                    <label for="password">Password:</label>
+                                    <input type="password" placeholder="Password" id="password" required name="password" class="form-control">
                                 </div>
                                 <div>
                                     <a href="#" class="forgot">Forgot Password?</a>
@@ -55,20 +54,20 @@ and open the template in the editor.-->
                                     <label><input type="checkbox"> Remember me</label>
                                 </div>
                                 <button class="btn text-uppercase" type="submit">LOGIN <i class="fas fa-sign-in-alt"></i></button>
+                            </form>
+                            <!--For Deliverable 1 only-->
+                            <p>This <a href="profile.php">link</a> is only for Deliverable 1 usage and will be removed for Deliverable 2.</p>
 
-                                <!--For Deliverable 1 only-->
-                                <p>This <a href="profile.php">link</a> is only for Deliverable 1 usage and will be removed for Deliverable 2.</p>
+                            <p class="hr-or">or</p>
+                            <div style="text-align: center">
+                                <button class="loginBtn loginBtn--facebook">
+                                    Login with Facebook
+                                </button>
 
-                                <p class="hr-or">or</p>
-                                <div style="text-align: center">
-                                    <button class="loginBtn loginBtn--facebook">
-                                        Login with Facebook
-                                    </button>
-
-                                    <button class="loginBtn loginBtn--google">
-                                        Login with Google
-                                    </button>
-                                </div>
+                                <button class="loginBtn loginBtn--google">
+                                    Login with Google
+                                </button>
+                            </div>
                             </form>
                         </div>
                     </div>

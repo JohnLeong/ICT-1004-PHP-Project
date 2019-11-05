@@ -32,11 +32,108 @@ and open the template in the editor.
         ?>
         
         <?php
-        // put your code here
-        ?>
-        <main>
+            //Constants for accessing our DB:
+            define("DBHOST", "localhost");
+            define("DBNAME", "zenith");
+            define("DBUSER", "root");
+            define("DBPASS", "");
+            $email = $pwd = $fname = "";
+            $errorMsg = "";
+            $success = true;
             
+             $error = "";
+            //email
+            $email = $errorMsg = "";
+            $success = true;
+            if (empty($_POST["email"])) {
+                $errorMsg .= "Email is required.<br>";
+                $success = false;
+            } 
+            else {
+                $email = sanitize_input($_POST["email"]);
+                // Additional check to make sure e-mail address is well-formed.
+                if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                    $errorMsg .= "Invalid email format.";
+                    $success = false;
+                }
+            }
+            $error.=$errorMsg;
+            
+            //password
+            $password = $errorMsg = "";
+            $success = true;
+            if (empty($_POST["password"])) {
+                $errorMsg .= "Password is required.<br>";
+                $success = false;
+            } else {
+                $password = sanitize_input($_POST["password"]);
+            }
+            $error .= $errorMsg;
+
+            $register = 'register.php';
+            $home = 'index.php';
+            
+            //Helper function that checks input for malicious or unwanted content.
+            function sanitize_input($data) {
+                $data = trim($data);
+                $data = stripslashes($data);
+                $data = htmlspecialchars($data);
+                return $data;
+            }
+            
+             // Create connection
+            $conn = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
+            // Check connection
+            if ($conn->connect_error) {
+                $errorMsg = "Connection failed: " . $conn->connect_error;
+                $success = false;
+            } else {
+                $sql = "SELECT * FROM zenith_members WHERE ";
+                $sql .= "email='$email' AND password='$password'";
+                // Execute the query
+                $result = $conn->query($sql);
+                if ($result->num_rows > 0) {
+                // Note that email field is unique, so should only have
+                // one row in the result set.
+                    $row = $result->fetch_assoc();
+                    $first_name = $row["fname"];
+                    $last_name = $row["lname"];
+                } else {
+                    $errorMsg = "Email not found or password doesn't match...";
+                    $success = false;
+                }
+                $result->free_result();
+            }
+            $conn->close();
+        ?>
+        
+        <main>
+            <div class ="container-fluid register">
+                <form method="post">
+                    <div class="form-group">
+                        <?php
+                        if ($success) {
+                            echo "<h2>Login successful!</h2>";
+                            echo "<h4>Welcome back, " . $first_name . $last_name . ".</h4>";
+                            ?>
+                            <input class="btn btn-default" type="button" value="Return to home" 
+                                   onclick="window.location.href = 'index.php'" />
+                            <?php
+                        } else {
+                            echo "<h2>Oops!</h2>";
+                            echo "<h4>Email not found or password doesn't match</h4>";
+                            echo $error;
+                            ?>
+                            <input class="btn btn-default" type="button" value="Return to login" 
+                                   onclick="window.location.href = 'login.php'" />
+                            <?php 
+                        } 
+                        ?>
+                    </div>
+                </form>
+            </div>
         </main>
+        
         <?php
         include 'inc/footer.php';
         ?>
