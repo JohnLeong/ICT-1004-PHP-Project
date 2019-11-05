@@ -144,10 +144,11 @@ and open the template in the editor.
                 <form method="post">
                     <div class="form-group">
                         <?php
+                        saveMemberToDB($first_name, $last_name, $email, $password);
                         if ($success) {
                             echo "<h2>Your registration is successful!</h2>";
                             echo "<h4>Thanks for signing up " . $first_name . ".</h4>";
-                            saveMemberToDB($first_name, $last_name, $email, $password);
+                            
                             ?>
                             <input class="btn btn-default" type="button" value="Login" 
                                    onclick="window.location.href='register.php'" />

@@ -62,11 +62,4 @@ and open the template in the editor.
             </b>
         </p>
     </div>
-    <!--Header -->
-    <div>
-        <br>
-        <a href="index.php">
-            <img class="brandName" src="img/zenith-vector.svg" alt="ZENITH BRAND"/>
-        </a>
-    </div>
 </header>
