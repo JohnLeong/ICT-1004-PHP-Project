@@ -30,6 +30,13 @@ and open the template in the editor.
         <?php
         include 'inc/headerMain.php';
         ?>
+            <!--Header -->
+    <div>
+        <br>
+        <a href="index.php">
+            <img class="brandName" src="/img/zenith-vector.svg" alt="ZENITH BRAND"/>
+        </a>
+    </div>
         <main>
             <div>
                 <div class="row">
