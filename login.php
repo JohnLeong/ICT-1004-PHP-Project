@@ -27,6 +27,9 @@ and open the template in the editor.-->
     <body>
         <?php
         include 'inc/header.php';
+        if(isset($_SESSION['name'])){
+            header('Location: index.php');
+        }
         ?>
         <main>
             <!--Main Content-->

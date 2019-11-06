@@ -29,6 +29,9 @@ and open the template in the editor.
     <body>
         <?php
         include 'header.php';
+        if(!isset($_POST['login_submit'])){
+            header('Location: ../index.php');
+        }
         ?>
 
         <?php
@@ -37,7 +40,7 @@ and open the template in the editor.
         define("DBNAME", "zenith");
         define("DBUSER", "root");
         define("DBPASS", "");
-        $email = $password = $fname = $lname = "";
+        $fname = $lname = $email = $password = "";
         $errorMsg = "";
         $success = true;
 
@@ -91,7 +94,7 @@ and open the template in the editor.
                 $errorMsg = "Connection failed: " . $conn->connect_error;
                 $success = false;
             } else {
-                $sql = "SELECT * FROM zenith_members WHERE ";
+                $sql = "SELECT * FROM zenith_member WHERE ";
                 $sql .= "email='$email' AND password='$password'";
                 // Execute the query
                 $result = $conn->query($sql);
@@ -102,7 +105,6 @@ and open the template in the editor.
                     $first_name = $row["fname"];
                     $last_name = $row["lname"];
                 } else {
-                    $errorMsg = "Email not found or password doesn't match...";
                     $success = false;
                 }
                 $result->free_result();
@@ -119,26 +121,16 @@ and open the template in the editor.
                         checkMemberDb();
                         echo $success;
                         if ($success) {
-                            session_start();
-                            $_SESSION['member_id'] = $row['member_id'];
-                            $_SESSION['fname'] = $row['fname'];
-                                    
-                            echo "<h2>Login successful!</h2>";
-                            echo "<h4>Welcome back, " . $first_name . $last_name . ".</h4>";
-                            ?>
-                            <input class="btn btn-default" type="button" value="Return to home" 
-                                   onclick="window.location.href = '../index.php'" />
-                                   <?php
-                               } else {
-                                   echo "<h2>Oops!</h2>";
-                                   echo "<h4>Email not found or password doesn't match</h4>";
-                                   echo $error;
-                                   ?>
-                            <input class="btn btn-default" type="button" value="Return to login" 
-                                   onclick="window.location.href = '../login.php'" />
-                                   <?php
-                               }
-                               ?>
+                            include_once("session.php");
+                            setLogin($first_name, $last_name);
+                            header("Location: ../index.php");
+                        } 
+                        else {
+                            echo "<h2>Oops!</h2>";
+                            echo "<h4>Email not found or password doesn't match</h4>";
+                            header( "refresh:2;url=../login.php" );
+                        }
+                        ?>
                     </div>
                 </form>
             </div>

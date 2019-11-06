@@ -27,6 +27,9 @@ and open the template in the editor.-->
     <body>
         <?php
         include 'inc/header.php';
+        if(isset($_SESSION['name'])){
+            header('Location: index.php');
+        }
         ?>
         <main>
             <div class="registering">
@@ -36,12 +39,12 @@ and open the template in the editor.-->
                     <hr>
                     <form action="register_process.php" name="myForm" onsubmit="return validateForm()" method="POST">
                         <div class="form-group">
-                            <label for="fna">First Name:</label>
-                            <input type="text" name="first_name" class="form-control" required id="fna">
+                            <label for="fname">First Name:</label>
+                            <input type="text" name="first_name" class="form-control" required id="fname">
                         </div>
                         <div class="form-group">
-                            <label for="lna">Last Name:</label>
-                            <input type="text" name="last_name" class="form-control" required id="lna" >
+                            <label for="lname">Last Name:</label>
+                            <input type="text" name="last_name" class="form-control" required id="lname" >
                         </div>
                         <div class="form-group">
                             <label for="email">Email:</label>
@@ -52,7 +55,7 @@ and open the template in the editor.-->
                             <input type="password" placeholder="Password" id="password" required name="password" class="form-control">
                         </div>
                         <div class="form-group">
-                            <label for="cpw">Confirm Password:</label>
+                            <label for="confirm_password">Confirm Password:</label>
                             <input type="password" placeholder="Confirm Password" id="confirm_password" required name="confirm_password" class="form-control" id="cpw" >
                         </div>
                         <p style="color:red"><i>&#42;Required Fields</i></p>
@@ -60,9 +63,8 @@ and open the template in the editor.-->
                             <label><input type="checkbox" required > Agree to our <a href="#">Terms & Privacy</a></label>
                         </div>
                         <hr>
-                        <button type="submit" class="registerbtn" name="register_submit">Register</button>
+                        <button type="submit" class="registerbtn" name="register_submit">Register123</button>
                     </form>
-
                 </div>
 
                 <div class="container signin">

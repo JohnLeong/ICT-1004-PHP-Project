@@ -29,8 +29,11 @@ and open the template in the editor.
     <body>
         <?php
         include 'inc/header.php';
+        if(!isset($_POST['register_submit'])){
+            header('Location: index.php');
+        }
         ?>
-        
+
         <?php
         // Constants for accessing our DB:
         define("DBHOST", "localhost");
@@ -72,11 +75,10 @@ and open the template in the editor.
             $success = false;
         } else {
             $email = sanitize_input($_POST["email"]);
-            // Additional check to make sure e-mail address is well-formed.
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $errorMsg .= "Invalid email format.";
-                $success = false;
-            }
+                    $errorMsg .= "Invalid email format.";
+                    $success = false;
+            }   
         }
         $error.=$errorMsg;
 
@@ -128,7 +130,7 @@ and open the template in the editor.
                 $success = false;
             }
             else {
-                $sql = "INSERT INTO zenith_members (fname, lname, email, password)";
+                $sql = "INSERT INTO zenith_member (fname, lname, email, password)";
                 $sql .= " VALUES ('$first_name', '$last_name', '$email', '$password')";
                 // Execute the query
                 if (!$conn->query($sql)) {
@@ -144,12 +146,10 @@ and open the template in the editor.
                 <form method="post">
                     <div class="form-group">
                         <?php
-                        
                         if ($success) {
-                            saveMemberToDB($first_name, $last_name, $email, $password);
                             echo "<h2>Your registration is successful!</h2>";
                             echo "<h4>Thanks for signing up " . $first_name . ".</h4>";
-                            
+                            saveMemberToDB($first_name, $last_name, $email, $password);
                             ?>
                             <input class="btn btn-default" type="button" value="Login Now" 
                                    onclick="window.location.href='login.php'" />

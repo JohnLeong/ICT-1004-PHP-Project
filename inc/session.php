@@ -1,0 +1,15 @@
+<?php
+
+if (!isset($_SESSION)) {
+    session_start();
+}
+
+function setLogin($first_name, $last_name) {
+    $_SESSION['name'] = $first_name . " " . $last_name;
+}
+
+function endSession() {
+    $_SESSION = array();
+    session_destroy();
+}
+?>

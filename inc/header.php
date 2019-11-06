@@ -1,7 +1,6 @@
 <?php
-    session_start();
+    include_once("session.php");
 ?>
-
 <!--
 To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
@@ -50,23 +49,36 @@ and open the template in the editor.
     </nav>
     <br>
     <br>
-    
     <!--Promo line-->
-    <div class="backingForPromo">
-        <p class="promoStatment">
-            Too expensive? <a href="register.php">Sign up</a> with us to get a 10% Discount for your first purchase!
-        </p>
-    </div>
     <?php
-    echo "Welcome, '{$_SESSION['fname']}";
+    if (isset($_SESSION['name'])) {
+        echo '<div>
+                <p class="loggerNCart">
+                    <b>';
+                        echo "<a href=profile.php>Welcome, {$_SESSION['name']}! </a>";
+                        echo ' <i class="fas fa-user-circle"></i> | 
+                            <a href="shoppingcart.php" >Shopping Cart <i class="fas fa-shopping-cart"></i></a> |
+                        <a href="inc/logout.php" >Logout <i class="fas fa-sign-in-alt"></i></a> 
+                    </b>
+                </p>
+            </div>';
+    }
+    else {
+        echo '
+            <div class="backingForPromo">
+                <p class="promoStatment">
+                    Too expensive? <a href="../register.php">Sign up</a> with us to get a 10% Discount for your first purchase!
+                </p>
+            </div>
+    
+            <!--Login + Shopping Cart-->
+            <div>
+                <p class="loggerNCart">
+                    <b>
+                        <a href="ICT1004_PHP_Project/../login.php" >Login <i class="fas fa-sign-in-alt"></i></a>
+                    </b>
+                </p>
+            </div> ';
+    }
     ?>
-    <!--Login + Shopping Cart-->
-    <div>
-        <p class="loggerNCart">
-            <b>
-                <a href="shoppingcart.php" >Shopping Cart <i class="fas fa-shopping-cart"></i></a> |
-                <a href="login.php" >Login <i class="fas fa-sign-in-alt"></i></a>
-            </b>
-        </p>
-    </div>
 </header>

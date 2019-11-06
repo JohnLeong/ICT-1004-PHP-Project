@@ -1,5 +1,5 @@
 <?php
-    session_start();
+    include_once("session.php");
 ?>
 
 <!-- 
@@ -52,14 +52,14 @@ and open the template in the editor.
     <br>
     <!--Promo line-->
     <?php
-    if (!empty($_SESSION["member_id"])) {
-        echo ' <div>
+    if (isset($_SESSION['name'])) {
+        echo '<div>
                 <p class="loggerNCart">
-                    <b>
-                        <form action="inc/logout.php" method="post">
-                            <button type="submit" name="logout-submit">Logout</button>
-                        <form>
-                        <a href="shoppingcart.php" >Shopping Cart <i class="fas fa-shopping-cart"></i></a>
+                    <b>';
+                        echo "<a href=profile.php>Welcome, {$_SESSION['name']}! </a>";
+                        echo ' <i class="fas fa-user-circle"></i> | 
+                            <a href="shoppingcart.php" >Shopping Cart <i class="fas fa-shopping-cart"></i></a> |
+                        <a href="inc/logout.php" >Logout <i class="fas fa-sign-in-alt"></i></a> 
                     </b>
                 </p>
             </div>';
@@ -68,7 +68,7 @@ and open the template in the editor.
         echo '
             <div class="backingForPromo">
                 <p class="promoStatment">
-                    Too expensive? <a href="register.php">Sign up</a> with us to get a 10% Discount for your first purchase!
+                    Too expensive? <a href="../register.php">Sign up</a> with us to get a 10% Discount for your first purchase!
                 </p>
             </div>
     
@@ -76,8 +76,7 @@ and open the template in the editor.
             <div>
                 <p class="loggerNCart">
                     <b>
-                        <a href="shoppingcart.php" >Shopping Cart <i class="fas fa-shopping-cart"></i></a> |
-                        <a href="login.php" >Login <i class="fas fa-sign-in-alt"></i></a>
+                        <a href="ICT1004_PHP_Project/../login.php" >Login <i class="fas fa-sign-in-alt"></i></a>
                     </b>
                 </p>
             </div> ';
