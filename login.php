@@ -48,19 +48,14 @@ and open the template in the editor.-->
                                 <div class="form-group">
                                     <label for="password">Password:</label>
                                     <input type="password" placeholder="Password" id="password" required name="password" class="form-control">
-                                </div>
-                                <div>
                                     <a href="#" class="forgot">Forgot Password?</a>
                                 </div>
-                                <hr class="hr-with-text">
+                                <hr>
                                 <div class="checkbox">
                                     <label><input type="checkbox"> Remember me</label>
                                 </div>
                                 <button class="btn text-uppercase" type="submit">LOGIN <i class="fas fa-sign-in-alt"></i></button>
                             </form>
-                            <!--For Deliverable 1 only-->
-                            <p>This <a href="profile.php">link</a> is only for Deliverable 1 usage and will be removed for Deliverable 2.</p>
-
                             <p class="hr-or">or</p>
                             <div style="text-align: center">
                                 <button class="loginBtn loginBtn--facebook">

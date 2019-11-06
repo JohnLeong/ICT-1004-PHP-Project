@@ -63,7 +63,7 @@ and open the template in the editor.-->
                             <label><input type="checkbox" required > Agree to our <a href="#">Terms & Privacy</a></label>
                         </div>
                         <hr>
-                        <button type="submit" class="registerbtn" name="register_submit">Register123</button>
+                        <button type="submit" class="registerbtn" name="register_submit">Register</button>
                     </form>
                 </div>
 

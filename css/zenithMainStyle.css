@@ -69,7 +69,7 @@ h2 {
     font-size: 30px; 
     text-transform: uppercase;
     border-bottom: 10px solid grey;
-    margin: 45px 0 10px 0;
+    margin: 25px 0 10px 0;
     letter-spacing: 5px;
 }
 
@@ -377,7 +377,7 @@ form {
 .loginpage {
     background: white;
     box-shadow: 5px 5px 5px 5px rgba(175,175,175,0.5);
-    padding: 20px 20px 50px 20px;
+    padding: 0 20px 50px 20px;
 }
 
 .form-signin .btn {
