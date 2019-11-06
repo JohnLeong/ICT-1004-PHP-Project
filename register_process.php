@@ -35,11 +35,7 @@ and open the template in the editor.
         ?>
 
         <?php
-        // Constants for accessing our DB:
-        define("DBHOST", "localhost");
-        define("DBNAME", "zenith");
-        define("DBUSER", "root");
-        define("DBPASS", "");
+        
         $fname = $lname = $email = $password = "";
         $errorMsg = "";
         $success = true;
@@ -123,14 +119,14 @@ and open the template in the editor.
         function saveMemberToDB() {
             global $first_name, $last_name, $email, $password, $errorMsg, $success;
             // Create connection
-            $conn = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
+            $conn = new mysqli("161.117.122.252", "p5_2", "yzhbGyqP87", "p5_2");
             // Check connection
             if ($conn->connect_error) {
                 $errorMsg = "Connection failed: " . $conn->connect_error;
                 $success = false;
             }
             else {
-                $sql = "INSERT INTO zenith_member (fname, lname, email, password)";
+                $sql = "INSERT INTO p5_2.zenith_members (fname, lname, email, password)";
                 $sql .= " VALUES ('$first_name', '$last_name', '$email', '$password')";
                 // Execute the query
                 if (!$conn->query($sql)) {

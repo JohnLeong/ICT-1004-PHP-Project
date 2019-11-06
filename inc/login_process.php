@@ -35,11 +35,7 @@ and open the template in the editor.
         ?>
 
         <?php
-        //Constants for accessing our DB:
-        define("DBHOST", "localhost");
-        define("DBNAME", "zenith");
-        define("DBUSER", "root");
-        define("DBPASS", "");
+        
         $fname = $lname = $email = $password = "";
         $errorMsg = "";
         $success = true;
@@ -88,13 +84,13 @@ and open the template in the editor.
         function checkMemberDb() {
             global $email, $first_name, $last_name, $password, $success;
             // Create connection
-            $conn = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
+            $conn = new mysqli("161.117.122.252", "p5_2", "yzhbGyqP87", "p5_2");
             // Check connection
             if ($conn->connect_error) {
                 $errorMsg = "Connection failed: " . $conn->connect_error;
                 $success = false;
             } else {
-                $sql = "SELECT * FROM zenith_member WHERE ";
+                $sql = "SELECT * FROM p5_2.zenith_members WHERE ";
                 $sql .= "email='$email' AND password='$password'";
                 // Execute the query
                 $result = $conn->query($sql);
