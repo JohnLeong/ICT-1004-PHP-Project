@@ -4,7 +4,7 @@ and open the template in the editor.-->
 
 <html>
     <head>
-        <title>Zenith - Contact Us</title>
+        <title>Zenith - WOMEN</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -12,7 +12,7 @@ and open the template in the editor.-->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
         <!--Website Main CSS-->
-        <link rel="stylesheet" href="css/zenithMainStyle.css"/>
+        <link rel="stylesheet" href="css/zenithMainStyle.css" />
 
         <!--Favicon for browser tab-->
         <link rel="shortcut icon" href="img/zshoe-icon.png"/>
@@ -31,19 +31,19 @@ and open the template in the editor.-->
         <main>
             <div>
                 <h2>Contact Us</h2>
-                <form class="contact-form">
+                <form class="contact-form" action="process_contact.php" method="post">
                     <div class="form-group">
                         <label for="name">Name (optional)</label>
-                        <textarea class="form-control" id="nameTextarea" rows="1"></textarea>
+                        <input class="form-control" id="name" name="name" rows="1"></input>
                     </div>
                     <div class="form-group">
                         <label for="email">Email address</label>
-                        <input type="email" class="form-control" id="email-input" aria-describedby="emailHelp" placeholder="Enter your email">
+                        <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" placeholder="Enter your email" required>
                         <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
                     </div>
                     <div class="form-group">
                         <label for="message">Message</label>
-                        <textarea class="form-control" id="messageTextarea" rows="4"></textarea>
+                        <textarea class="form-control" id="message" name="message" rows="4"></textarea>
                     </div>
                     <button type="submit" class="btn btn-secondary">Submit</button>
                     <br>
