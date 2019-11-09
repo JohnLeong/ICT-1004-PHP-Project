@@ -68,8 +68,8 @@ and open the template in the editor.
         }
         $error .= $errorMsg;
 
-        $register = 'register.php';
-        $home = 'index.php';
+        $register = '../register.php';
+        $home = '../index.php';
 
 
         // Functions
