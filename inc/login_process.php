@@ -82,7 +82,7 @@ and open the template in the editor.
         }
 
         function checkMemberDb() {
-            global $email, $first_name, $last_name, $password, $success;
+            global $email, $first_name, $last_name, $password, $success, $zid;
             // Create connection
             $conn = new mysqli("161.117.122.252", "p5_2", "yzhbGyqP87", "p5_2");
             // Check connection
@@ -100,6 +100,7 @@ and open the template in the editor.
                     $row = $result->fetch_assoc();
                     $first_name = $row["fname"];
                     $last_name = $row["lname"];
+                    $zid = $row["zmember_id"];
                 } else {
                     $success = false;
                 }
@@ -119,6 +120,7 @@ and open the template in the editor.
                         if ($success) {
                             include_once("session.php");
                             setLogin($first_name, $last_name);
+                            getID($zid);
                             header("Location: ../index.php");
                         } 
                         else {
