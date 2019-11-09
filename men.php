@@ -108,7 +108,7 @@ and open the template in the editor.-->
                             $errorMsg = "Connection failed: " . $conn->connect_error;
                             $success = false;
                         } else {
-                            $sql = "SELECT * FROM p5_2.products;";
+                            $sql = "SELECT * FROM p5_2.products WHERE gender='Men'";
 
                             // Execute the query
                             $result = $conn->query($sql);
