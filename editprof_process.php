@@ -36,6 +36,7 @@ and open the template in the editor.
 
         <?php
         $first_name = $last_name = $email = $gender = $mobile = $country = $city = $address = "";
+        $dob_d = $dob_m = $dob_y = "";
         $errorMsg = "";
         $success = true;
 
@@ -99,7 +100,7 @@ and open the template in the editor.
         } else {
             $country = sanitize_input($_POST["country"]);
         }
-        
+
         //city
         $city = $errorMsg = "";
         if (empty($_POST["city"])) {
@@ -108,7 +109,17 @@ and open the template in the editor.
         } else {
             $city = sanitize_input($_POST["city"]);
         }
-        
+        //dob
+        $dob = $errorMsg = "";
+            $dob_d = $_POST["dob_d"];
+            $dob_m = $_POST["dob_m"];
+            $dob_y = $_POST["dob_y"];
+            // Date format YYYY-MM-DD
+            $dob .= $dob_y . "-";
+            $dob .= $dob_m . "-";
+            $dob .= $dob_d;
+            
+            
         //address
         $address = $errorMsg = "";
         if (empty($_POST["address"])) {
@@ -117,18 +128,19 @@ and open the template in the editor.
         } else {
             $address = sanitize_input($_POST["address"]);
         }
-        
+
+
         // Troubleshoot
-        echo "<script type='text/javascript'>alert('$address');</script>";
-        echo "<script type='text/javascript'>alert('$gender');</script>";
-        echo "<script type='text/javascript'>alert('$first_name');</script>";
-        echo "<script type='text/javascript'>alert('$last_name');</script>";
-        echo "<script type='text/javascript'>alert('$mobile');</script>";
-        echo "<script type='text/javascript'>alert('$city');</script>";
-        echo "<script type='text/javascript'>alert('$country');</script>";
-        
-        
-        
+//        echo "<script type='text/javascript'>alert('$dob');</script>";
+//        echo "<script type='text/javascript'>alert('$gender');</script>";
+//        echo "<script type='text/javascript'>alert('$first_name');</script>";
+//        echo "<script type='text/javascript'>alert('$last_name');</script>";
+//        echo "<script type='text/javascript'>alert('$mobile');</script>";
+//        echo "<script type='text/javascript'>alert('$city');</script>";
+//        echo "<script type='text/javascript'>alert('$country');</script>";
+
+        updateMemberInfo();
+
         $register = 'register.php';
         $home = 'index.php';
 
@@ -143,7 +155,7 @@ and open the template in the editor.
         function updateMemberInfo() {
             global $id, $email, $first_name, $last_name, $dob;
             global $gender, $mobile, $country, $city, $address, $success, $zid;
-            global $day, $month, $year;
+            global $day, $month, $year, $error;
 
             $id = $_SESSION['zid'];
             // Create connection
@@ -153,37 +165,29 @@ and open the template in the editor.
                 $errorMsg = "Connection failed: " . $conn->connect_error;
                 $success = false;
             } else {
+//                 UPDATE `p5_2`.`zenith_members` SET `fname` = 'XB', `lname` = 'Po',
+//                  `email` = 'xb@hotmaill.com', `dob` = '1997-07-11', `gender` = 'MALE',
+//                   `mobile` = '12342312',
+//                  `country` = 'SG', `city` = 'SG', `address` = '828 Woodlands Drive 50 #01-123' 
+//                  WHERE (`zmember_id` = '2');
                 $sql = "UPDATE p5_2.zenith_members SET";
-                // UPDATE `p5_2`.`zenith_members` SET `fname` = 'XB', `lname` = 'Po',
-                //  `email` = 'xb@hotmaill.com', `dob` = '1997-07-11', `gender` = 'MALE',
-                //   `mobile` = '12342312',
-                //  `country` = 'SG', `city` = 'SG', `address` = '828 Woodlands Drive 50 #01-123' 
-                //  WHERE (`zmember_id` = '2');
-                // Insert update statement
-                $sql .= "WHERE zmember_id='$id'";
-
+                $sql .= " fname = '" . $first_name . "',";
+                $sql .= " lname = '" . $last_name . "',";
+                $sql .= " email = '" . $email . "',";
+                $sql .= " dob = '" . $dob . "',";
+                $sql .= " gender = '" . $gender . "',";
+                $sql .= " mobile = '" . $mobile . "',";
+                $sql .= " country = '" . $country . "',";
+                $sql .= " city = '" . $city . "',";
+                $sql .= " address = '" . $address . "'";
+                $sql .= " WHERE zmember_id='" . $id . "'";
                 // Execute the query
-                $result = $conn->query($sql);
-                if ($result->num_rows > 0) {
-                    $row = $result->fetch_assoc();
-                    $first_name = $row["fname"];
-                    $last_name = $row["lname"];
-                    $email = $row["email"];
-                    $gender = $row["gender"];
-                    $mobile = $row["mobile"];
-                    $country = $row["country"];
-                    $city = $row["city"];
-                    $address = $row["address"];
-
-                    $dob = $row["dob"];
-                    $dob = strtotime($dob); // String to time
-                    $day = date('d', $dob);
-                    $month = date('m', $dob);
-                    $year = date('Y', $dob);
+                if ($conn->query($sql) == TRUE) {
+                    $success = true;
                 } else {
+                    $error .= $conn->error;
                     $success = false;
                 }
-                $result->free_result();
             }
             $conn->close();
         }
@@ -194,23 +198,17 @@ and open the template in the editor.
                     <div class="form-group">
                         <?php
                         if ($success) {
-                            echo "<h2>Your registration is successful!</h2>";
-                            echo "<h4>Thanks for signing up " . $first_name . ".</h4>";
-                            saveMemberToDB($first_name, $last_name, $email, $password);
-                            ?>
-                            <input class="btn btn-default" type="button" value="Login Now" 
-                                   onclick="window.location.href = 'login.php'" />
-                            <input class="btn btn-default" type="button" value="Home" 
+//                            echo "<script type='text/javascript'>alert('Your info has been updated :) Thank you!');</script>";
+                            echo "<h2>Your Profile has been updated. </h2>";
+                            ?> 
+                            <input class="btn btn-default" type="button" value="Return to Shopping" 
                                    onclick="window.location.href = 'index.php'" />
-
                             <?php
                         } else {
-                            echo "<h2>Oops!</h2>";
-                            echo "<h4>The following input errors were detected:</h4>";
                             echo $error;
                             ?>
-                            <input class="btn btn-default" type="button" value="Return to Sign up" 
-                                   onclick="window.location.href = 'register.php'" />
+                            <input class="btn btn-outline-dark" type="button" value="Return to Edit Profile" 
+                                   onclick="window.location.href = 'editprofile.php'" />
                                <?php } ?>
                     </div>
                 </form>
