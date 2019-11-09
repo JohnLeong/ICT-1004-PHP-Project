@@ -130,15 +130,16 @@ and open the template in the editor.-->
                                         echo "<div class='col-md-4'>";
                                         echo "<div class='card h-100'>";   
                                         
-                                        echo "<div class='card-body'>";   
-                                        echo "<img class='productimgresize fitimage' src='" . $row["image"] . "' alt='". $row["product_name"] . "'/>";
+                                        echo "<div class='card-body'>";
+                                        echo "<img class='productimgresize fitimage' src='" . $row["image"] . "' alt='" . $row["product_name"] . "'/>";
                                         echo "<h3 class='card-title'>" . $row["product_name"] . "</h3>";
                                         echo "<p class='productdescription'>" . $row["type"] . "</p>";
-                                        echo "<p class='productoption'>". $num_colors . " Colour(s)</p>";
+                                        echo "<p class='productdescription'>$" . $row["unit_price"] . "</p>";
+                                        //echo "<p class='productoption'>". $num_colors . " Colour(s)</p>";
                                         echo "</div>";
 
                                         echo "<div class = card-footer>";
-                                        echo "<a href = product_detail.php class='btn btn-secondary btn-sm'>More Info</a>";
+                                        echo "<a href = product_detail.php?productID=" . $row["product_ID"] . " class='btn btn-secondary btn-sm'>More Info</a>";
                                         echo "<a href ='https://" . $row["image_source"] . "'>Image source</a>";
                                         echo "</div>";
 

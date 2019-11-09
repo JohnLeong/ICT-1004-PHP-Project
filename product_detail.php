@@ -38,32 +38,69 @@ and open the template in the editor.
             <div class="container" id="product-section">
                 <div class="row">
                     <div class="col-md-6"><!--Product Image-->
-                        <img class="productimgresize" src="img/AJ1.png" alt="Air Jordan 1"/>
+                        <?php
+                        //Constants for accessing our DB:
+                        define("DBHOST", "161.117.122.252");
+                        define("DBNAME", "p5_2");
+                        define("DBUSER", "p5_2");
+                        define("DBPASS", "yzhbGyqP87");
+
+                        $success = true;
+
+                        $conn = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
+
+                        // Check connection
+                        if ($conn->connect_error) {
+                            $errorMsg = "Connection failed: " . $conn->connect_error;
+                            $success = false;
+                        } else {
+                            $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+                            $url_components = parse_url($url);
+                            parse_str($url_components['query'], $params);
+                            $sql = "SELECT * FROM p5_2.products WHERE product_ID='" . $params['productID'] . "'";
+                        }
+                        $result = $conn->query($sql);
+                        $row = $result->fetch_assoc();
+                        
+                        if ($result->num_rows > 0)
+                            echo "<img class='productimgresize' src='" . $row["image"] . "' alt='Air Jordan 1'/>";
+                        ?>
                     </div><!--End of Product Image-->
                     <div class="col-md-6"><!--Product Info-->
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h2>AIR JORDAN 1 RETRO HIGH OG - FIRST CLASS FLIGHT</h2>                            </h1>
-                            </div>
-                        </div><!--End of row-->
-                        <!--<div class="row"><!--Product Type and SKU
-                            <div class="col-md-12">
-                                <span class="label label-primary">Lifestyle</span>
-                                <span class="monospaced">EG SKU</span>
-                            </div>
-                        </div><!--End of row-->
-                        <div class="row">
-                            <div class="col-md-12">
-                                <p class="description">
-                                    Air Jordan 1 Retro High OG
-                                </p>
-                            </div>
-                        </div><!--End of row-->
-                        <div class="row">
-                            <div class="col-md-12 bottom-rule">
-                                <h2 class="product-price">$129.00</h2>
-                            </div>
-                        </div>
+                        <?php
+                        if ($result->num_rows > 0) {
+                            echo "<div class='row'>";
+                            echo "<div class='col-md-12'>";
+                            echo "<h2>" . $row["product_name"] . "</h2>";
+                            echo "</div>";
+                            echo "</div>";
+                            
+                            echo "<div class='row'>";
+                            echo "<div class='col-md-12'>";
+                            echo "<p class='description'>" . $row["product_desc"] ."</p>";
+                            echo "</div>";
+                            echo "</div>";
+                            
+                            echo "<div class='row'>";
+                            echo "<div class='col-md-12 bottom-rule'>";
+                            echo "<h2 class='product-price'>$" . $row["unit_price"] . "</h2>";
+                            echo "</div>";
+                            echo "</div>";
+                            
+                            echo "<div class='col-md-6'>";
+                            echo "<div class='input-group mb-3'>";
+                            echo "<input type='text' class='form-control' placeholder='Quantity' aria-label='Quantity' aria-describedby='button-addon2'>";
+                            echo "<div class='input-group-append'>";
+                            echo "<button class='btn btn-success btn-md' type='button' id='button-addon2'>Add to Cart!</button>";
+                            echo "</div>";
+                            echo "</div>";
+                            echo "</div>";
+
+                        }
+                        else{
+                            echo "<h4>Product does not exist!</h4>";
+                        }
+                        ?>
 
                         <!--<div class="row add-to-cart">
                             <div class="def-number-input number-input safari_only">
@@ -73,20 +110,13 @@ and open the template in the editor.
                             </div>
                             <button type="button" class="btn btn-success btn-block">Add to Cart!</button>
                         </div>--><!--end of row-->
-                        <div class="col-md-6">
-                            <div class="input-group mb-3">
-                                <input type="text" class="form-control" placeholder="Quantity" aria-label="Quantity"
-                                       aria-describedby="button-addon2">
-                                <div class="input-group-append">
-                                    <button class="btn btn-success btn-md" type="button" id="button-addon2">Add to Cart!</button>
-                                </div>
-                            </div>
-                        </div>
+
                         <!-- Product Description Collapsible Panel-->
                         <div class="row product-description">
                             <div class="col-md-12">
                                 <div class="wrapper center-block">
                                     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                        <!--
                                         <div class="panel panel-default">
                                             <div class="panel-heading active" role="tab" id="headingOne">
                                                 <h4 class="panel-title">
@@ -101,18 +131,30 @@ and open the template in the editor.
                                                 </div>
                                             </div>
                                         </div>
+                                        -->
                                         <div class="panel panel-default">
                                             <div class="panel-heading" role="tab" id="headingTwo">
                                                 <h4 class="panel-title">
                                                     <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                                        Reviews
+                                                        <?php
+                                                        if ($result->num_rows > 0) {
+                                                            echo "Reviews";
+                                                        }
+                                                        ?>
                                                     </a>
                                                 </h4>
                                             </div>
                                             <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                                                <div class="panel-body">
-                                                    "These were playable, which is the main thing. If you wanted the look or styling of an Air Jordan I with modern tech you can either swap the insoles out for cushion or opt to purchase the Air Jordan I Alpha which offers many upgrades in every category, most notably the cushion with its Phylon midsole and full length bottom loaded Zoom Air." - WearTesters.com
-                                                </div>
+                                                <?php
+                                                if ($result->num_rows > 0) {
+                                                    echo "<div class='panel-body'>";
+                                                    echo "These were playable, which is the main thing. If you wanted the look or styling of an Air Jordan I with modern tech you can either swap the insoles out for cushion or opt to purchase the Air Jordan I Alpha which offers many upgrades in every category, most notably the cushion with its Phylon midsole and full length bottom loaded Zoom Air. - WearTesters.com";
+                                                    echo "</div>";
+                                                }
+
+                                                $result->free_result();
+                                                $conn->close();
+                                                ?>
                                             </div>
                                         </div>
                                     </div>

@@ -37,7 +37,11 @@ and open the template in the editor.
         $success = true;
 
         getMemberInfo();
-
+        
+        if ($gender == null || $dob == null || $mobile == null || $country == null || $city == null || $address == null) {
+            echo "<script type='text/javascript'>alert('Please complete your profile information :)');</script>";
+            echo "<script>window.location.href='editprofile.php'</script>";
+        }
         function getMemberInfo() {
             global $id, $email, $first_name, $last_name, $dob, $gender, $mobile, $country, $city, $address, $success, $zid;
             $id = $_SESSION['zid'];
