@@ -92,6 +92,7 @@ and open the template in the editor.-->
                     </div>
                     <!--Products Column-->
                     <div class= "col-md-9">
+
                         <?php
                         //Constants for accessing our DB:
                         define("DBHOST", "161.117.122.252");
@@ -137,7 +138,7 @@ and open the template in the editor.-->
                                         echo "</div>";
 
                                         echo "<div class = card-footer>";
-                                        echo "<a href = productdetails.html class='btn btn-secondary btn-sm'>More Info</a>";
+                                        echo "<a href = product_detail.php class='btn btn-secondary btn-sm'>More Info</a>";
                                         echo "<a href = https://image-cdn.hypb.st/https%3A%2F%2Fhypebeast.com%2Fimage%2F2019%2F09%2Fair-jordan-first-class-03.jpg?q=90&w=1400&cbr=1&fit=max>Image source</a>";
                                         echo "</div>";
 

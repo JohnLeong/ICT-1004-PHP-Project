@@ -60,9 +60,7 @@ and open the template in the editor.-->
                                                 <div class="media-body">
                                                     <a href="#" class="d-block text-dark">AIR JORDAN 1 RETRO HIGH OG - FIRST CLASS FLIGHT</a>
                                                     <small>
-                                                        <span class="text-muted">Color:</span> WHITE & YELLOW
-                                                        <span class="text-muted">Size: </span> US 10.5 &nbsp;
-                                                        <span class="text-muted">Ships from: </span> United States or America
+                                                        <span class="text-muted">Size: </span> US 10.5
                                                     </small>
                                                 </div>
                                             </div>
@@ -80,9 +78,7 @@ and open the template in the editor.-->
                                                 <div class="media-body">
                                                     <a href="#" class="d-block text-dark">NIKE AIR MAX 90 PREMIUM 'NEW SPECIES'</a>
                                                     <small>
-                                                        <span class="text-muted">Color:</span> PURE PLATINUM & BIO GREEN
-                                                        <span class="text-muted">Size: </span> US 9.0 &nbsp;
-                                                        <span class="text-muted">Ships from: </span> United States or America
+                                                        <span class="text-muted">Size: </span> US 9.0
                                                     </small>
                                                 </div>
                                             </div>
@@ -100,9 +96,7 @@ and open the template in the editor.-->
                                                 <div class="media-body">
                                                     <a href="#" class="d-block text-dark">NIKE AIR MAX 90 PREMIUM 'NEW SPECIES'</a>
                                                     <small>
-                                                        <span class="text-muted">Color:</span> PURE PLATINUM & BIO GREEN
-                                                        <span class="text-muted">Size: </span> US 10.5 &nbsp;
-                                                        <span class="text-muted">Ships from: </span> United States or America
+                                                        <span class="text-muted">Size: </span> US 10.5
                                                     </small>
                                                 </div>
                                             </div>
