@@ -48,7 +48,7 @@ and open the template in the editor.-->
                                 <div class="form-group">
                                     <label for="password">Password:</label>
                                     <input type="password" placeholder="Password" id="password" required name="password" class="form-control">
-                                    <a href="#" class="forgot">Forgot Password?</a>
+                                    <a href="reset_password.php" class="forgot">Forgot Password?</a>
                                 </div>
                                 <hr>
                                 <div class="checkbox">

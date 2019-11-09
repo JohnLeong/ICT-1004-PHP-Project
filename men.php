@@ -103,7 +103,7 @@ and open the template in the editor.-->
                                         <p class="productoption">2 Colours</p>
                                     </div>
                                     <div class="card-footer">
-                                        <a href="productdetails.html" class="btn btn-secondary btn-sm">More Info</a>
+                                        <a href="product_detail.php" class="btn btn-secondary btn-sm">More Info</a>
                                         <a href="https://image-cdn.hypb.st/https%3A%2F%2Fhypebeast.com%2Fimage%2F2019%2F09%2Fair-jordan-first-class-03.jpg?q=90&w=1400&cbr=1&fit=max">Image source</a>
                                     </div>
                                 </div>
