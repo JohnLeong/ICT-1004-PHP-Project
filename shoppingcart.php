@@ -70,42 +70,6 @@ and open the template in the editor.-->
                                         <td class="text-right font-weight-semibold align-middle p-4">SGD 309.00</td>
                                         <td class="text-center align-middle px-0"><a href="#" class="shop-tooltip close float-none text-danger" title="" data-original-title="Remove" onclick="delCartItem(1)">×</a></td>
                                     </tr>
-
-                                    <tr id="row2">
-                                        <td class="p-4">
-                                            <div class="media align-items-center">
-                                                <img src="img/AM1.PNG" class="d-block ui-w-40 ui-bordered mr-4" alt="NIKE AIR MAX 90 PREMIUM 'NEW SPECIES'">
-                                                <div class="media-body">
-                                                    <a href="#" class="d-block text-dark">NIKE AIR MAX 90 PREMIUM 'NEW SPECIES'</a>
-                                                    <small>
-                                                        <span class="text-muted">Size: </span> US 9.0
-                                                    </small>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="text-right font-weight-semibold align-middle p-4">SGD 185.00</td>
-                                        <td class="align-middle p-4"><input type="text" class="form-control text-center" value="1"></td>
-                                        <td class="text-right font-weight-semibold align-middle p-4">SGD 185.00</td>
-                                        <td class="text-center align-middle px-0"><a href="#" class="shop-tooltip close float-none text-danger" title="" data-original-title="Remove" onclick="delCartItem(2)">×</a></td>
-                                    </tr>
-
-                                    <tr id="row3">
-                                        <td class="p-4">
-                                            <div class="media align-items-center">
-                                                <img src="img/AM1.PNG" class="d-block ui-w-40 ui-bordered mr-4" alt="NIKE AIR MAX 90 PREMIUM 'NEW SPECIES'">
-                                                <div class="media-body">
-                                                    <a href="#" class="d-block text-dark">NIKE AIR MAX 90 PREMIUM 'NEW SPECIES'</a>
-                                                    <small>
-                                                        <span class="text-muted">Size: </span> US 10.5
-                                                    </small>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="text-right font-weight-semibold align-middle p-4">SGD 185.00</td>
-                                        <td class="align-middle p-4"><input type="text" class="form-control text-center" value="1"></td>
-                                        <td class="text-right font-weight-semibold align-middle p-4">SGD 185.00</td>
-                                        <td class="text-center align-middle px-0"><a href="#" class="shop-tooltip close float-none text-danger" title="" data-original-title="Remove" onclick="delCartItem(3)">×</a></td>
-                                    </tr>
                                 </tbody>
                             </table>
                         </div>

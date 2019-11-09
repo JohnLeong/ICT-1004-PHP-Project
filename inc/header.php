@@ -57,7 +57,8 @@ and open the template in the editor.
                     <b>';
                         echo "<a href=profile.php>Welcome, {$_SESSION['name']}! </a>";
                         echo ' <i class="fas fa-user-circle"></i> | 
-                            <a href="shoppingcart.php" >Shopping Cart <i class="fas fa-shopping-cart"></i></a> |
+                            <a href="shoppingcart.php" >Shopping Cart <i class="fas fa-shopping-cart"> 
+                            <span id="cart-item" class="badge badge-danger">3</span></i></a> |
                         <a href="inc/logout.php" >Logout <i class="fas fa-sign-in-alt"></i></a> 
                     </b>
                 </p>

@@ -62,8 +62,9 @@ and open the template in the editor.
                         $result = $conn->query($sql);
                         $row = $result->fetch_assoc();
                         
-                        if ($result->num_rows > 0)
+                        if ($result->num_rows > 0) {
                             echo "<img class='productimgresize' src='" . $row["image"] . "' alt='Air Jordan 1'/>";
+                        }
                         ?>
                     </div><!--End of Product Image-->
                     <div class="col-md-6"><!--Product Info-->
@@ -88,10 +89,9 @@ and open the template in the editor.
                             echo "</div>";
                             
                             echo "<div class='col-md-6'>";
-                            echo "<div class='input-group mb-3'>";
-                            echo "<input type='text' class='form-control' placeholder='Quantity' aria-label='Quantity' aria-describedby='button-addon2'>";
-                            echo "<div class='input-group-append'>";
-                            echo "<button class='btn btn-success btn-md' type='button' id='button-addon2'>Add to Cart!</button>";
+                            echo "<div class='input-group mb-3'>";echo "<div class='input-group-append'>";
+                            echo '<button class="btn btn-success btn-md" type="button" id="addcart">'
+                            . '<i class = "fa fa-cart-plus"></i>&nbsp&nbspAdd to Cart!</button>';
                             echo "</div>";
                             echo "</div>";
                             echo "</div>";
