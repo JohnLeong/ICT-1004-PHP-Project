@@ -138,7 +138,7 @@ and open the template in the editor.-->
                                         echo "</div>";
 
                                         echo "<div class = card-footer>";
-                                        echo "<a href = product_detail.php class='btn btn-secondary btn-sm'>More Info</a>";
+                                        echo "<a href = product_detail.php?productID=" . $row["product_ID"] . " class='btn btn-secondary btn-sm'>More Info</a>";
                                         echo "<a href ='https://" . $row["image_source"] . "'>Image source</a>";
                                         echo "</div>";
 
