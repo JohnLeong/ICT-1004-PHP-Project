@@ -127,7 +127,7 @@ and open the template in the editor.-->
                                         $num_colors = $colors_result->num_rows;
                                         $colors_result->free_result();
 
-                                        echo "<div class='col-md-4'>";
+                                        echo "<div class='col-md-4 " . $row["brand"] . " " . $row["type"] . "'>";
                                         echo "<div class='card h-100'>";   
                                         
                                         echo "<div class='card-body'>";   
