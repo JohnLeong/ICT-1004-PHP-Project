@@ -35,6 +35,7 @@ and open the template in the editor.
         if ($result->num_rows > 0) {
             echo "<title>Zenith - " . $row["product_name"] . "</title>";
         }
+        $result->free_result();
 
         function sanitize_input($data) {
             $data = trim($data);
@@ -140,17 +141,17 @@ and open the template in the editor.
                                 
                                 for($i = 0; $i < $resultShoe->num_rows; ++$i)
                                 {
-                                    $row = $resultShoe->fetch_assoc();
+                                    $rowDetail = $resultShoe->fetch_assoc();
                                     //if($row)
-                                        echo "<option value='1'>" . $row["colour"] . " : " . $row["size"] . "</option>";
+                                        echo "<option value='1'>" . $rowDetail["colour"] . " : " . $rowDetail["size"] . "</option>";
                                 }
                                 
                                 echo "</select>";
                                 echo "<br />";
                                 echo "<br />";
-                                echo "<input type='hidden' name='productID' value='$row[product_ID]' class='form-control'>";
-                                echo "<input type='text' name='productname' value='".$row['product_name']."' class='form-control'>";
-                                echo "<input type='text' name='price' value='".$row['unit_price']."' class='form-control'>";
+                                echo "<input type='hidden' name='productID' value='" . $row['product_ID'] . "' class='form-control'>";
+                                echo "<input type='text' name='productname' value='" . $row['product_name'] . "' class='form-control'>";
+                                echo "<input type='text' name='price' value='" . $row['unit_price'] . "' class='form-control'>";
                                 echo "<div class='input-group-append'>";
                                 echo '<button class="btn btn-success btn-md" type="submit" id="addcart">'
                                 . '<i class = "fa fa-cart-plus"></i>&nbsp &nbsp Add to Cart!</button>';
