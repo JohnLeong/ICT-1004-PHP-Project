@@ -99,7 +99,7 @@ and open the template in the editor.-->
                         define("DBNAME", "p5_2");
                         define("DBUSER", "p5_2");
                         define("DBPASS", "yzhbGyqP87");
-                        
+
                         $success = true;
 
                         $conn = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
@@ -119,8 +119,8 @@ and open the template in the editor.-->
                                 for ($i = 0; $i < $num_rows; $i++) {
                                     //echo "<div class =row>";   //Create row
                                     for ($j = 0; $j < 3; $j++) {
-                                        if(!($row = $result->fetch_assoc()))
-                                                break;
+                                        if (!($row = $result->fetch_assoc()))
+                                            break;
                                         if ($row["gender"] != "Men")
                                             continue;
 
@@ -129,8 +129,8 @@ and open the template in the editor.-->
                                         $colors_result->free_result();
 
                                         echo "<div class='col-md-4 " . $row["brand"] . " " . $row["type"] . "'>";
-                                        echo "<div class='card h-100'>";   
-                                        
+                                        echo "<div class='card h-100'>";
+
                                         echo "<div class='card-body'>";
                                         echo "<img class='productimgresize fitimage' src='" . $row["image"] . "' alt='" . $row["product_name"] . "'/>";
                                         echo "<h3 class='card-title'>" . $row["product_name"] . "</h3>";
@@ -149,7 +149,7 @@ and open the template in the editor.-->
                                     }
                                     //echo "</div>";
                                 }
-                                 echo "</div>";
+                                echo "</div>";
                             } else {
                                 $success = false;
                             }
