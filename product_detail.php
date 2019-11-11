@@ -139,103 +139,15 @@ and open the template in the editor.
                             } else {
                                 echo "<h4>Product does not exist!</h4>";
                                 ?> 
-                                 <input class="btn btn-default" type="button" value="Back To Shopping" 
-                                   onclick="window.location.href='index.php'" /> 
-                                 <?php 
-                                $rsuccess = false;
-                                
-                                
-                            }
-                            $result->free_result();
-                            $conn->close();
-                        }
-                        ?>
-                    </div><!--End of Product Image-->
-                    <div class="col-md-6"><!--Product Info-->
-                        <?php
-                        if ($result->num_rows > 0) {
-                            echo "<div class='row'>";
-                            echo "<div class='col-md-12'>";
-                            echo "<h2>" . $row["product_name"] . "</h2>";
-                            echo "</div>";
-                            echo "</div>";
-                            
-                            echo "<div class='row'>";
-                            echo "<div class='col-md-12'>";
-                            echo "<p class='description'>" . $row["product_desc"] ."</p>";
-                            echo "</div>";
-                            echo "</div>";
-                            
-                            echo "<div class='row'>";
-                            echo "<div class='col-md-12 bottom-rule'>";
-                            echo "<h2 class='product-price'>$" . $row["unit_price"] . "</h2>";
-                            echo "</div>";
-                            echo "</div>";
-                            
-                            echo "<div class='col-md-6'>";
-                            echo "<div class='input-group mb-3'>";echo "<div class='input-group-append'>";
-                            ?>
-                            <form action='shoppingcart.php' name='myForm' method='POST'>
-                                <?php 
-                                echo "<input type='hidden' name='productID' value='$row[product_ID]' class='form-control'>";
-                                ?>
-                                <button class="btn btn-success btn-md" type="submit" name="addcart">
-                                    <i class = "fa fa-cart-plus"></i>&nbsp;&nbsp; Add to Cart!</button>
-                            </form>
-                            <?php
-                            echo "</div>";
-                            echo "</div>";
-                            echo "</div>";
-
-                        }
-                        else{
-                            echo "<h4>Product does not exist!</h4>";
-                        function getReviewsDB() {
-                            global $zmemb, $pid, $date, $errorMsg, $reviews, $numOfReviews;
-                            $reviews = array();
-                            $zmemb = array();
-                            $date = array();
-                            $conn = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
-                            // Check connection
-                            if ($conn->connect_error) {
-                                $errorMsg = "Connection failed: " . $conn->connect_error;
-                                $success = false;
-                            } else {
-                                $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-                                $url_components = parse_url($url);
-                                parse_str($url_components['query'], $params);
-                                $pid = sanitize_input($params['productID']);
-                                // SQL Statement
-                                $sql = "SELECT R.product_ID, M.fname, M.lname, R.reviews, R.datetime ";
-                                $sql .= "FROM p5_2.products_review R, p5_2.zenith_members M ";
-                                $sql .= "WHERE R.zmember_id = M.zmember_id ";
-                                $sql .= "AND R.product_ID = " . $pid . " ";
-                                $sql .= "ORDER BY datetime ASC";
-                                // Execute the query
-                                $result = $conn->query($sql);
-                                $numOfReviews = $result->num_rows;
-                                if ($result->num_rows > 0) {
-                                    for ($i = 0; $i < $numOfReviews; $i++) {
-                                        $row = $result->fetch_assoc();
-                                        $reviews[$i] = $row["reviews"];
-                                        $zmemb[$i] = $row["fname"] . " " . $row["lname"];
-                                        $date[$i] = $row["datetime"];
-                                    }
-                                } else {
-                                    $success = false;
-                                }
-                            }
-                            $conn->close();
-                        }
-                        ?>
                                 <input class="btn btn-default" type="button" value="Back To Shopping" 
                                        onclick="window.location.href = 'index.php'" /> 
                                        <?php
                                        $rsuccess = false;
-                        }
+                                   }
                                    $result->free_result();
                                    $conn->close();
-                            
+                               }
+
                                function getReviewsDB() {
                                    global $zmemb, $pid, $date, $errorMsg, $reviews, $numOfReviews;
                                    $reviews = array();
@@ -280,6 +192,7 @@ and open the template in the editor.
                                    $conn->close();
                                }
                                ?>
+
                         <!--<div class="row add-to-cart">
                             <div class="def-number-input number-input safari_only">
                                 <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="minus"></button>
