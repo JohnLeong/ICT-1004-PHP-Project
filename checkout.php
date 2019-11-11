@@ -36,7 +36,7 @@ and open the template in the editor.-->
                 <!-- Shopping cart table -->
                 <div class="card">
                     <div class="card-header">
-                        <h2>Shopping Cart</h2>
+                        <h2>Checkout</h2>
                     </div>
                     <?php
                     global $grandtotal, $total;
@@ -61,7 +61,6 @@ and open the template in the editor.-->
                                                 <th class="text-center py-3 px-4" style="width: 100px;">Price</th>
                                                 <th class="text-center py-3 px-4" style="width: 120px;">Quantity</th>
                                                 <th class="text-center py-3 px-4" style="width: 100px;">Total</th>
-                                                <th class="text-center align-middle py-3 px-0" style="width: 40px;"><a href="#" class="shop-tooltip float-none text-light" title="" data-original-title="Clear cart"><i class="ino ion-md-trash"></i></a></th>
                                             </tr>
                                         </thead>
                                         <?php
@@ -88,26 +87,14 @@ and open the template in the editor.-->
                                                         </div>
                                                     </td>
                                                     <?php
-                                                    echo "<form method='post' name='updatecart' action='inc/update_shoppingcart.php'>";
                                                     echo "<td class='text-right font-weight-semibold align-middle p-4'>SGD $row[unit_price] </td>";
                                                     echo "<td class='align-middle p-4'>"
-                                                    . "<input type='text' name='qty' class='form-control text-center' value='" . $row['quantity'] . "'>"
-                                                            . "<input type='hidden' name=prodDID value='". $row['productDetail_ID'] ."'>"
-                                                            . "<span><button class='btn btn-sm btn-outline-dark mt-1' type='submit' name='updatecartqty'>Update Quantity</button></span>"
-                                                            . "</td>"
-                                                            . "</form>";
+                                                    . "<input type='text' disabled name='qty' class='form-control text-center' value='" . $row['quantity'] . "'>"
+                                                            . "</td>";
                                                     
                                                     $total = $row['unit_price'] * $row['quantity'];
                                                     echo "<td class='text-right font-weight-semibold align-middle p-4'>SGD $total </td>";
                                                     ?>
-                                                    <td class="text-center align-middle px-0">
-                                                        <?php
-                                                        echo "<form method='post' name='deletecartitem' action='inc/update_shoppingcart.php'>"
-                                                                . "<input type='hidden' name=prodDID value='". $row['productDetail_ID'] ."'>"
-                                                                . "<button name='deleteitem' class='btn btn-sm btn btn-outline-danger'>X</a>"
-                                                            . "</form>";
-                                                        ?>
-                                                    </td>
                                                 </tr>
                                             </tbody>
                                             <?php
@@ -121,45 +108,33 @@ and open the template in the editor.-->
                             </table>
                         </div>
                         <!-- / Shopping cart table -->
-
-                        <div class="d-flex flex-wrap justify-content-between align-items-center pb-4">
-                            <div class="mt-4">
-                                <label class="text-muted font-weight-normal">Enter Promo Code Here:</label>
-                                <input type="text" placeholder="Promo Code" class="form-control">
+                        <div class="row float-right">
+                            <div class="text-right mt-4 mr-5">
+                                <label class="text-muted font-weight-normal m-0">Shipping Fee</label>
+                                <?php
+                                $shippingfee = 18;
+                                if ($grandtotal == 0) {
+                                    $shippingfee = 0;
+                                    $grandtotal = 0;
+                                } else if ($grandtotal < 300) {
+                                    $grandtotal = $grandtotal + $shippingfee;
+                                } else {
+                                    $shippingfee = 0;
+                                    $grandtotal = $grandtotal + $shippingfee;
+                                }
+                                echo "<div class='text-large'><strong>SGD $shippingfee</strong></div>";
+                                ?>
                             </div>
-                            <div class="d-flex">
-                                <div class="text-right mt-4 mr-5">
-                                    <label class="text-muted font-weight-normal m-0">Discount</label>
-                                    <div class="text-large"><strong>SGD 0.00</strong></div>
-                                </div>
-                                <div class="text-right mt-4 mr-5">
-                                    <label class="text-muted font-weight-normal m-0">Shipping Fee</label>
-                                    <?php
-                                    $shippingfee = 18;
-                                    if ($grandtotal == 0){
-                                        $shippingfee = 0;
-                                        $grandtotal = 0;
-                                    } else if ($grandtotal < 300){
-                                        $grandtotal = $grandtotal + $shippingfee; 
-                                    } else {
-                                        $shippingfee = 0;
-                                        $grandtotal = $grandtotal + $shippingfee;
-                                    }
-                                    echo "<div class='text-large'><strong>SGD $shippingfee</strong></div>";
-                                    ?>
-                                </div>
-                                <div class="text-right mt-4">
-                                    <label class="text-muted font-weight-normal m-0">Total price</label>
-                                    <?php
-                                    echo "<div class='text-large'><strong>SGD $grandtotal</strong></div>";
-                                    ?>
-                                </div>
+                            <div class="text-right mt-4">
+                                <label class="text-muted font-weight-normal m-0">Total price</label>
+                                <?php
+                                echo "<div class='text-large'><strong>SGD $grandtotal</strong></div>";
+                                ?>
                             </div>
                         </div>
-
-                        <div class="float-right">
+                        <div class="row float-right">
                             <button type="button" class="btn btn-lg btn-secondary md-btn-flat mt-2 mr-3" onclick="window.location.href='index.php'">Back to Shopping</button>
-                            <button type="button" class="btn btn-lg btn-secondary mt-2" onclick="window.location.href='checkout.php'">Checkout</button>
+                            <button type="button" class="btn btn-lg btn-secondary mt-2">Payment</button>
                         </div>
 
                     </div>
