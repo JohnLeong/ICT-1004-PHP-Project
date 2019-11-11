@@ -142,8 +142,9 @@ and open the template in the editor.
                                 for($i = 0; $i < $resultShoe->num_rows; ++$i)
                                 {
                                     $rowDetail = $resultShoe->fetch_assoc();
-                                    //if($row)
-                                        echo "<option value='1'>" . $rowDetail["colour"] . " : " . $rowDetail["size"] . "</option>";
+                                    if((int)$rowDetail["stock"] > 0){
+                                         echo "<option value='" . $rowDetail["colour"]. ":" . $rowDetail["size"] . "'>" . $rowDetail["colour"] . " : " . $rowDetail["size"] . "</option>";
+                                    }
                                 }
                                 
                                 echo "</select>";
@@ -160,6 +161,8 @@ and open the template in the editor.
                                 
                                 echo "</div>";
                                 echo "</div>";
+
+                                $resultShoe->free_result();
                             } else {
                                 echo "<h4>Product does not exist!</h4>";
                                 ?> 
