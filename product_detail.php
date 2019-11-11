@@ -232,11 +232,10 @@ and open the template in the editor.
                                        onclick="window.location.href = 'index.php'" /> 
                                        <?php
                                        $rsuccess = false;
-                                   }
+                        }
                                    $result->free_result();
                                    $conn->close();
-                               }
-
+                            
                                function getReviewsDB() {
                                    global $zmemb, $pid, $date, $errorMsg, $reviews, $numOfReviews;
                                    $reviews = array();
