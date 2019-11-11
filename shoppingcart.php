@@ -158,7 +158,7 @@ and open the template in the editor.-->
                         </div>
 
                         <div class="float-right">
-                            <button type="button" class="btn btn-lg btn-secondary md-btn-flat mt-2 mr-3" onclick="goBack()">Back to shopping</button>
+                            <button type="button" class="btn btn-lg btn-secondary md-btn-flat mt-2 mr-3" onclick="window.location.href='index.php'">Back to Shopping</button>
                             <button type="button" class="btn btn-lg btn-secondary mt-2">Checkout</button>
                         </div>
 

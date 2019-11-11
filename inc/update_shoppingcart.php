@@ -11,8 +11,11 @@ if ((!isset($_POST['addtocart'])) && (!isset($_POST['updatecartqty'])) && (!isse
     } else {
         $quantity = $_POST['qty'];
         $prodDID = $_POST['prodDID'];
-        $sql = "UPDATE p5_2.zshoppingcart SET quantity='$quantity' WHERE productDetail_ID='$prodDID'";
-
+        if ($quantity == 0) {
+            $sql = "DELETE FROM p5_2.zshoppingcart WHERE productDetail_ID='$prodDID'";
+        } else {
+            $sql = "UPDATE p5_2.zshoppingcart SET quantity='$quantity' WHERE productDetail_ID='$prodDID'";
+        }
         // Execute the query
         if (!$conn->query($sql)) {
             $errorMsg = "Database error: " . $conn->error;
