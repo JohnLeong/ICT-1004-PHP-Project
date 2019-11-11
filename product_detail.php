@@ -6,7 +6,34 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>Zenith - (Product Name in DB)</title>
+        <?php
+        //Constants for accessing our DB:
+        define("DBHOST", "161.117.122.252");
+        define("DBNAME", "p5_2");
+        define("DBUSER", "p5_2");
+        define("DBPASS", "yzhbGyqP87");
+        global $success;
+        $success = true;
+
+        $conn = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
+
+        // Check connection
+        if ($conn->connect_error) {
+            $errorMsg = "Connection failed: " . $conn->connect_error;
+            $success = false;
+        } else {
+            $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+            $url_components = parse_url($url);
+            parse_str($url_components['query'], $params);
+            $sql = "SELECT * FROM p5_2.products WHERE product_ID='" . $params['productID'] . "'";
+        }
+        $result = $conn->query($sql);
+        $row = $result->fetch_assoc();
+
+        if ($result->num_rows > 0) {
+            echo "<title>Zenith - " . $row["product_name"] . "</title>";
+        }
+        ?>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -57,12 +84,6 @@ and open the template in the editor.
                 <div class="row">
                     <div class="col-md-6"><!--Product Image-->
                         <?php
-                        //Constants for accessing our DB:
-                        define("DBHOST", "161.117.122.252");
-                        define("DBNAME", "p5_2");
-                        define("DBUSER", "p5_2");
-                        define("DBPASS", "yzhbGyqP87");
-                        global $success;
 
                         getProdDB();
                         getReviewsDB();
@@ -87,12 +108,8 @@ and open the template in the editor.
 
                             if ($result->num_rows > 0) {
                                 echo "<img class='productimgresize' src='" . $row["image"] . "' alt='Air Jordan 1'/>";
-                            }
-                            ?>
-                        </div><!--End of Product Image-->
-                        <div class="col-md-6"><!--Product Info-->
-                            <?php
-                            if ($result->num_rows > 0) {
+                                echo "</div><!--End of Product Image--><div class='col-md-6'><!--Product Info-->";
+
                                 echo "<div class='row'>";
                                 echo "<div class='col-md-12'>";
                                 echo "<h2>" . $row["product_name"] . "</h2>";
