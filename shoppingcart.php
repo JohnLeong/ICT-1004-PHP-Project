@@ -88,12 +88,26 @@ and open the template in the editor.-->
                                                         </div>
                                                     </td>
                                                     <?php
+                                                    echo "<form method='post' name='updatecart' action='inc/update_shoppingcart.php'>";
                                                     echo "<td class='text-right font-weight-semibold align-middle p-4'>SGD $row[unit_price] </td>";
-                                                    echo "<td class='align-middle p-4'><input type='text' class='form-control text-center' value='" . $row['quantity'] . "'></td>";
-                                                    $total = $row['unit_price'] * $row[quantity];
+                                                    echo "<td class='align-middle p-4'>"
+                                                    . "<input type='text' name='qty' class='form-control text-center' value='" . $row['quantity'] . "'>"
+                                                            . "<input type='hidden' name=prodDID value='". $row['productDetail_ID'] ."'>"
+                                                            . "<span><button class='btn btn-sm btn-outline-dark mt-1' type='submit' name='updatecartqty'>Update Quantity</button></span>"
+                                                            . "</td>"
+                                                            . "</form>";
+                                                    
+                                                    $total = $row['unit_price'] * $row['quantity'];
                                                     echo "<td class='text-right font-weight-semibold align-middle p-4'>SGD $total </td>";
                                                     ?>
-                                                    <td class="text-center align-middle px-0"><a href="inc/update_shoppingcart.php" class="shop-tooltip close float-none text-danger" title="" data-original-title="Remove" onclick="delCartItem(1)">X</a></td>
+                                                    <td class="text-center align-middle px-0">
+                                                        <?php
+                                                        echo "<form method='post' name='deletecartitem' action='inc/update_shoppingcart.php'>"
+                                                                . "<input type='hidden' name=prodDID value='". $row['productDetail_ID'] ."'>"
+                                                                . "<button name='deleteitem' class='btn btn-sm btn btn-outline-danger'>X</a>"
+                                                            . "</form>";
+                                                        ?>
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                             <?php
@@ -120,7 +134,19 @@ and open the template in the editor.-->
                                 </div>
                                 <div class="text-right mt-4 mr-5">
                                     <label class="text-muted font-weight-normal m-0">Shipping Fee</label>
-                                    <div class="text-large"><strong>SGD 18.00</strong></div>
+                                    <?php
+                                    $shippingfee = 18;
+                                    if ($grandtotal == 0){
+                                        $shippingfee = 0;
+                                        $grandtotal = 0;
+                                    } else if ($grandtotal < 300){
+                                        $grandtotal = $grandtotal + $shippingfee; 
+                                    } else {
+                                        $shippingfee = 0;
+                                        $grandtotal = $grandtotal + $shippingfee;
+                                    }
+                                    echo "<div class='text-large'><strong>SGD $shippingfee</strong></div>";
+                                    ?>
                                 </div>
                                 <div class="text-right mt-4">
                                     <label class="text-muted font-weight-normal m-0">Total price</label>

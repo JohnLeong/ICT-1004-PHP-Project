@@ -52,13 +52,31 @@ and open the template in the editor.
     <!--Promo line-->
     <?php
     if (isset($_SESSION['name'])) {
+        $conn = new mysqli("161.117.122.252", "p5_2", "yzhbGyqP87", "p5_2");
+        // Check connection
+        if ($conn->connect_error) {
+            $errorMsg = "Connection failed: " . $conn->connect_error;
+            $success = false;
+        } else {
+            global $noOfitem;
+            $id = $_SESSION['zid'];
+            $sql = "SELECT * FROM zshoppingcart WHERE zmember_id =$id";
+            $result = mysqli_query($conn, $sql);
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $noOfitem += $row['quantity'];
+                }
+            }
+        }
+    }
+    if (isset($_SESSION['name'])) {
         echo '<div>
                 <p class="loggerNCart">
                     <b>';
                         echo "<a href=profile.php>Welcome, {$_SESSION['name']}! </a>";
                         echo ' <i class="fas fa-user-circle"></i> | 
                             <a href="shoppingcart.php" >Shopping Cart <i class="fas fa-shopping-cart"> 
-                            <span id="cart-item" class="badge badge-danger">3</span></i></a> |
+                            <span id="cart-item" class="badge badge-danger">'. $noOfitem .'</span></i></a> |
                         <a href="inc/logout.php" >Logout <i class="fas fa-sign-in-alt"></i></a> 
                     </b>
                 </p>
