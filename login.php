@@ -48,24 +48,13 @@ and open the template in the editor.-->
                                 <div class="form-group">
                                     <label for="password">Password:</label>
                                     <input type="password" placeholder="Password" id="password" required name="password" class="form-control">
-                                    <a href="reset_password.php" class="forgot">Forgot Password?</a>
+                                   
                                 </div>
                                 <hr>
                                 <div class="checkbox">
                                     <label><input type="checkbox"> Remember me</label>
                                 </div>
-                                <button class="btn text-uppercase" type="submit">LOGIN <i class="fas fa-sign-in-alt"></i></button>
-                            </form>
-                            <p class="hr-or">or</p>
-                            <div style="text-align: center">
-                                <button class="loginBtn loginBtn--facebook">
-                                    Login with Facebook
-                                </button>
-
-                                <button class="loginBtn loginBtn--google">
-                                    Login with Google
-                                </button>
-                            </div>
+                                <button class="btn text-uppercase" name="login_submit" type="submit">LOGIN <i class="fas fa-sign-in-alt"></i></button>
                             </form>
                         </div>
                     </div>
