@@ -12,8 +12,8 @@ and open the template in the editor.
         define("DBNAME", "p5_2");
         define("DBUSER", "p5_2");
         define("DBPASS", "yzhbGyqP87");
-        global $success;
-        $success = true;
+        global $rsuccess;
+        $rsuccess = true;
 
         $conn = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
 
@@ -88,11 +88,11 @@ and open the template in the editor.
                         getProdDB();
                         getReviewsDB();
                         $success = true;
-
+                        
                         function getProdDB() {
                             $conn = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
-
-
+                            global $rsuccess;
+                            $rsuccess = true;
                             // Check connection
                             if ($conn->connect_error) {
                                 $errorMsg = "Connection failed: " . $conn->connect_error;
@@ -138,13 +138,20 @@ and open the template in the editor.
                                 echo "</div>";
                             } else {
                                 echo "<h4>Product does not exist!</h4>";
+                                ?> 
+                                 <input class="btn btn-default" type="button" value="Back To Shopping" 
+                                   onclick="window.location.href='index.php'" /> 
+                                 <?php 
+                                $rsuccess = false;
+                                
+                                
                             }
                             $result->free_result();
                             $conn->close();
                         }
 
                         function getReviewsDB() {
-                            global $zmemb, $pid, $date, $rsuccess, $errorMsg, $reviews, $numOfReviews;
+                            global $zmemb, $pid, $date, $errorMsg, $reviews, $numOfReviews;
                             $reviews = array();
                             $zmemb = array();
                             $date = array();
@@ -223,7 +230,7 @@ and open the template in the editor.
                                                 <h4 class="panel-title">
                                                     <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                                                         <?php
-                                                        if ($success) {
+                                                        if ($rsuccess) {
                                                             echo "Reviews";
                                                         }
                                                         ?>
@@ -232,7 +239,7 @@ and open the template in the editor.
                                             </div>
                                             <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                                                 <?php
-                                                if ($success) {
+                                                if ($rsuccess) {
                                                     echo "<div class='panel-body'>";
                                                     for ($i = 0; $i < $numOfReviews; $i++) {
                                                         echo $reviews[$i];
@@ -246,6 +253,10 @@ and open the template in the editor.
                                             </div>
                                             <div class="panel-body">
                                                 <br>
+                                                <?php 
+                                                if ($rsuccess == 1) {
+                                                    
+                                                ?>
                                                 <form name="reviewForm" action="<?php echo htmlspecialchars('review_process.php') ?>" method="POST" onsubmit="return validateForm()">
                                                     <p>Leave your review here! (Max 500 Characters)</p>
                                                     <input type="hidden" name="prodID" value="<?php echo $pid ?>">
@@ -256,6 +267,9 @@ and open the template in the editor.
                                                             document.getElementById('count').innerHTML = "Characters left: " + (500 - this.value.length);
                                                         };</script>
                                                 </form>
+                                                <?php 
+                                                }
+                                                ?>
                                             </div>
                                         </div>
                                     </div>
