@@ -90,8 +90,15 @@ and open the template in the editor.
                             
                             echo "<div class='col-md-6'>";
                             echo "<div class='input-group mb-3'>";echo "<div class='input-group-append'>";
-                            echo '<button class="btn btn-success btn-md" type="button" id="addcart">'
-                            . '<i class = "fa fa-cart-plus"></i>&nbsp&nbspAdd to Cart!</button>';
+                            ?>
+                            <form action='shoppingcart.php' name='myForm' method='POST'>
+                                <?php 
+                                echo "<input type='hidden' name='productID' value='$row[product_ID]' class='form-control'>";
+                                ?>
+                                <button class="btn btn-success btn-md" type="submit" name="addcart">
+                                    <i class = "fa fa-cart-plus"></i>&nbsp;&nbsp; Add to Cart!</button>
+                            </form>
+                            <?php
                             echo "</div>";
                             echo "</div>";
                             echo "</div>";
