@@ -135,7 +135,7 @@ and open the template in the editor.
                                 
                                 echo "<form method='post' action='inc/update_shoppingcart.php' name='addtocart'>";
                                          
-                                echo "<select id='shoe_select'>";
+                                echo "<select name='shoe_select'>";
                                 $sqlShoe = "SELECT * FROM p5_2.product_details WHERE product_ID='" . $params['productID'] . "'";
                                 $resultShoe = $conn->query($sqlShoe);
                                 
@@ -150,10 +150,10 @@ and open the template in the editor.
                                 echo "<br />";
                                 echo "<br />";
                                 echo "<input type='hidden' name='productID' value='" . $row['product_ID'] . "' class='form-control'>";
-                                echo "<input type='text' name='productname' value='" . $row['product_name'] . "' class='form-control'>";
-                                echo "<input type='text' name='price' value='" . $row['unit_price'] . "' class='form-control'>";
+                                echo "<input type='hidden' name='productname' value='" . $row['product_name'] . "' class='form-control'>";
+                                echo "<input type='hidden' name='price' value='" . $row['unit_price'] . "' class='form-control'>";
                                 echo "<div class='input-group-append'>";
-                                echo '<button class="btn btn-success btn-md" type="submit" id="addcart">'
+                                echo '<button class="btn btn-success btn-md" name="addtocart" type="submit" id="addcart">'
                                 . '<i class = "fa fa-cart-plus"></i>&nbsp &nbsp Add to Cart!</button>';
                                 echo "</div>";
                                 echo "</form>";

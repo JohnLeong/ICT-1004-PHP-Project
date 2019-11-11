@@ -12,9 +12,10 @@ if (!isset($_POST['addtocart'])) {
     } else {
         include_once("session.php");
         $id = $_SESSION['zid'];
-        $coloursize = explode(':', $_POST['shoe_select'], 2);
-        $colour = $coloursize[0];
-        $size = $coloursize[1];
+        $coloursize = $_POST['shoe_select'];
+        $split = explode(':', $coloursize, 2);
+        $colour = $split[0];
+        $size = $split[1];
         $pid = $_POST['productID'];
         $pname = $_POST['productname'];
         $price = $_POST['price'];
@@ -27,7 +28,7 @@ if (!isset($_POST['addtocart'])) {
             $success = false;
         }
         
-        header("location:javascript://history.go(-1)");
+        //header("location:javascript://history.go(-1)");
     }
 }
 ?>
