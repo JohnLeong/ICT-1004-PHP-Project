@@ -86,6 +86,7 @@ and open the template in the editor.
             $success = false;
         } else {
             $password = sanitize_input($_POST["password"]);
+            $hash = password_hash($password, PASSWORD_DEFAULT);
         }
         $error.=$errorMsg;    
 
@@ -117,7 +118,7 @@ and open the template in the editor.
         
         /* Helper function to write the data to the DB */
         function saveMemberToDB() {
-            global $first_name, $last_name, $email, $password, $errorMsg, $success;
+            global $first_name, $last_name, $email, $hash, $errorMsg, $success;
             // Create connection
             $conn = new mysqli("161.117.122.252", "p5_2", "yzhbGyqP87", "p5_2");
             // Check connection
@@ -127,7 +128,7 @@ and open the template in the editor.
             }
             else {
                 $sql = "INSERT INTO p5_2.zenith_members (fname, lname, email, password)";
-                $sql .= " VALUES ('$first_name', '$last_name', '$email', '$password')";
+                $sql .= " VALUES ('$first_name', '$last_name', '$email', '$hash')";
                 // Execute the query
                 if (!$conn->query($sql)) {
                     $errorMsg = "Database error: " . $conn->error;
@@ -145,7 +146,7 @@ and open the template in the editor.
                         if ($success) {
                             echo "<h2>Your registration is successful!</h2>";
                             echo "<h4>Thanks for signing up " . $first_name . ".</h4>";
-                            saveMemberToDB($first_name, $last_name, $email, $password);
+                            saveMemberToDB($first_name, $last_name, $email, $hash);
                             ?>
                             <input class="btn btn-default" type="button" value="Login Now" 
                                    onclick="window.location.href='login.php'" />
