@@ -25,6 +25,7 @@ and open the template in the editor.
             $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
             $url_components = parse_url($url);
             parse_str($url_components['query'], $params);
+            $params['productID'] = sanitize_input($params['productID']);
             $proID = sanitize_input($params['productID']);
             $sql = "SELECT * FROM p5_2.products WHERE product_ID='" . $proID . "'";
         }
@@ -130,10 +131,32 @@ and open the template in the editor.
                                 echo "</div>";
                                 echo "<div class='col-md-6'>";
                                 echo "<div class='input-group mb-3'>";
+                                
+                                echo "<form>";
+                                         
+                                echo "<select name='shoe_select'>";
+                                $sqlShoe = "SELECT * FROM p5_2.product_details WHERE product_ID='" . $params['productID'] . "'";
+                                $resultShoe = $conn->query($sqlShoe);
+                                
+                                echo "RESULTS:" . $resultShoe->num_rows;
+                                for($i = 0; $i < $resultShoe->num_rows; ++$i)
+                                {
+                                    $row = $resultShoe->fetch_assoc();
+                                    //if($row)
+                                        echo "<option value='1'>" . $row["colour"] . " : " . $row["size"] . "</option>";
+                                }
+                                
+                                $resultShoe->free_result();
+                                
+                                echo "</select>";
+                                echo "<br />";
+                                echo "<br />";
                                 echo "<div class='input-group-append'>";
                                 echo '<button class="btn btn-success btn-md" type="button" id="addcart">'
                                 . '<i class = "fa fa-cart-plus"></i>&nbsp&nbspAdd to Cart!</button>';
                                 echo "</div>";
+                                echo "</form>";
+                                
                                 echo "</div>";
                                 echo "</div>";
                             } else {
