@@ -27,43 +27,10 @@ and open the template in the editor.-->
     <body>
         <?php
         include 'inc/header.php';
-        if(!isset($_SESSION['name'])){
+        if (!isset($_SESSION['name'])) {
             header('Location: index.php');
         }
         ?>
-        
-        <?php
-        
-        $conn = new mysqli("161.117.122.252", "p5_2", "yzhbGyqP87", "p5_2");
-        // Check connection
-        if ($conn->connect_error) {
-            $errorMsg = "Connection failed: " . $conn->connect_error;
-            $success = false;
-        } else {
-            $pID = $_POST["productID"];
-            $sql = "SELECT * FROM p5_2.products WHERE product_ID =$pID";
-            $result = mysqli_query($conn, $sql);
-            if (mysqli_num_rows($result)) {
-                $row = mysqli_fetch_assoc($result);
-                $id = $_SESSION['zid'];
-                
-//            saveProductToCartDB($id, $pID, $row[image], $row[product_name], $row[unit_price], $row[colour], $row[size]);
-//                            
-                }
-        }
-//        function saveProductToCartDB() {
-//            global $id, $pID, $image, $pname, $unit_price, $colour, $size, $success;
-//            $sql = "INSERT INTO p5_2.shoppingcart (zmember_id,product_ID, product_name, unit_price, colour, size)";
-//            $sql .= " VALUES ('$id', '$pID', '$image', '$pname', '$unit_price', '$colour', '$size')";
-//            // Execute the query
-//            if (!$conn->query($sql)) {
-//                $errorMsg = "Database error: " . $conn->error;
-//                $success = false;
-//            }
-//        }
-            
-        ?>
-        
         <main>
             <div class="container px-3 my-5 clearfix">
                 <!-- Shopping cart table -->
@@ -71,49 +38,72 @@ and open the template in the editor.-->
                     <div class="card-header">
                         <h2>Shopping Cart</h2>
                     </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered m-0">
-                                <thead>
-                                    <tr>
-                                        <!-- Set columns width -->
-                                        <th class="text-center py-3 px-4" style="min-width: 400px;">Product Name &amp; Details</th>
-                                        <th class="text-right py-3 px-4" style="width: 100px;">Price</th>
-                                        <th class="text-center py-3 px-4" style="width: 120px;">Quantity</th>
-                                        <th class="text-right py-3 px-4" style="width: 100px;">Total</th>
-                                        <th class="text-center align-middle py-3 px-0" style="width: 40px;"><a href="#" class="shop-tooltip float-none text-light" title="" data-original-title="Clear cart"><i class="ino ion-md-trash"></i></a></th>
-                                    </tr>
-                                </thead>
-                                
-                                <tbody id="carttab">
-                                    <tr id="row1">
-                                        <td class="p-4">
-                                            <div class="media align-items-center">
-                                                <?php
-                                                echo "<img src='$row[image]' class='d-block ui-w-40 ui-bordered mr-4' alt=$row[product_name]>";
-                                                ?>
-                                                <div class="media-body">
+                    <?php
+                    global $grandtotal, $total;
+                    $conn = new mysqli("161.117.122.252", "p5_2", "yzhbGyqP87", "p5_2");
+                    // Check connection
+                    if ($conn->connect_error) {
+                        $errorMsg = "Connection failed: " . $conn->connect_error;
+                        $success = false;
+                    } else {
+                        $id = $_SESSION['zid'];
+                        $sql = "SELECT * FROM zshoppingcart WHERE zmember_id =$id";
+                        $result = mysqli_query($conn, $sql);
+                        if (mysqli_num_rows($result) > 0) {
+                            ?>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered m-0">
+                                        <thead>
+                                            <tr>
+                                                <!-- Set columns width -->
+                                                <th class="text-center py-3 px-4" style="min-width: 400px;">Product Name &amp; Details</th>
+                                                <th class="text-right py-3 px-4" style="width: 100px;">Price</th>
+                                                <th class="text-center py-3 px-4" style="width: 120px;">Quantity</th>
+                                                <th class="text-right py-3 px-4" style="width: 100px;">Total</th>
+                                                <th class="text-center align-middle py-3 px-0" style="width: 40px;"><a href="#" class="shop-tooltip float-none text-light" title="" data-original-title="Clear cart"><i class="ino ion-md-trash"></i></a></th>
+                                            </tr>
+                                        </thead>
+                                        <?php
+                                        while ($row = mysqli_fetch_assoc($result)) {
+                                            ?>
+                                            <tbody id="carttab">
+                                                <tr id="row1">
+                                                    <td class="p-4">
+                                                        <div class="media align-items-center">
+                                                            <?php
+                                                            echo "<img src='$row[image]' class='d-block ui-w-40 ui-bordered mr-4' alt=$row[product_name]>";
+                                                            ?>
+                                                            <div class="media-body">
+                                                                <?php
+                                                                echo "<p class='d-block text-dark'>$row[product_name]</p>";
+                                                                ?>
+                                                                <small>
+                                                                    <?php
+                                                                    echo "<span class='text-muted'>Size: </span> $row[size]";
+                                                                    echo "<span class='text-muted'>&nbsp;&nbsp; Colour: </span> $row[colour]";
+                                                                    ?>
+                                                                </small>
+                                                            </div>
+                                                        </div>
+                                                    </td>
                                                     <?php
-                                                    echo "<p class='d-block text-dark'>$row[product_name]</p>";
+                                                    echo "<td class='text-right font-weight-semibold align-middle p-4'>SGD $row[unit_price] </td>";
+                                                    echo "<td class='align-middle p-4'><input type='text' class='form-control text-center' value='" . $row['quantity'] . "'></td>";
+                                                    $total = $row['unit_price'] * $row[quantity];
+                                                    echo "<td class='text-right font-weight-semibold align-middle p-4'>SGD $total </td>";
                                                     ?>
-                                                    <small>
-                                                        <?php
-                                                        echo "<span class='text-muted'>Size: </span> $row[unit_price]";
-                                                        ?>
-                                                    </small>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <?php
-                                        echo "<td class='text-right font-weight-semibold align-middle p-4'>SGD $row[unit_price] </td>";
-                                        ?>
-                                        <td class="align-middle p-4"><input type="text" class="form-control text-center" value="1"></td>
-                                        <?php
-                                        echo "<td class='text-right font-weight-semibold align-middle p-4'>SGD $row[unit_price] </td>";
-                                        ?>
-                                        <td class="text-center align-middle px-0"><a href="#" class="shop-tooltip close float-none text-danger" title="" data-original-title="Remove" onclick="delCartItem(1)">×</a></td>
-                                    </tr>
-                                </tbody>
+                                                    <td class="text-center align-middle px-0"><a href="inc/update_shoppingcart.php" class="shop-tooltip close float-none text-danger" title="" data-original-title="Remove" onclick="delCartItem(1)">X</a></td>
+                                                </tr>
+                                            </tbody>
+                                            <?php
+                                            $grandtotal += $total;
+                                        }
+                                    } else {
+                                        echo "<span class='cartempty'>Your Cart is Empty!!!</span>";
+                                    }
+                                }
+                                ?>
                             </table>
                         </div>
                         <!-- / Shopping cart table -->
@@ -134,7 +124,9 @@ and open the template in the editor.-->
                                 </div>
                                 <div class="text-right mt-4">
                                     <label class="text-muted font-weight-normal m-0">Total price</label>
-                                    <div class="text-large"><strong>SGD 679</strong></div>
+                                    <?php
+                                    echo "<div class='text-large'><strong>SGD $grandtotal</strong></div>";
+                                    ?>
                                 </div>
                             </div>
                         </div>

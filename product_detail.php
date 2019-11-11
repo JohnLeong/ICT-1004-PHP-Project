@@ -153,6 +153,7 @@ and open the template in the editor.
                                 echo "<input type='hidden' name='productID' value='" . $row['product_ID'] . "' class='form-control'>";
                                 echo "<input type='hidden' name='productname' value='" . $row['product_name'] . "' class='form-control'>";
                                 echo "<input type='hidden' name='price' value='" . $row['unit_price'] . "' class='form-control'>";
+                                echo "<input type='hidden' name='img' value='" . $row['image'] . "' class='form-control'>";
                                 echo "<div class='input-group-append'>";
                                 echo '<button class="btn btn-success btn-md" name="addtocart" type="submit" id="addcart">'
                                 . '<i class = "fa fa-cart-plus"></i>&nbsp &nbsp Add to Cart!</button>';

@@ -19,16 +19,17 @@ if (!isset($_POST['addtocart'])) {
         $pid = $_POST['productID'];
         $pname = $_POST['productname'];
         $price = $_POST['price'];
-                
-        $sql = "INSERT INTO p5_2.shoppingcart (zmember_id, product_ID, product_name, unit_price, colour, size)"
-                . "VALUES ('$id','$pid','$pname','$price','$colour','$size)";
+        $image = $_POST['img'];
+        
+        
+        $sql = "INSERT INTO p5_2.zshoppingcart (zmember_id, product_ID, product_name, unit_price, colour, size, image, quantity)"
+                . " VALUES ('$id','$pid','$pname','$price','$colour','$size', '$image', '1')";
         // Execute the query
         if (!$conn->query($sql)) {
             $errorMsg = "Database error: " . $conn->error;
             $success = false;
         }
-        
-        //header("location:javascript://history.go(-1)");
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
     }
 }
 ?>

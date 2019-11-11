@@ -23,6 +23,7 @@ if (!isset($_POST['login_submit'])) {
             $dbPw = $row["password"];
             $first_name = $row["fname"];
             $last_name = $row["lname"];
+            $zid = $row["zmember_id"];
             if (password_verify($cpwd, $dbPw)) {
                 include_once("session.php");
                 setLogin($first_name, $last_name);
