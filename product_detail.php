@@ -227,11 +227,11 @@ and open the template in the editor.
                                             <div class="panel-heading" role="tab" id="headingTwo">
                                                 <h4 class="panel-title">
                                                     <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-<?php
-if ($rsuccess) {
-    echo "Reviews";
-}
-?>
+                                                        <?php
+                                                        if ($rsuccess) {
+                                                            echo "Reviews";
+                                                        }
+                                                        ?>
                                                     </a>
                                                 </h4>
                                             </div>

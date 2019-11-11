@@ -19,6 +19,9 @@ and open the template in the editor.-->
 
         <!--Icons for Web-->
         <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+        
+        <!--Item Filter-->
+        <script src="js/main.js"></script>
 
         <!--SEO-->
         <meta name="description" content="Buy high-quality shoes at great prices. Zenith offers a large variety of shoes from popular brands and provides world-wide shipping.">
@@ -42,23 +45,23 @@ and open the template in the editor.-->
                                 <div class="card-body">
                                     <form>
                                         <label class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="">
+                                            <input class="form-check-input" type="checkbox" id="Nike" onclick="filter_items()">
                                             <span class="form-check-label">Nike</span>
                                         </label> <!-- form-check.// -->
                                         <label class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="">
+                                            <input class="form-check-input" type="checkbox" id="UnderArmour" onclick="filter_items()">
                                             <span class="form-check-label">Under Armour</span>
                                         </label>  <!-- form-check.// -->
                                         <label class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="">
+                                            <input class="form-check-input" type="checkbox" id="Adidas" onclick="filter_items()">
                                             <span class="form-check-label">Adidas</span>
                                         </label>  <!-- form-check.// -->
                                         <label class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="">
+                                            <input class="form-check-input" type="checkbox" id="DrMartens" onclick="filter_items()">
                                             <span class="form-check-label">Dr. Martens</span>
                                         </label>  <!-- form-check.// -->
                                         <label class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="">
+                                            <input class="form-check-input" type="checkbox" id="On" onclick="filter_items()">
                                             <span class="form-check-label">On</span>
                                         </label>  <!-- form-check.// -->
                                     </form>
@@ -71,19 +74,19 @@ and open the template in the editor.-->
                                 </header>
                                 <div class="card-body">
                                     <label class="form-check">
-                                        <input class="form-check-input" type="radio" name="exampleRadio" value="">
+                                        <input class="form-check-input" type="checkbox" id="Lifestyle" onclick="filter_items()">
                                         <span class="form-check-label">Lifestyle</span>
                                     </label>
                                     <label class="form-check">
-                                        <input class="form-check-input" type="radio" name="exampleRadio" value="">
+                                        <input class="form-check-input" type="checkbox" id="Training" onclick="filter_items()">
                                         <span class="form-check-label">Training & Gym</span>
                                     </label>
                                     <label class="form-check">
-                                        <input class="form-check-input" type="radio" name="exampleRadio" value="">
+                                        <input class="form-check-input" type="checkbox" id="Running" onclick="filter_items()">
                                         <span class="form-check-label">Running</span>
                                     </label>
                                     <label class="form-check">
-                                        <input class="form-check-input" type="radio" name="exampleRadio" value="">
+                                        <input class="form-check-input" type="checkbox" id="Walking" onclick="filter_items()">
                                         <span class="form-check-label">Walking</span>
                                     </label>
                                 </div> <!-- card-body.// -->
@@ -128,9 +131,8 @@ and open the template in the editor.-->
                                         $num_colors = $colors_result->num_rows;
                                         $colors_result->free_result();
 
-                                        echo "<div class='col-md-4 " . $row["brand"] . " " . $row["type"] . "'>";
-                                        echo "<div class='card h-100'>";
-
+                                        echo "<div class='col-md-4 filterItem " . $row["brand"] . " " . $row["type"] . "'>";
+                                        echo "<div class='card h-100'>"; 
                                         echo "<div class='card-body'>";
                                         echo "<img class='productimgresize fitimage' src='" . $row["image"] . "' alt='" . $row["product_name"] . "'/>";
                                         echo "<h3 class='card-title'>" . $row["product_name"] . "</h3>";
