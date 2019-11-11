@@ -25,13 +25,22 @@ and open the template in the editor.
             $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
             $url_components = parse_url($url);
             parse_str($url_components['query'], $params);
-            $sql = "SELECT * FROM p5_2.products WHERE product_ID='" . $params['productID'] . "'";
+            $proID = sanitize_input($params['productID']);
+            $sql = "SELECT * FROM p5_2.products WHERE product_ID='" . $proID . "'";
         }
         $result = $conn->query($sql);
         $row = $result->fetch_assoc();
 
         if ($result->num_rows > 0) {
             echo "<title>Zenith - " . $row["product_name"] . "</title>";
+        }
+
+        function sanitize_input($data) {
+            $data = trim($data);
+            $data = stripslashes($data);
+            $data = htmlspecialchars($data);
+            $data = preg_replace('/[^0-9]/', '', $data);
+            return $data;
         }
         ?>
         <meta charset="UTF-8">
@@ -84,64 +93,44 @@ and open the template in the editor.
                 <div class="row">
                     <div class="col-md-6"><!--Product Image-->
                         <?php
+                        if ($result->num_rows > 0) {
+                            echo "<img class='productimgresize' src='" . $row["image"] . "' alt='Air Jordan 1'/>";
+                            echo "</div><!--End of Product Image--><div class='col-md-6'><!--Product Info-->";
 
-                        getProdDB();
+                            echo "<div class='row'>";
+                            echo "<div class='col-md-12'>";
+                            echo "<h2>" . $row["product_name"] . "</h2>";
+                            echo "</div>";
+                            echo "</div>";
+
+                            echo "<div class='row'>";
+                            echo "<div class='col-md-12'>";
+                            echo "<p class='description'>" . $row["product_desc"] . "</p>";
+                            echo "</div>";
+                            echo "</div>";
+
+                            echo "<div class='row'>";
+                            echo "<div class='col-md-12 bottom-rule'>";
+                            echo "<h2 class='product-price'>$" . $row["unit_price"] . "</h2>";
+                            echo "</div>";
+                            echo "</div>";
+
+                            echo "<div class='col-md-6'>";
+                            echo "<div class='input-group mb-3'>";
+                            echo "<div class='input-group-append'>";
+                            echo '<button class="btn btn-success btn-md" type="button" id="addcart">'
+                            . '<i class = "fa fa-cart-plus"></i>&nbsp&nbspAdd to Cart!</button>';
+                            echo "</div>";
+                            echo "</div>";
+                            echo "</div>";
+                        } else {
+                            echo "<h4>Product does not exist!</h4>";
+                        }
+                        $result->free_result();
+                        $conn->close();
+                        
                         getReviewsDB();
                         $success = true;
-
-                        function getProdDB() {
-                            $conn = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
-
-
-                            // Check connection
-                            if ($conn->connect_error) {
-                                $errorMsg = "Connection failed: " . $conn->connect_error;
-                                $success = false;
-                            } else {
-                                $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-                                $url_components = parse_url($url);
-                                parse_str($url_components['query'], $params);
-                                $sql = "SELECT * FROM p5_2.products WHERE product_ID='" . $params['productID'] . "'";
-                            }
-                            $result = $conn->query($sql);
-                            $row = $result->fetch_assoc();
-
-                            if ($result->num_rows > 0) {
-                                echo "<img class='productimgresize' src='" . $row["image"] . "' alt='Air Jordan 1'/>";
-                                echo "</div><!--End of Product Image--><div class='col-md-6'><!--Product Info-->";
-
-                                echo "<div class='row'>";
-                                echo "<div class='col-md-12'>";
-                                echo "<h2>" . $row["product_name"] . "</h2>";
-                                echo "</div>";
-                                echo "</div>";
-
-                                echo "<div class='row'>";
-                                echo "<div class='col-md-12'>";
-                                echo "<p class='description'>" . $row["product_desc"] . "</p>";
-                                echo "</div>";
-                                echo "</div>";
-
-                                echo "<div class='row'>";
-                                echo "<div class='col-md-12 bottom-rule'>";
-                                echo "<h2 class='product-price'>$" . $row["unit_price"] . "</h2>";
-                                echo "</div>";
-                                echo "</div>";
-
-                                echo "<div class='col-md-6'>";
-                                echo "<div class='input-group mb-3'>";
-                                echo "<div class='input-group-append'>";
-                                echo '<button class="btn btn-success btn-md" type="button" id="addcart">'
-                                . '<i class = "fa fa-cart-plus"></i>&nbsp&nbspAdd to Cart!</button>';
-                                echo "</div>";
-                                echo "</div>";
-                                echo "</div>";
-                            } else {
-                                echo "<h4>Product does not exist!</h4>";
-                            }
-                            $result->free_result();
-                            $conn->close();
-                        }
 
                         function getReviewsDB() {
                             global $zmemb, $pid, $date, $rsuccess, $errorMsg, $reviews, $numOfReviews;
@@ -160,7 +149,7 @@ and open the template in the editor.
                                 $url_components = parse_url($url);
                                 parse_str($url_components['query'], $params);
 
-                                $pid = $params['productID'];
+                                $pid = sanitize_input($params['productID']);
 
                                 // SQL Statement
                                 $sql = "SELECT R.product_ID, M.fname, M.lname, R.reviews, R.datetime ";
