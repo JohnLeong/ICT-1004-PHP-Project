@@ -37,10 +37,10 @@ and open the template in the editor.
                 <ul class="nav navbar-nav ml-auto">
                     <li> <!-- Search bar -->
                         <!-- Search form -->
-                        <form class="form-inline active-cyan-3 active-cyan-4">
+                        <form class="form-inline active-cyan-3 active-cyan-4" method="post" action="search.php">
                             <i class="fas fa-search" aria-hidden="true"></i>
-                            <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Search"
-                                   aria-label="Search">
+                            <input class="form-control form-control-sm ml-3 w-75" type="text" name="searchbox" placeholder="Search" aria-label="Search">
+                            <input type="submit" style="position: absolute; left: -9999px"/>
                         </form>
                     </li>
                 </ul>
