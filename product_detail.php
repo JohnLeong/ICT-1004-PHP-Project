@@ -6,7 +6,43 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>Zenith - (Product Name in DB)</title>
+        <?php
+        //Constants for accessing our DB:
+        define("DBHOST", "161.117.122.252");
+        define("DBNAME", "p5_2");
+        define("DBUSER", "p5_2");
+        define("DBPASS", "yzhbGyqP87");
+        global $rsuccess;
+        $rsuccess = true;
+
+        $conn = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
+
+        // Check connection
+        if ($conn->connect_error) {
+            $errorMsg = "Connection failed: " . $conn->connect_error;
+            $success = false;
+        } else {
+            $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+            $url_components = parse_url($url);
+            parse_str($url_components['query'], $params);
+            $proID = sanitize_input($params['productID']);
+            $sql = "SELECT * FROM p5_2.products WHERE product_ID='" . $proID . "'";
+        }
+        $result = $conn->query($sql);
+        $row = $result->fetch_assoc();
+
+        if ($result->num_rows > 0) {
+            echo "<title>Zenith - " . $row["product_name"] . "</title>";
+        }
+
+        function sanitize_input($data) {
+            $data = trim($data);
+            $data = stripslashes($data);
+            $data = htmlspecialchars($data);
+            $data = preg_replace('/[^0-9]/', '', $data);
+            return $data;
+        }
+        ?>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -29,6 +65,21 @@ and open the template in the editor.
         <meta name="description" content="Buy high-quality shoes at great prices. Zenith offers a large variety of shoes from popular brands and provides world-wide shipping.">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
+    <script>
+        function validateForm() {
+            var maxchar = 500;
+            var wordcount = 0;
+            var reviews = document.forms["reviewForm"]["reviewbox"].value;
+            
+            if (reviews == null || reviews == "") {
+                alert("Review Box is empty!");
+                return false;
+            } else if (reviews.length>500) {
+                alert("Review must be between 1 to 500 characters!");
+                return false;
+            }
+        }
+    </script>
     <body>
         <?php
         include "inc/header.php"
@@ -39,32 +90,66 @@ and open the template in the editor.
                 <div class="row">
                     <div class="col-md-6"><!--Product Image-->
                         <?php
-                        //Constants for accessing our DB:
-                        define("DBHOST", "161.117.122.252");
-                        define("DBNAME", "p5_2");
-                        define("DBUSER", "p5_2");
-                        define("DBPASS", "yzhbGyqP87");
-
+                        getProdDB();
+                        getReviewsDB();
                         $success = true;
-
-                        $conn = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
-
-                        // Check connection
-                        if ($conn->connect_error) {
-                            $errorMsg = "Connection failed: " . $conn->connect_error;
-                            $success = false;
-                        } else {
-                            $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-                            $url_components = parse_url($url);
-                            parse_str($url_components['query'], $params);
-                            $sql = "SELECT * FROM p5_2.products WHERE product_ID='" . $params['productID'] . "'";
-                        }
-                        $result = $conn->query($sql);
-                        $row = $result->fetch_assoc();
                         
-                        if ($result->num_rows > 0) {
-                            echo "<img class='productimgresize' src='" . $row["image"] . "' alt='Air Jordan 1'/>";
+                        function getProdDB() {
+                            $conn = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
+                            global $rsuccess;
+                            $rsuccess = true;
+                            // Check connection
+                            if ($conn->connect_error) {
+                                $errorMsg = "Connection failed: " . $conn->connect_error;
+                                $success = false;
+                            } else {
+                                $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+                                $url_components = parse_url($url);
+                                parse_str($url_components['query'], $params);
+                                $sql = "SELECT * FROM p5_2.products WHERE product_ID='" . $params['productID'] . "'";
+                            }
+                            $result = $conn->query($sql);
+                            $row = $result->fetch_assoc();
+                            if ($result->num_rows > 0) {
+                                echo "<img class='productimgresize' src='" . $row["image"] . "' alt='Air Jordan 1'/>";
+                                echo "</div><!--End of Product Image--><div class='col-md-6'><!--Product Info-->";
+                                echo "<div class='row'>";
+                                echo "<div class='col-md-12'>";
+                                echo "<h2>" . $row["product_name"] . "</h2>";
+                                echo "</div>";
+                                echo "</div>";
+                                echo "<div class='row'>";
+                                echo "<div class='col-md-12'>";
+                                echo "<p class='description'>" . $row["product_desc"] . "</p>";
+                                echo "</div>";
+                                echo "</div>";
+                                echo "<div class='row'>";
+                                echo "<div class='col-md-12 bottom-rule'>";
+                                echo "<h2 class='product-price'>$" . $row["unit_price"] . "</h2>";
+                                echo "</div>";
+                                echo "</div>";
+                                echo "<div class='col-md-6'>";
+                                echo "<div class='input-group mb-3'>";
+                                echo "<div class='input-group-append'>";
+                                echo '<button class="btn btn-success btn-md" type="button" id="addcart">'
+                                . '<i class = "fa fa-cart-plus"></i>&nbsp&nbspAdd to Cart!</button>';
+                                echo "</div>";
+                                echo "</div>";
+                                echo "</div>";
+                            } else {
+                                echo "<h4>Product does not exist!</h4>";
+                                ?> 
+                                 <input class="btn btn-default" type="button" value="Back To Shopping" 
+                                   onclick="window.location.href='index.php'" /> 
+                                 <?php 
+                                $rsuccess = false;
+                                
+                                
+                            }
+                            $result->free_result();
+                            $conn->close();
                         }
+<<<<<<< HEAD
                         ?>
                     </div><!--End of Product Image-->
                     <div class="col-md-6"><!--Product Info-->
@@ -106,6 +191,44 @@ and open the template in the editor.
                         }
                         else{
                             echo "<h4>Product does not exist!</h4>";
+=======
+                        function getReviewsDB() {
+                            global $zmemb, $pid, $date, $errorMsg, $reviews, $numOfReviews;
+                            $reviews = array();
+                            $zmemb = array();
+                            $date = array();
+                            $conn = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
+                            // Check connection
+                            if ($conn->connect_error) {
+                                $errorMsg = "Connection failed: " . $conn->connect_error;
+                                $success = false;
+                            } else {
+                                $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+                                $url_components = parse_url($url);
+                                parse_str($url_components['query'], $params);
+                                $pid = sanitize_input($params['productID']);
+                                // SQL Statement
+                                $sql = "SELECT R.product_ID, M.fname, M.lname, R.reviews, R.datetime ";
+                                $sql .= "FROM p5_2.products_review R, p5_2.zenith_members M ";
+                                $sql .= "WHERE R.zmember_id = M.zmember_id ";
+                                $sql .= "AND R.product_ID = " . $pid . " ";
+                                $sql .= "ORDER BY datetime ASC";
+                                // Execute the query
+                                $result = $conn->query($sql);
+                                $numOfReviews = $result->num_rows;
+                                if ($result->num_rows > 0) {
+                                    for ($i = 0; $i < $numOfReviews; $i++) {
+                                        $row = $result->fetch_assoc();
+                                        $reviews[$i] = $row["reviews"];
+                                        $zmemb[$i] = $row["fname"] . " " . $row["lname"];
+                                        $date[$i] = $row["datetime"];
+                                    }
+                                } else {
+                                    $success = false;
+                                }
+                            }
+                            $conn->close();
+>>>>>>> 33fe9b970b0162ecc665578ed76dff3f53dd862a
                         }
                         ?>
 
@@ -144,7 +267,7 @@ and open the template in the editor.
                                                 <h4 class="panel-title">
                                                     <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                                                         <?php
-                                                        if ($result->num_rows > 0) {
+                                                        if ($rsuccess) {
                                                             echo "Reviews";
                                                         }
                                                         ?>
@@ -153,14 +276,36 @@ and open the template in the editor.
                                             </div>
                                             <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                                                 <?php
-                                                if ($result->num_rows > 0) {
+                                                if ($rsuccess) {
                                                     echo "<div class='panel-body'>";
-                                                    echo "These were playable, which is the main thing. If you wanted the look or styling of an Air Jordan I with modern tech you can either swap the insoles out for cushion or opt to purchase the Air Jordan I Alpha which offers many upgrades in every category, most notably the cushion with its Phylon midsole and full length bottom loaded Zoom Air. - WearTesters.com";
+                                                    for ($i = 0; $i < $numOfReviews; $i++) {
+                                                        echo $reviews[$i];
+                                                        echo "<br>";
+                                                        echo "- " . $zmemb[$i] . " @ " . $date[$i];
+                                                        echo "<hr>";
+                                                    }
                                                     echo "</div>";
                                                 }
-
-                                                $result->free_result();
-                                                $conn->close();
+                                                ?>
+                                            </div>
+                                            <div class="panel-body">
+                                                <br>
+                                                <?php 
+                                                if ($rsuccess == 1) {
+                                                    
+                                                ?>
+                                                <form name="reviewForm" action="<?php echo htmlspecialchars('review_process.php') ?>" method="POST" onsubmit="return validateForm()">
+                                                    <p>Leave your review here! (Max 500 Characters)</p>
+                                                    <input type="hidden" name="prodID" value="<?php echo $pid ?>">
+                                                    <textarea rows="4" cols="50" name="reviewbox" id="reviewbox"></textarea>
+                                                    <label id="count"></label>
+                                                    <button type="submit" class="btn btn-outline-dark" id="rvwBtn">Submit</button>
+                                                    <script>document.getElementById('reviewbox').onkeyup = function () {
+                                                            document.getElementById('count').innerHTML = "Characters left: " + (500 - this.value.length);
+                                                        };</script>
+                                                </form>
+                                                <?php 
+                                                }
                                                 ?>
                                             </div>
                                         </div>

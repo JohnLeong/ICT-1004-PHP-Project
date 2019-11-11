@@ -115,8 +115,8 @@ and open the template in the editor.-->
                             $num_results = $result->num_rows;
                             $num_rows = $num_results / 3;
                             if ($num_results > 0) {
+                                echo "<div class =row>";   //Create row
                                 for ($i = 0; $i < $num_rows; $i++) {
-                                    echo "<div class =row>";   //Create row
                                     for ($j = 0; $j < 3; $j++) {
                                         if(!($row = $result->fetch_assoc()))
                                                 break;
@@ -127,7 +127,7 @@ and open the template in the editor.-->
                                         $num_colors = $colors_result->num_rows;
                                         $colors_result->free_result();
 
-                                        echo "<div class='col-md-4'>";
+                                        echo "<div class='col-md-4 " . $row["brand"] . " " . $row["type"] . "'>";
                                         echo "<div class='card h-100'>";   
                                         
                                         echo "<div class='card-body'>";   
@@ -145,9 +145,9 @@ and open the template in the editor.-->
 
                                         echo "</div>";
                                         echo "</div>";
-                                    }
-                                    echo "</div>";
+                                    }                                 
                                 }
+                                echo "</div>";
                             } else {
                                 $success = false;
                             }
