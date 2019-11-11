@@ -25,28 +25,28 @@ and open the template in the editor.-->
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
-        //<?php
-//        include 'inc/header.php';
-//        if(!isset($_SESSION['name'])){
-//            header('Location: index.php');
-//        }
-//        ?>
+        <?php
+        include 'inc/header.php';
+        if(!isset($_SESSION['name'])){
+            header('Location: index.php');
+        }
+        ?>
         
-        //<?php
-//        
-//        $conn = new mysqli("161.117.122.252", "p5_2", "yzhbGyqP87", "p5_2");
-//        // Check connection
-//        if ($conn->connect_error) {
-//            $errorMsg = "Connection failed: " . $conn->connect_error;
-//            $success = false;
-//        } else {
-//            $pID = $_POST["productID"];
-//            $sql = "SELECT * FROM p5_2.products WHERE product_ID =$pID";
-//            $result = mysqli_query($conn, $sql);
-//            if (mysqli_num_rows($result)) {
-//                $row = mysqli_fetch_assoc($result);
-//                $id = $_SESSION['zid'];
-//                
+        <?php
+        
+        $conn = new mysqli("161.117.122.252", "p5_2", "yzhbGyqP87", "p5_2");
+        // Check connection
+        if ($conn->connect_error) {
+            $errorMsg = "Connection failed: " . $conn->connect_error;
+            $success = false;
+        } else {
+            $pID = $_POST["productID"];
+            $sql = "SELECT * FROM p5_2.products WHERE product_ID =$pID";
+            $result = mysqli_query($conn, $sql);
+            if (mysqli_num_rows($result)) {
+                $row = mysqli_fetch_assoc($result);
+                $id = $_SESSION['zid'];
+                
 //            saveProductToCartDB($id, $pID, $row[image], $row[product_name], $row[unit_price], $row[colour], $row[size]);
 //                            
                 }

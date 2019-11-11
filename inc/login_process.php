@@ -9,6 +9,7 @@ if (!isset($_POST['login_submit'])) {
     if ($conn->connect_error) {
         $errorMsg = "Connection failed: " . $conn->connect_error;
     } else {
+        // Sanitizing to prevent SQL injections
         $email = sanitize_input($_POST["email"]);
         $cemail = mysqli_real_escape_string($conn, $email);
         $pwd = sanitize_input($_POST["password"]);
@@ -22,7 +23,7 @@ if (!isset($_POST['login_submit'])) {
             $dbPw = $row["password"];
             $first_name = $row["fname"];
             $last_name = $row["lname"];
-            if (password_verify($cpwd, $dbPw)) {//correct password
+            if (password_verify($cpwd, $dbPw)) {
                 include_once("session.php");
                 setLogin($first_name, $last_name);
                 getID($zid);

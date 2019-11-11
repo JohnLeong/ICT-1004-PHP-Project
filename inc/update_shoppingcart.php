@@ -1,17 +1,33 @@
-<!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title></title>
-    </head>
-    <body>
-        <?php
-        // put your code here
-        ?>
-    </body>
-</html>
+<?php
+
+if (!isset($_POST['addtocart'])) {
+    header('Location: ../index.php');
+} else {
+    // Create connection
+    $conn = new mysqli("161.117.122.252", "p5_2", "yzhbGyqP87", "p5_2");
+    // Check connection
+    if ($conn->connect_error) {
+        $errorMsg = "Connection failed: " . $conn->connect_error;
+        $success = false;
+    } else {
+        include_once("session.php");
+        $id = $_SESSION['zid'];
+        $coloursize = explode(':', $_POST['shoe_select'], 2);
+        $colour = $coloursize[0];
+        $size = $coloursize[1];
+        $pid = $_POST['productID'];
+        $pname = $_POST['productname'];
+        $price = $_POST['price'];
+                
+        $sql = "INSERT INTO p5_2.shoppingcart (zmember_id, product_ID, product_name, unit_price, colour, size)"
+                . "VALUES ('$id','$pid','$pname','$price','$colour','$size)";
+        // Execute the query
+        if (!$conn->query($sql)) {
+            $errorMsg = "Database error: " . $conn->error;
+            $success = false;
+        }
+        
+        header("location:javascript://history.go(-1)");
+    }
+}
+?>

@@ -132,13 +132,12 @@ and open the template in the editor.
                                 echo "<div class='col-md-6'>";
                                 echo "<div class='input-group mb-3'>";
                                 
-                                echo "<form>";
+                                echo "<form method='post' action='inc/update_shoppingcart.php' name='addtocart'>";
                                          
-                                echo "<select name='shoe_select'>";
+                                echo "<select id='shoe_select'>";
                                 $sqlShoe = "SELECT * FROM p5_2.product_details WHERE product_ID='" . $params['productID'] . "'";
                                 $resultShoe = $conn->query($sqlShoe);
                                 
-                                echo "RESULTS:" . $resultShoe->num_rows;
                                 for($i = 0; $i < $resultShoe->num_rows; ++$i)
                                 {
                                     $row = $resultShoe->fetch_assoc();
@@ -146,14 +145,15 @@ and open the template in the editor.
                                         echo "<option value='1'>" . $row["colour"] . " : " . $row["size"] . "</option>";
                                 }
                                 
-                                $resultShoe->free_result();
-                                
                                 echo "</select>";
                                 echo "<br />";
                                 echo "<br />";
+                                echo "<input type='hidden' name='productID' value='$row[product_ID]' class='form-control'>";
+                                echo "<input type='text' name='productname' value='".$row['product_name']."' class='form-control'>";
+                                echo "<input type='text' name='price' value='".$row['unit_price']."' class='form-control'>";
                                 echo "<div class='input-group-append'>";
-                                echo '<button class="btn btn-success btn-md" type="button" id="addcart">'
-                                . '<i class = "fa fa-cart-plus"></i>&nbsp&nbspAdd to Cart!</button>';
+                                echo '<button class="btn btn-success btn-md" type="submit" id="addcart">'
+                                . '<i class = "fa fa-cart-plus"></i>&nbsp &nbsp Add to Cart!</button>';
                                 echo "</div>";
                                 echo "</form>";
                                 
@@ -170,7 +170,32 @@ and open the template in the editor.
                                    $result->free_result();
                                    $conn->close();
                                }
-
+                               
+                               function addtocartdb() {
+                                   global $id, $pid, $pname, $price, $colour, $size;
+                                   $colsize = explode(':', $_POST['shoe_select'], 2); 
+                                   $id = $_SESSION['zid'];
+                                   $pid = $params['productID'];
+                                   $pname = $row['product_name'];
+                                   $price = $row['unit_price'];
+                                   $colour = $colsize[0];
+                                   $size = $colsize[1];
+                                   
+                                   $conn = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
+                                   if ($conn->connect_error) {
+                                        $errorMsg = "Connection failed: " . $conn->connect_error;
+                                        $success = false;
+                                   } else {
+                                        $sql = "INSERT INTO p5_2.shoppingcart (zmember_id, product_ID, product_name, unit_price, colour, size)"
+                                                . "VALUES ('$id','$pid','$pname','$price','$colour','$size)";
+                                        // Execute the query
+                                        if (!$conn->query($sql)) {
+                                            $errorMsg = "Database error: " . $conn->error;
+                                            $success = false;
+                                        }
+                                   }
+                               }
+                               
                                function getReviewsDB() {
                                    global $zmemb, $pid, $date, $errorMsg, $reviews, $numOfReviews;
                                    $reviews = array();

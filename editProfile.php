@@ -1,5 +1,4 @@
 <html>
-
     <head>
         <title>Zenith - Profile Edited</title>
         <meta charset="UTF-8">
