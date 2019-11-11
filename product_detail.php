@@ -149,7 +149,8 @@ and open the template in the editor.
                                 $sql = "SELECT R.product_ID, M.fname, M.lname, R.reviews, R.datetime ";
                                 $sql .= "FROM p5_2.products_review R, p5_2.zenith_members M ";
                                 $sql .= "WHERE R.zmember_id = M.zmember_id ";
-                                $sql .= "AND R.product_ID = " . $pid . "";
+                                $sql .= "AND R.product_ID = " . $pid . " ";
+                                $sql .= "ORDER BY datetime ASC";
 
                                 // Execute the query
                                 $result = $conn->query($sql);
