@@ -70,11 +70,11 @@ and open the template in the editor.
             var maxchar = 500;
             var wordcount = 0;
             var reviews = document.forms["reviewForm"]["reviewbox"].value;
-            
+
             if (reviews == null || reviews == "") {
                 alert("Review Box is empty!");
                 return false;
-            } else if (reviews.length>500) {
+            } else if (reviews.length > 500) {
                 alert("Review must be between 1 to 500 characters!");
                 return false;
             }
@@ -93,7 +93,7 @@ and open the template in the editor.
                         getProdDB();
                         getReviewsDB();
                         $success = true;
-                        
+
                         function getProdDB() {
                             $conn = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
                             global $rsuccess;
@@ -139,54 +139,59 @@ and open the template in the editor.
                             } else {
                                 echo "<h4>Product does not exist!</h4>";
                                 ?> 
-                                 <input class="btn btn-default" type="button" value="Back To Shopping" 
-                                   onclick="window.location.href='index.php'" /> 
-                                 <?php 
-                                $rsuccess = false;
-                                
-                                
-                            }
-                            $result->free_result();
-                            $conn->close();
-                        }
-                        function getReviewsDB() {
-                            global $zmemb, $pid, $date, $errorMsg, $reviews, $numOfReviews;
-                            $reviews = array();
-                            $zmemb = array();
-                            $date = array();
-                            $conn = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
-                            // Check connection
-                            if ($conn->connect_error) {
-                                $errorMsg = "Connection failed: " . $conn->connect_error;
-                                $success = false;
-                            } else {
-                                $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-                                $url_components = parse_url($url);
-                                parse_str($url_components['query'], $params);
-                                $pid = sanitize_input($params['productID']);
-                                // SQL Statement
-                                $sql = "SELECT R.product_ID, M.fname, M.lname, R.reviews, R.datetime ";
-                                $sql .= "FROM p5_2.products_review R, p5_2.zenith_members M ";
-                                $sql .= "WHERE R.zmember_id = M.zmember_id ";
-                                $sql .= "AND R.product_ID = " . $pid . " ";
-                                $sql .= "ORDER BY datetime ASC";
-                                // Execute the query
-                                $result = $conn->query($sql);
-                                $numOfReviews = $result->num_rows;
-                                if ($result->num_rows > 0) {
-                                    for ($i = 0; $i < $numOfReviews; $i++) {
-                                        $row = $result->fetch_assoc();
-                                        $reviews[$i] = $row["reviews"];
-                                        $zmemb[$i] = $row["fname"] . " " . $row["lname"];
-                                        $date[$i] = $row["datetime"];
-                                    }
-                                } else {
-                                    $success = false;
-                                }
-                            }
-                            $conn->close();
-                        }
-                        ?>
+                                <input class="btn btn-default" type="button" value="Back To Shopping" 
+                                       onclick="window.location.href = 'index.php'" /> 
+                                       <?php
+                                       $rsuccess = false;
+                                   }
+                                   $result->free_result();
+                                   $conn->close();
+                               }
+
+                               function getReviewsDB() {
+                                   global $zmemb, $pid, $date, $errorMsg, $reviews, $numOfReviews;
+                                   $reviews = array();
+                                   $zmemb = array();
+                                   $date = array();
+                                   $conn = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
+                                   // Check connection
+                                   if ($conn->connect_error) {
+                                       $errorMsg = "Connection failed: " . $conn->connect_error;
+                                       $success = false;
+                                   } else {
+                                       $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+                                       $url_components = parse_url($url);
+                                       parse_str($url_components['query'], $params);
+                                       $pid = sanitize_input($params['productID']);
+                                       // SQL Statement
+                                       $sql = "SELECT R.product_ID, M.fname, M.lname, R.reviews, R.datetime ";
+                                       $sql .= "FROM p5_2.products_review R, p5_2.zenith_members M ";
+                                       $sql .= "WHERE R.zmember_id = M.zmember_id ";
+                                       $sql .= "AND R.product_ID = " . $pid . " ";
+                                       $sql .= "ORDER BY datetime ASC";
+                                       // Execute the query                                
+                                       $result = $conn->query($sql);
+
+                                       if ($result != null) {
+                                           $numOfReviews = $result->num_rows;
+
+                                           if ($result->num_rows > 0) {
+                                               for ($i = 0; $i < $numOfReviews; $i++) {
+                                                   $row = $result->fetch_assoc();
+                                                   $reviews[$i] = $row["reviews"];
+                                                   $zmemb[$i] = $row["fname"] . " " . $row["lname"];
+                                                   $date[$i] = $row["datetime"];
+                                               }
+                                           } else {
+                                               $success = false;
+                                           }
+                                       }else {
+                                           $success =false;
+                                       }
+                                   }
+                                   $conn->close();
+                               }
+                               ?>
 
                         <!--<div class="row add-to-cart">
                             <div class="def-number-input number-input safari_only">
@@ -222,47 +227,46 @@ and open the template in the editor.
                                             <div class="panel-heading" role="tab" id="headingTwo">
                                                 <h4 class="panel-title">
                                                     <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                                        <?php
-                                                        if ($rsuccess) {
-                                                            echo "Reviews";
-                                                        }
-                                                        ?>
+<?php
+if ($rsuccess) {
+    echo "Reviews";
+}
+?>
                                                     </a>
                                                 </h4>
                                             </div>
                                             <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                                                <?php
-                                                if ($rsuccess) {
-                                                    echo "<div class='panel-body'>";
-                                                    for ($i = 0; $i < $numOfReviews; $i++) {
-                                                        echo $reviews[$i];
-                                                        echo "<br>";
-                                                        echo "- " . $zmemb[$i] . " @ " . $date[$i];
-                                                        echo "<hr>";
-                                                    }
-                                                    echo "</div>";
-                                                }
-                                                ?>
+                                                        <?php
+                                                        if ($rsuccess) {
+                                                            echo "<div class='panel-body'>";
+                                                            for ($i = 0; $i < $numOfReviews; $i++) {
+                                                                echo $reviews[$i];
+                                                                echo "<br>";
+                                                                echo "- " . $zmemb[$i] . " @ " . $date[$i];
+                                                                echo "<hr>";
+                                                            }
+                                                            echo "</div>";
+                                                        }
+                                                        ?>
                                             </div>
                                             <div class="panel-body">
                                                 <br>
-                                                <?php 
+                                                <?php
                                                 if ($rsuccess == 1) {
-                                                    
-                                                ?>
-                                                <form name="reviewForm" action="<?php echo htmlspecialchars('review_process.php') ?>" method="POST" onsubmit="return validateForm()">
-                                                    <p>Leave your review here! (Max 500 Characters)</p>
-                                                    <input type="hidden" name="prodID" value="<?php echo $pid ?>">
-                                                    <textarea rows="4" cols="50" name="reviewbox" id="reviewbox"></textarea>
-                                                    <label id="count"></label>
-                                                    <button type="submit" class="btn btn-outline-dark" id="rvwBtn">Submit</button>
-                                                    <script>document.getElementById('reviewbox').onkeyup = function () {
-                                                            document.getElementById('count').innerHTML = "Characters left: " + (500 - this.value.length);
-                                                        };</script>
-                                                </form>
-                                                <?php 
-                                                }
-                                                ?>
+                                                    ?>
+                                                    <form name="reviewForm" action="<?php echo htmlspecialchars('review_process.php') ?>" method="POST" onsubmit="return validateForm()">
+                                                        <p>Leave your review here! (Max 500 Characters)</p>
+                                                        <input type="hidden" name="prodID" value="<?php echo $pid ?>">
+                                                        <textarea rows="4" cols="50" name="reviewbox" id="reviewbox"></textarea>
+                                                        <label id="count"></label>
+                                                        <button type="submit" class="btn btn-outline-dark" id="rvwBtn">Submit</button>
+                                                        <script>document.getElementById('reviewbox').onkeyup = function () {
+                                                                document.getElementById('count').innerHTML = "Characters left: " + (500 - this.value.length);
+                                                            };</script>
+                                                    </form>
+    <?php
+}
+?>
                                             </div>
                                         </div>
                                     </div>
@@ -274,9 +278,9 @@ and open the template in the editor.
                 <!-- End of Product Details-->
             </div>
         </main>
-        <?php
-        include "inc/footer.php"
-        ?>
+<?php
+include "inc/footer.php"
+?>
 
         <!--JavaScript-->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
