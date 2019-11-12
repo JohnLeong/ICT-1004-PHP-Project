@@ -74,19 +74,19 @@ and open the template in the editor.-->
                                 </header>
                                 <div class="card-body">
                                     <label class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="Lifestyle">
+                                        <input class="form-check-input" type="checkbox" id="Lifestyle" onclick="filter_items()">
                                         <span class="form-check-label">Lifestyle</span>
                                     </label>
                                     <label class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="Training">
+                                        <input class="form-check-input" type="checkbox" id="Training" onclick="filter_items()">
                                         <span class="form-check-label">Training & Gym</span>
                                     </label>
                                     <label class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="Running">
+                                        <input class="form-check-input" type="checkbox" id="Running" onclick="filter_items()">
                                         <span class="form-check-label">Running</span>
                                     </label>
                                     <label class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="Walking">
+                                        <input class="form-check-input" type="checkbox" id="Walking" onclick="filter_items()">
                                         <span class="form-check-label">Walking</span>
                                     </label>
                                 </div> <!-- card-body.// -->
