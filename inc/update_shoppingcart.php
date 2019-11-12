@@ -63,7 +63,7 @@ if ((!isset($_POST['addtocart'])) && (!isset($_POST['updatecartqty'])) && (!isse
         if ($dupcheck->num_rows > 0) {
             $data = $dupcheck->fetch_assoc();
             $update = $data["quantity"] + 1;
-            $sql = "UPDATE p5_2.zshoppingcart SET quantity='$update' WHERE productDetail_ID='$pid'";
+            $sql = "UPDATE p5_2.zshoppingcart SET quantity='$update' WHERE productDetail_ID='$pid' && zmember_id='$id'";
             // Execute the query
             if (!$conn->query($sql)) {
                 $errorMsg = "Database error: " . $conn->error;
