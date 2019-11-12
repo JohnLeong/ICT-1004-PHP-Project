@@ -73,7 +73,7 @@ and open the template in the editor.
             <div>
                 <p class="loggerNCart">
                     <b><?php
-                        echo "<a href=profile.php>Welcome, {$_SESSION['name']}! </a>";
+                        echo "<a href=account.php>Welcome, {$_SESSION['name']}! </a>";
                         ?>
                             <i class="fas fa-user-circle"></i> | 
                             <a href="shoppingcart.php" >Shopping Cart <i class="fas fa-shopping-cart"> 
