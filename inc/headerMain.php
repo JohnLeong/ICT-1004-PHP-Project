@@ -52,6 +52,7 @@ and open the template in the editor.
     <br>
     <!--Promo line-->
     <?php
+    
     if (isset($_SESSION['name'])) {
         $conn = new mysqli("161.117.122.252", "p5_2", "yzhbGyqP87", "p5_2");
         // Check connection
@@ -69,20 +70,21 @@ and open the template in the editor.
                 }
             }
         }
-        echo '<div>
-                <p class="loggerNCart">
-                    <b>';
-                        echo "<a href=profile.php>Welcome, {$_SESSION['name']}! </a>";
-                        echo ' <i class="fas fa-user-circle"></i> | 
-                            <a href="shoppingcart.php" >Shopping Cart <i class="fas fa-shopping-cart"> 
-                            <span id="cart-item" class="badge badge-danger">'. $noOfitem .'</span></i></a> |
-                        <a href="inc/logout.php" >Logout <i class="fas fa-sign-in-alt"></i></a> 
-                    </b>
-                </p>
-            </div>';
-    }
-    else {
-        echo '
+        ?>
+            <div>
+                    <p class="loggerNCart">
+                        <b>
+                            <?php
+                            echo "<a href=profile.php>Welcome, {$_SESSION['name']}! </a>"; 
+                            ?>
+                            <i class="fas fa-user-circle"></i> | 
+                                <a href="shoppingcart.php" >Shopping Cart <i class="fas fa-shopping-cart"> 
+                                <?php echo '<span id="cart-item" class="badge badge-danger">'. $noOfitem .'</span></i></a> |'; ?>
+                            <a href="inc/logout.php" >Logout <i class="fas fa-sign-in-alt"></i></a> 
+                        </b>
+                    </p>
+                </div><?php
+    } else {?>
             <div class="backingForPromo">
                 <p class="promoStatment">
                     Too expensive? <a href="register.php">Sign up</a> with us to get a 10% Discount for your first purchase!
@@ -93,13 +95,12 @@ and open the template in the editor.
             <div>
                 <p class="loggerNCart">
                     <b>
-                        <a href="ICT1004_PHP_Project/../login.php" >Login <i class="fas fa-sign-in-alt"></i></a>
+                        <a href="ICT1004_PHP_Project/../login.php?log" >Login <i class="fas fa-sign-in-alt"></i></a>
                     </b>
                 </p>
-            </div> ';
-    }
-    
-    ?>
+            </div><?php
+    }?>
+            
     <!--Header -->
     <div>
         <br>

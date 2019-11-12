@@ -29,6 +29,9 @@ and open the template in the editor.-->
         include 'inc/header.php';
         if (!isset($_SESSION['name'])) {
             header('Location: index.php');
+        } 
+        if(isset($_GET['error'])){
+            echo '<script type="text/javascript">alert("Your Cart is empty! Please try again after you add a product.");</script>';
         }
         ?>
         <main>
@@ -159,7 +162,7 @@ and open the template in the editor.-->
 
                         <div class="float-right">
                             <button type="button" class="btn btn-lg btn-secondary md-btn-flat mt-2 mr-3" onclick="window.location.href='index.php'">Back to Shopping</button>
-                            <button type="button" class="btn btn-lg btn-secondary mt-2" onclick="window.location.href='checkout.php'">Checkout</button>
+                            <button type="button" name="checkoutbtn" class="btn btn-lg btn-secondary mt-2" onclick="window.location.href='checkout.php'">Checkout</button>
                         </div>
 
                     </div>

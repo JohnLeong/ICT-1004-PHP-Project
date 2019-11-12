@@ -31,26 +31,27 @@ and open the template in the editor.-->
             header('Location: index.php');
         }
         ?>
-        <main>
-            <div class="container px-3 my-5 clearfix">
-                <!-- Shopping cart table -->
-                <div class="card">
-                    <div class="card-header">
-                        <h2>Checkout</h2>
-                    </div>
-                    <?php
-                    global $grandtotal, $total;
-                    $conn = new mysqli("161.117.122.252", "p5_2", "yzhbGyqP87", "p5_2");
-                    // Check connection
-                    if ($conn->connect_error) {
-                        $errorMsg = "Connection failed: " . $conn->connect_error;
-                        $success = false;
-                    } else {
-                        $id = $_SESSION['zid'];
-                        $sql = "SELECT * FROM zshoppingcart WHERE zmember_id =$id";
-                        $result = mysqli_query($conn, $sql);
-                        if (mysqli_num_rows($result) > 0) {
-                            ?>
+        <?php
+        global $grandtotal, $total;
+        $conn = new mysqli("161.117.122.252", "p5_2", "yzhbGyqP87", "p5_2");
+        // Check connection
+        if ($conn->connect_error) {
+            $errorMsg = "Connection failed: " . $conn->connect_error;
+            $success = false;
+        } else {
+            $id = $_SESSION['zid'];
+            $sql = "SELECT * FROM zshoppingcart WHERE zmember_id =$id";
+            $result = mysqli_query($conn, $sql);
+            if (mysqli_num_rows($result) > 0) {
+                ?>
+                <main>
+                    <div class="container px-3 my-5 clearfix">
+                        <!-- Shopping cart table -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h2>Checkout</h2>
+                            </div>
+
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table table-bordered m-0">
@@ -101,7 +102,7 @@ and open the template in the editor.-->
                                             $grandtotal += $total;
                                         }
                                     } else {
-                                        echo "<span class='cartempty'>Your Cart is Empty!!!</span>";
+                                        header("Location: shoppingcart.php?error");
                                     }
                                 }
                                 ?>

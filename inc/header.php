@@ -69,37 +69,40 @@ and open the template in the editor.
             }
         }
     }
-    if (isset($_SESSION['name'])) {
-        echo '<div>
+    if (isset($_SESSION['name'])) {?>
+            <div>
                 <p class="loggerNCart">
-                    <b>';
+                    <b><?php
                         echo "<a href=profile.php>Welcome, {$_SESSION['name']}! </a>";
-                        echo ' <i class="fas fa-user-circle"></i> | 
+                        ?>
+                            <i class="fas fa-user-circle"></i> | 
                             <a href="shoppingcart.php" >Shopping Cart <i class="fas fa-shopping-cart"> 
-                            <span id="cart-item" class="badge badge-danger">'. $noOfitem .'</span></i></a> |
+                            <?php
+                                echo '<span id="cart-item" class="badge badge-danger">'. $noOfitem .'</span></i></a> |'; ?>
                         <a href="inc/logout.php" >Logout <i class="fas fa-sign-in-alt"></i></a> 
                     </b>
                 </p>
-            </div>';
+            </div> <?php
     }
-    else {
-        echo '
+    else {?>
             <div class="backingForPromo">
                 <p class="promoStatment">
                     Too expensive? <a href="../register.php">Sign up</a> with us to get a 10% Discount for your first purchase!
                 </p>
             </div>
-    
+    <?php
+        if(!isset($_GET['log'])) {?>
             <!--Login + Shopping Cart-->
             <div>
                 <p class="loggerNCart">
                     <b>
-                        <a href="ICT1004_PHP_Project/../login.php" >Login <i class="fas fa-sign-in-alt"></i></a>
+                        <a href="ICT1004_PHP_Project/../login.php?log" >Login <i class="fas fa-sign-in-alt"></i></a>
                     </b>
                 </p>
-            </div> ';
-    }
-    ?>
+            </div> <?php
+        }    
+    }?>
+    
     <br>
     <a href="index.php">
         <img class="brandName" src="img/zenith-vector.svg" alt="ZENITH BRAND"/>

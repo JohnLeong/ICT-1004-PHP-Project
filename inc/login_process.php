@@ -31,13 +31,10 @@ if (!isset($_POST['login_submit'])) {
                 header("Location: ../index.php");
             }
             else{//wrong password
-                $message = "Email or Password does not match!";
-                echo "<script type='text/javascript'>alert('$message');</script>";
-                
+                header("Location: ../login.php?error");          
             }
         }else{//wrong email
-            echo $errorMsg;
-            echo '<script>location.replace("index.php");</script>';
+            header("Location: ../login.php?error");
         }
     }
     $conn->close();
