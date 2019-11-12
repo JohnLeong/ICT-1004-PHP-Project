@@ -29,6 +29,13 @@ and open the template in the editor.
     <body>
         <?php
         include 'inc/headerMain.php';
+
+        if (isset($_GET['mailing_error'])) {
+            echo '<script type="text/javascript">alert("An error has occured. Please try again.");</script>';
+        }
+        if (isset($_GET['mailing_success'])) {
+            echo '<script type="text/javascript">alert("You have been added to the mailing list!");</script>';
+        }
         ?>
             <!--Header -->
         <main>
