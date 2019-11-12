@@ -39,111 +39,116 @@ and open the template in the editor.
         $dob_d = $dob_m = $dob_y = "";
         $errorMsg = "";
         $success = true;
-
-        //first name
-        $error = "";
-        $first_name = $errorMsg = "";
-        if (empty($_POST["first_name"])) {
-            $errorMsg .= "First name is required.<br>";
-            $success = false;
-        } else {
-            $first_name = sanitize_input($_POST["first_name"]);
-        }
-        $error .= $errorMsg;
-
-        //last name
-        $last_name = $errorMsg = "";
-        if (empty($_POST["last_name"])) {
-            $errorMsg .= "Last name is required.<br>";
-            $success = false;
-        } else {
-            $last_name = sanitize_input($_POST["last_name"]);
-        }
-        $error .= $errorMsg;
-
-        //email
-        $email = $errorMsg = "";
-        if (empty($_POST["email"])) {
-            $errorMsg .= "Email is required.<br>";
-            $success = false;
-        } else {
-            $email = sanitize_input($_POST["email"]);
-            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $errorMsg .= "Invalid email format.";
+        
+        if (isset($_POST['updateShipping'])) {
+            updateMemberInfo();
+            header('Location: ../checkout.php');
+        } else if ((!isset($_POST['updateShipping'])) && (isset($_POST['profForm']))) {
+            //first name
+            $error = "";
+            $first_name = $errorMsg = "";
+            if (empty($_POST["first_name"])) {
+                $errorMsg .= "First name is required.<br>";
                 $success = false;
+            } else {
+                $first_name = sanitize_input($_POST["first_name"]);
             }
+            $error .= $errorMsg;
+
+            //last name
+            $last_name = $errorMsg = "";
+            if (empty($_POST["last_name"])) {
+                $errorMsg .= "Last name is required.<br>";
+                $success = false;
+            } else {
+                $last_name = sanitize_input($_POST["last_name"]);
+            }
+            $error .= $errorMsg;
+
+            //email
+            $email = $errorMsg = "";
+            if (empty($_POST["email"])) {
+                $errorMsg .= "Email is required.<br>";
+                $success = false;
+            } else {
+                $email = sanitize_input($_POST["email"]);
+                if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                    $errorMsg .= "Invalid email format.";
+                    $success = false;
+                }
+            }
+
+            //gender
+            $gender = $errorMsg = "";
+            if (empty($_POST["gender"])) {
+                $errorMsg .= "Gender is required.<br>";
+                $success = false;
+            } else {
+                $gender = sanitize_input($_POST["gender"]);
+            }
+
+            //mobile
+            $mobile = $errorMsg = "";
+            if (empty($_POST["mobile"])) {
+                $errorMsg .= "Mobile is required.<br>";
+                $success = false;
+            } else {
+                $mobile = sanitize_input($_POST["mobile"]);
+            }
+
+            //country
+            $country = $errorMsg = "";
+            if (empty($_POST["country"])) {
+                $errorMsg .= "Country is required.<br>";
+                $success = false;
+            } else {
+                $country = sanitize_input($_POST["country"]);
+            }
+
+            //city
+            $city = $errorMsg = "";
+            if (empty($_POST["city"])) {
+                $errorMsg .= "City is required.<br>";
+                $success = false;
+            } else {
+                $city = sanitize_input($_POST["city"]);
+            }
+            //dob
+            $dob = $errorMsg = "";
+                $dob_d = $_POST["dob_d"];
+                $dob_m = $_POST["dob_m"];
+                $dob_y = $_POST["dob_y"];
+                // Date format YYYY-MM-DD
+                $dob .= $dob_y . "-";
+                $dob .= $dob_m . "-";
+                $dob .= $dob_d;
+
+
+            //address
+            $address = $errorMsg = "";
+            if (empty($_POST["address"])) {
+                $errorMsg .= "Address is required.<br>";
+                $success = false;
+            } else {
+                $address = sanitize_input($_POST["address"]);
+            }
+
+
+            // Troubleshoot
+    //        echo "<script type='text/javascript'>alert('$dob');</script>";
+    //        echo "<script type='text/javascript'>alert('$gender');</script>";
+    //        echo "<script type='text/javascript'>alert('$first_name');</script>";
+    //        echo "<script type='text/javascript'>alert('$last_name');</script>";
+    //        echo "<script type='text/javascript'>alert('$mobile');</script>";
+    //        echo "<script type='text/javascript'>alert('$city');</script>";
+    //        echo "<script type='text/javascript'>alert('$country');</script>";
+
+            updateMemberInfo();
+
+            $register = 'register.php';
+            $home = 'index.php';
         }
-
-        //gender
-        $gender = $errorMsg = "";
-        if (empty($_POST["gender"])) {
-            $errorMsg .= "Gender is required.<br>";
-            $success = false;
-        } else {
-            $gender = sanitize_input($_POST["gender"]);
-        }
-
-        //mobile
-        $mobile = $errorMsg = "";
-        if (empty($_POST["mobile"])) {
-            $errorMsg .= "Mobile is required.<br>";
-            $success = false;
-        } else {
-            $mobile = sanitize_input($_POST["mobile"]);
-        }
-
-        //country
-        $country = $errorMsg = "";
-        if (empty($_POST["country"])) {
-            $errorMsg .= "Country is required.<br>";
-            $success = false;
-        } else {
-            $country = sanitize_input($_POST["country"]);
-        }
-
-        //city
-        $city = $errorMsg = "";
-        if (empty($_POST["city"])) {
-            $errorMsg .= "City is required.<br>";
-            $success = false;
-        } else {
-            $city = sanitize_input($_POST["city"]);
-        }
-        //dob
-        $dob = $errorMsg = "";
-            $dob_d = $_POST["dob_d"];
-            $dob_m = $_POST["dob_m"];
-            $dob_y = $_POST["dob_y"];
-            // Date format YYYY-MM-DD
-            $dob .= $dob_y . "-";
-            $dob .= $dob_m . "-";
-            $dob .= $dob_d;
-            
-            
-        //address
-        $address = $errorMsg = "";
-        if (empty($_POST["address"])) {
-            $errorMsg .= "Address is required.<br>";
-            $success = false;
-        } else {
-            $address = sanitize_input($_POST["address"]);
-        }
-
-
-        // Troubleshoot
-//        echo "<script type='text/javascript'>alert('$dob');</script>";
-//        echo "<script type='text/javascript'>alert('$gender');</script>";
-//        echo "<script type='text/javascript'>alert('$first_name');</script>";
-//        echo "<script type='text/javascript'>alert('$last_name');</script>";
-//        echo "<script type='text/javascript'>alert('$mobile');</script>";
-//        echo "<script type='text/javascript'>alert('$city');</script>";
-//        echo "<script type='text/javascript'>alert('$country');</script>";
-
-        updateMemberInfo();
-
-        $register = 'register.php';
-        $home = 'index.php';
-
+        
         //Helper function that checks input for malicious or unwanted content.
         function sanitize_input($data) {
             $data = trim($data);
@@ -175,7 +180,7 @@ and open the template in the editor.
                     $sql .= " address = '" . $caddress . "'";
                     $sql .= " WHERE zmember_id='" . $id . "'";
                     
-                    header('Location: ../checkout.php');
+                    $conn->close();
                 } else {
 //                 UPDATE `p5_2`.`zenith_members` SET `fname` = 'XB', `lname` = 'Po',
 //                  `email` = 'xb@hotmaill.com', `dob` = '1997-07-11', `gender` = 'MALE',
