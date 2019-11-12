@@ -165,28 +165,41 @@ and open the template in the editor.
                 $errorMsg = "Connection failed: " . $conn->connect_error;
                 $success = false;
             } else {
+                if(isset($_POST['updateShipping'])) {
+                    $cemail = $_POST['cemail'];
+                    $cmobile = $_POST['cmobile'];
+                    $caddress = $_POST['caddress'];
+                    $sql = "UPDATE p5_2.zenith_members SET";
+                    $sql .= " email = '" . $cemail . "',";
+                    $sql .= " mobile = '" . $cmobile . "',";
+                    $sql .= " address = '" . $caddress . "'";
+                    $sql .= " WHERE zmember_id='" . $id . "'";
+                    
+                    header('Location: ../checkout.php');
+                } else {
 //                 UPDATE `p5_2`.`zenith_members` SET `fname` = 'XB', `lname` = 'Po',
 //                  `email` = 'xb@hotmaill.com', `dob` = '1997-07-11', `gender` = 'MALE',
 //                   `mobile` = '12342312',
 //                  `country` = 'SG', `city` = 'SG', `address` = '828 Woodlands Drive 50 #01-123' 
 //                  WHERE (`zmember_id` = '2');
-                $sql = "UPDATE p5_2.zenith_members SET";
-                $sql .= " fname = '" . $first_name . "',";
-                $sql .= " lname = '" . $last_name . "',";
-                $sql .= " email = '" . $email . "',";
-                $sql .= " dob = '" . $dob . "',";
-                $sql .= " gender = '" . $gender . "',";
-                $sql .= " mobile = '" . $mobile . "',";
-                $sql .= " country = '" . $country . "',";
-                $sql .= " city = '" . $city . "',";
-                $sql .= " address = '" . $address . "'";
-                $sql .= " WHERE zmember_id='" . $id . "'";
-                // Execute the query
-                if ($conn->query($sql) == TRUE) {
-                    $success = true;
-                } else {
-                    $error .= $conn->error;
-                    $success = false;
+                    $sql = "UPDATE p5_2.zenith_members SET";
+                    $sql .= " fname = '" . $first_name . "',";
+                    $sql .= " lname = '" . $last_name . "',";
+                    $sql .= " email = '" . $email . "',";
+                    $sql .= " dob = '" . $dob . "',";
+                    $sql .= " gender = '" . $gender . "',";
+                    $sql .= " mobile = '" . $mobile . "',";
+                    $sql .= " country = '" . $country . "',";
+                    $sql .= " city = '" . $city . "',";
+                    $sql .= " address = '" . $address . "'";
+                    $sql .= " WHERE zmember_id='" . $id . "'";
+                    // Execute the query
+                    if ($conn->query($sql) == TRUE) {
+                        $success = true;
+                    } else {
+                        $error .= $conn->error;
+                        $success = false;
+                    }
                 }
             }
             $conn->close();

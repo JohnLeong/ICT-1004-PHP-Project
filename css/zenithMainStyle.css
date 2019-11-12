@@ -1004,3 +1004,7 @@ form {
     }
 }
 /*End of Refund Policy*/
+
+.checkoutdetail .row {
+    padding-top: 0px;
+}
