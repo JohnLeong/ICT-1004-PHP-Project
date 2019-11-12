@@ -16,7 +16,7 @@ if (!isset($_POST['login_submit'])) {
         $cpwd = mysqli_real_escape_string($conn, $pwd);
             
         // Execute the query
-        $sql = "SELECT * FROM p5_2.zenith_members WHERE email='$cemail'";
+        $sql = "SELECT * FROM p5_2.zenith_members WHERE email='$email'";
         $result = $conn->query($sql);
         if ($result->num_rows > 0){
             $row = $result->fetch_assoc();

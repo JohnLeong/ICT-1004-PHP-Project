@@ -37,12 +37,29 @@ and open the template in the editor.
         <?php
         $first_name = $last_name = $email = $gender = $mobile = $country = $city = $address = "";
         $dob_d = $dob_m = $dob_y = "";
+        global $dob_d, $dob_m, $dob_y;
         $errorMsg = "";
         $success = true;
         
         if (isset($_POST['updateShipping'])) {
-            updateMemberInfo();
-            header('Location: ../checkout.php');
+            $id = $_SESSION['zid'];
+            // Create connection
+            $conn = new mysqli("161.117.122.252", "p5_2", "yzhbGyqP87", "p5_2");
+            // Check connection
+            if ($conn->connect_error) {
+                $errorMsg = "Connection failed: " . $conn->connect_error;
+                $success = false;
+            } else {
+                $cemail = $_POST['cemail'];
+                $cmobile = $_POST['cmobile'];
+                $caddress = $_POST['caddress'];
+                $sql = "UPDATE p5_2.zenith_members SET";
+                $sql .= " email = '" . $cemail . "',";
+                $sql .= " mobile = '" . $cmobile . "',";
+                $sql .= " address = '" . $caddress . "'";
+                $sql .= " WHERE zmember_id='" . $id . "'";
+            }
+            header('Location: ICT1004_PHP_Project/../checkout.php');
         } else {
             //first name
             $error = "";
@@ -115,13 +132,13 @@ and open the template in the editor.
             }
             //dob
             $dob = $errorMsg = "";
-                $dob_d = $_POST["dob_d"];
-                $dob_m = $_POST["dob_m"];
-                $dob_y = $_POST["dob_y"];
-                // Date format YYYY-MM-DD
-                $dob .= $dob_y . "-";
-                $dob .= $dob_m . "-";
-                $dob .= $dob_d;
+            $dob_d = $_POST["dob_d"];
+            $dob_m = $_POST["dob_m"];
+            $dob_y = $_POST["dob_y"];
+            // Date format YYYY-MM-DD
+            $dob .= $dob_y . "-";
+            $dob .= $dob_m . "-";
+            $dob .= $dob_d;
 
 
             //address
@@ -170,16 +187,6 @@ and open the template in the editor.
                 $errorMsg = "Connection failed: " . $conn->connect_error;
                 $success = false;
             } else {
-                if(isset($_POST['updateShipping'])) {
-                    $cemail = $_POST['cemail'];
-                    $cmobile = $_POST['cmobile'];
-                    $caddress = $_POST['caddress'];
-                    $sql = "UPDATE p5_2.zenith_members SET";
-                    $sql .= " email = '" . $cemail . "',";
-                    $sql .= " mobile = '" . $cmobile . "',";
-                    $sql .= " address = '" . $caddress . "'";
-                    $sql .= " WHERE zmember_id='" . $id . "'";
-                } else {
 //                 UPDATE `p5_2`.`zenith_members` SET `fname` = 'XB', `lname` = 'Po',
 //                  `email` = 'xb@hotmaill.com', `dob` = '1997-07-11', `gender` = 'MALE',
 //                   `mobile` = '12342312',
@@ -204,9 +211,7 @@ and open the template in the editor.
                         $success = false;
                     }
                 }
-            }
-            $conn->close();
-        }
+            }$conn->close();
         ?>
         <main>
             <div class ="container-fluid register">

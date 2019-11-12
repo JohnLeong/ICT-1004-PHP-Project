@@ -123,7 +123,7 @@ and open the template in the editor.-->
                             }
                             ?>
                             <div class="row">
-                                <form class="text-left" name="updateShipping" action="<?php echo htmlspecialchars("editprof_process.php"); ?>" onsubmit="return validateForm()" method="POST">
+                                <form class="text-left" name="update" action="<?php echo htmlspecialchars("editprof_process.php"); ?>" onsubmit="return validateForm()" method="POST">
                                     <h4 class="mx-3">Shipping Details</h4>
                                     <hr class="mx-3">
                                     <div class="row pt-0">
@@ -144,45 +144,71 @@ and open the template in the editor.-->
                                         <label for="email">Shipping Address:</label>
                                         <input class="form-control" type="text" name="caddress" id="address" value="<?php echo $address ?>">
                                     </div>
-                                    <button class="btn btn-outline-dark mt-2 mx-3" name="login_submit" type="submit">Update&nbsp;<i class="far fa-edit"></i></button>
+                                    <button class="btn btn-outline-dark mt-2 ml-3" name="updateShipping" type="submit">Update&nbsp;<i class="far fa-edit"></i></button>
 
                                 </form>
                             </div>
                         </div>
 
-                        <div class="row">
-                            <form>
-                                <h4 class="mx-3">Credit Card Details</h4>
-                                <hr class="mx-3 mb-0">
+                        <div class="row ">
+                            <form class="col-7 px-0" action="inc/checkout_process.php" method="post" name="checkoutpayment">
+                                <h4 class="px-3">Credit Card Details</h4>
+                                <hr class="ml-3 mb-0">
                                 <div class="row">
                                     <div class="form-group col-6">
                                         <div class="inner-addon right-addon">
                                             <label>Card Holder</label>
                                             <i class="far fa-user"></i>
-                                            <input id="card-holder" type="text" class="form-control">
+                                            <input id="card-holder" type="text" placeholder="Name" pattern="[A-Za-z]{1.}" class="form-control" required>
                                         </div>	
                                     </div>
-                                    <div class="form-group col-3">
+                                    <div class="form-group col-6">
                                         <label>Expiration Date</label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="MM">
+                                            <select class="form-control" name="mm" required>
+                                                <option selected="selected">MM</option>
+                                                <?php
+                                                // Populating the month array
+                                                $months = array("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12");
+
+                                                // Iterating through the MM array
+                                                foreach ($months as $months) {
+                                                    ?>
+                                                    <option value="<?= $months ?>"><?= $months ?></option>
+                                                    <?php
+                                                }
+                                                ?>
+                                            </select>
                                             <h5 class="mt-1">&nbsp;&nbsp;/&nbsp;&nbsp;</h5>
-                                            <input type="text" class="form-control" placeholder="YY">
+                                            <select class="form-control" name="yy" required>
+                                                <option selected="selected">YY</option>
+                                                <?php
+                                                // Populating the year array
+                                                $years = array("19", "20", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31");
+
+                                                // Iterating through the YY array
+                                                foreach ($years as $years) {
+                                                    ?>
+                                                    <option value="<?= $years ?>"><?= $years ?></option>
+                                                    <?php
+                                                }
+                                                ?>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row form-group py-0 mb-0">
+                                <div class="row form-group py-0 mb-0 ">
                                     <div class="inner-addon right-addon col-6">
                                         <label>Card Number</label>
                                         <i class="far fa-credit-card"></i>
-                                        <input id="card-number" type="text" class="form-control" placeholder="Card Number">
+                                        <input id="card-number" type="text" class="form-control" placeholder="Card Number" pattern="[0-9]{16}" required>
                                     </div>	
                                     <div class="form-group col-4">
                                         <label>CVC</label>
-                                        <input id="cvc" type="text" class="form-control" placeholder="CVC">
+                                        <input id="cvc" type="text" class="form-control" placeholder="CVC" pattern="[0-9]{3}" required>
                                     </div>
                                 </div>
-                                <button type="button" class="btn btn-outline-dark mt-0 mx-3">Pay Now&nbsp;<i class="far fa-money-bill-alt"></i></button>
+                                <button type="submit" class="btn btn-outline-dark mt-0 ml-3">Pay Now&nbsp;<i class="far fa-money-bill-alt"></i></button>
                             </form>	
                         </div>
                         <hr class="mx-3">
