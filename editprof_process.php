@@ -43,7 +43,7 @@ and open the template in the editor.
         if (isset($_POST['updateShipping'])) {
             updateMemberInfo();
             header('Location: ../checkout.php');
-        } else if ((!isset($_POST['updateShipping'])) && (isset($_POST['profForm']))) {
+        } else {
             //first name
             $error = "";
             $first_name = $errorMsg = "";
@@ -179,8 +179,6 @@ and open the template in the editor.
                     $sql .= " mobile = '" . $cmobile . "',";
                     $sql .= " address = '" . $caddress . "'";
                     $sql .= " WHERE zmember_id='" . $id . "'";
-                    
-                    $conn->close();
                 } else {
 //                 UPDATE `p5_2`.`zenith_members` SET `fname` = 'XB', `lname` = 'Po',
 //                  `email` = 'xb@hotmaill.com', `dob` = '1997-07-11', `gender` = 'MALE',

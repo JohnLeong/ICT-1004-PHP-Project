@@ -1008,3 +1008,6 @@ form {
 .checkoutdetail .row {
     padding-top: 0px;
 }
+.date-separator{
+    font-size: 30px;
+}

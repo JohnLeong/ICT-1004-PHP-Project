@@ -108,6 +108,7 @@ and open the template in the editor.-->
                             </table>
                         </div>
                         <!-- / Shopping cart table -->
+
                         <div>
                             <?php
                             $psql = "SELECT * FROM p5_2.zenith_members WHERE zmember_id='$id'";
@@ -120,11 +121,12 @@ and open the template in the editor.-->
                                 $mobile = $pData["mobile"];
                                 $address = $pData["address"];
                             }
-                                ?>
-                            <div class="checkoutdetail row float-left ">
+                            ?>
+                            <div class="row">
                                 <form class="text-left" name="updateShipping" action="<?php echo htmlspecialchars("editprof_process.php"); ?>" onsubmit="return validateForm()" method="POST">
                                     <h4 class="mx-3">Shipping Details</h4>
-                                    <div class="row">
+                                    <hr class="mx-3">
+                                    <div class="row pt-0">
                                         <div class="col-6">
                                             <label for="email">Email:</label>
                                         </div>
@@ -132,47 +134,60 @@ and open the template in the editor.-->
                                             <label for="mobile">Mobile:</label>
                                         </div>
                                         <div class="col-6">
-                                            <input class="form-control" type="text" name="email" value="<?php echo $email ?>" required>
+                                            <input class="form-control" type="text" name="cemail" value="<?php echo $email ?>" required>
                                         </div>
                                         <div class="col-6">
-                                            <input class="form-control" type="tel" name="mobile" pattern="[0-9]{8}" value="<?php echo $mobile ?>">
+                                            <input class="form-control" type="tel" name="cmobile" pattern="[0-9]{8}" value="<?php echo $mobile ?>">
                                         </div>
                                     </div><br/>
                                     <div class="row py-0 mx-3">
                                         <label for="email">Shipping Address:</label>
-                                        <input class="form-control" type="text" name="address" id="address" value="<?php echo $address ?>">
+                                        <input class="form-control" type="text" name="caddress" id="address" value="<?php echo $address ?>">
                                     </div>
-                                    <button class="btn btn-outline-dark mt-2 mx-3" name="login_submit" type="submit">Update <i class="far fa-edit"></i></button>
+                                    <button class="btn btn-outline-dark mt-2 mx-3" name="login_submit" type="submit">Update&nbsp;<i class="far fa-edit"></i></button>
+
                                 </form>
                             </div>
-                            <div class="row float-right">
-                                <div class="text-right mt-4 mr-5">
-                                    <label class="text-muted font-weight-normal m-0">Shipping Fee</label>
-                                    <?php
-                                    $shippingfee = 18;
-                                    if ($grandtotal == 0) {
-                                        $shippingfee = 0;
-                                        $grandtotal = 0;
-                                    } else if ($grandtotal < 300) {
-                                        $grandtotal = $grandtotal + $shippingfee;
-                                    } else {
-                                        $shippingfee = 0;
-                                        $grandtotal = $grandtotal + $shippingfee;
-                                    }
-                                    echo "<div class='text-large'><strong>SGD $shippingfee</strong></div>";
-                                    ?>
+                        </div>
+
+                        <div class="row">
+                            <form>
+                                <h4 class="mx-3">Credit Card Details</h4>
+                                <hr class="mx-3 mb-0">
+                                <div class="row">
+                                    <div class="form-group col-6">
+                                        <div class="inner-addon right-addon">
+                                            <label>Card Holder</label>
+                                            <i class="far fa-user"></i>
+                                            <input id="card-holder" type="text" class="form-control">
+                                        </div>	
+                                    </div>
+                                    <div class="form-group col-3">
+                                        <label>Expiration Date</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="MM">
+                                            <h5 class="mt-1">&nbsp;&nbsp;/&nbsp;&nbsp;</h5>
+                                            <input type="text" class="form-control" placeholder="YY">
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="text-right mt-4">
-                                    <label class="text-muted font-weight-normal m-0">Total price</label>
-                                    <?php
-                                    echo "<div class='text-large'><strong>SGD $grandtotal</strong></div>";
-                                    ?>
+                                <div class="row form-group py-0 mb-0">
+                                    <div class="inner-addon right-addon col-6">
+                                        <label>Card Number</label>
+                                        <i class="far fa-credit-card"></i>
+                                        <input id="card-number" type="text" class="form-control" placeholder="Card Number">
+                                    </div>	
+                                    <div class="form-group col-4">
+                                        <label>CVC</label>
+                                        <input id="cvc" type="text" class="form-control" placeholder="CVC">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row float-right">
-                                <button type="button" class="btn btn-lg btn-secondary md-btn-flat mt-2 mr-3" onclick="window.location.href = 'shoppingcart.php'">Back to Cart</button>
-                                <button type="button" class="btn btn-lg btn-secondary mt-2">Payment</button>
-                            </div>
+                                <button type="button" class="btn btn-outline-dark mt-0 mx-3">Pay Now&nbsp;<i class="far fa-money-bill-alt"></i></button>
+                            </form>	
+                        </div>
+                        <hr class="mx-3">
+                        <div class="row mx-3 pt-0">
+                            <button type="button" class="btn btn-md btn-secondary md-btn-flat mt-2 mr-3" onclick="window.location.href = 'shoppingcart.php'">Back to Cart</button>
                         </div>
                     </div>
                 </div>
