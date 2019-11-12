@@ -143,7 +143,7 @@ and open the template in the editor.
                                 {
                                     $rowDetail = $resultShoe->fetch_assoc();
                                     if((int)$rowDetail["stock"] > 0){
-                                         echo "<option value='" . $rowDetail["colour"]. ":" . $rowDetail["size"] . "'>" . $rowDetail["colour"] . " : " . $rowDetail["size"] . "</option>";
+                                         echo "<option value='" . $rowDetail["productDetail_ID"]. ":" . $rowDetail["colour"]. ":" . $rowDetail["size"] . "'>" . $rowDetail["colour"] . " : " . $rowDetail["size"] . "</option>";
                                     }
                                 }
                                 
@@ -174,31 +174,6 @@ and open the template in the editor.
                                    }
                                    $result->free_result();
                                    $conn->close();
-                               }
-                               
-                               function addtocartdb() {
-                                   global $id, $pid, $pname, $price, $colour, $size;
-                                   $colsize = explode(':', $_POST['shoe_select'], 2); 
-                                   $id = $_SESSION['zid'];
-                                   $pid = $params['productID'];
-                                   $pname = $row['product_name'];
-                                   $price = $row['unit_price'];
-                                   $colour = $colsize[0];
-                                   $size = $colsize[1];
-                                   
-                                   $conn = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
-                                   if ($conn->connect_error) {
-                                        $errorMsg = "Connection failed: " . $conn->connect_error;
-                                        $success = false;
-                                   } else {
-                                        $sql = "INSERT INTO p5_2.shoppingcart (zmember_id, product_ID, product_name, unit_price, colour, size)"
-                                                . "VALUES ('$id','$pid','$pname','$price','$colour','$size)";
-                                        // Execute the query
-                                        if (!$conn->query($sql)) {
-                                            $errorMsg = "Database error: " . $conn->error;
-                                            $success = false;
-                                        }
-                                   }
                                }
                                
                                function getReviewsDB() {

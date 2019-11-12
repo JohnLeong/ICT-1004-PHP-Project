@@ -208,7 +208,7 @@ and open the template in the editor.-->
                                         <input id="cvc" type="text" class="form-control" placeholder="CVC" pattern="[0-9]{3}" required>
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn-outline-dark mt-0 ml-3">Pay Now&nbsp;<i class="far fa-money-bill-alt"></i></button>
+                                <button type="submit" name="paynow" class="btn btn-outline-dark mt-0 ml-3">Pay Now&nbsp;<i class="far fa-money-bill-alt"></i></button>
                             </form>	
                         </div>
                         <hr class="mx-3">
