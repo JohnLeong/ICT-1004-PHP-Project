@@ -8,18 +8,19 @@ function filter_items() {
     }
     for (i = 0; i < filtered.length; i++) { //for every product
         var found = false;
+        var check = false;
         for (h = 0; h < checked.length; h++) { //for all brands & types 
-            console.log(checked[h].id);
             if (checked[h].checked == false) //if brand/type is not selected, skip
                 continue;
+            check = true;
             if (filtered[i].classList.contains(checked[h].id)) {
                 found = true;
                 break; //if brand/type is selected
             }
         }
-        if(found == false){
-                filtered[i].style.display = "none"; //hide the product
-            }
+        if (found == false && check == true) {
+            filtered[i].style.display = "none"; //hide the product
+        }
     }
 
 }

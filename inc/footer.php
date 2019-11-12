@@ -44,10 +44,10 @@ and open the template in the editor.
         </div>
         <div class="col-md">
             <p><i class="fas fa-newspaper"></i> Sign up to our mailing list</p>
-            <form class="form-signin">
+            <form class="form-signin" action="process_mailing.php" method="post">
                 <div class="form-label-group">
                     <label for="inputEmail"></label>
-                    <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required>
+                    <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Email address" required>
                     <button type="submit" class="newsletter_submit" name="commit" id="Subscribe">
                         <span>Subscribe</span>
                     </button>

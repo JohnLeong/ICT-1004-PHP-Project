@@ -36,7 +36,7 @@ and open the template in the editor.-->
             define("DBUSER", "p5_2");
             define("DBPASS", "yzhbGyqP87");
 
-            $name = $email = $errorMsg = "";
+            $email = $errorMsg = "";
             $success = true;
             if (empty($_POST["email"])) {
                 $errorMsg .= "Email is required.<br>";
@@ -49,29 +49,20 @@ and open the template in the editor.-->
                 }
             }
 
-            $name = sanitize_input($_POST["name"]);
-
-            if (empty($_POST["message"])) {
-                $errorMsg .= "A message is required.<br>";
-                $success = false;
-            } else {
-                $message = sanitize_input($_POST["message"]);
-            }
-
             if ($success) {
                 echo "<br>";
-                echo "<h4>Your message has been submitted!</h4>";
+                echo "<h4>You have been added to the mailing list</h4>";
                 echo "<a href='index.php'>Back to shopping</a>"; 
                 echo "<br>";
                 echo "<br>";
-                saveMessageToDB();
+                saveMailingListToDB();
             } else {
                 echo "<br>";
                 echo "<h4>The following errors were detected:</h4>";
                 echo "<p>" . $errorMsg . "</p>";
             }//Helper function that checks input for malicious or unwanted content.
 
-            function saveMessageToDB() {
+            function saveMailingListToDB() {
                 global $name, $email, $message, $errorMsg, $success;
                 // Create connection
                 $conn = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
@@ -80,8 +71,8 @@ and open the template in the editor.-->
                     $errorMsg = "Connection failed: " . $conn->connect_error;
                     $success = false;
                 } else {
-                    $sql = "INSERT INTO p5_2.contact_us_info (email, name, message)";
-                    $sql .= " VALUES('$email', '$name', '$message')";
+                    $sql = "INSERT INTO p5_2.mailing_list (email)";
+                    $sql .= " VALUES('$email')";
                     // Execute the query
                     if (!$conn->query($sql)) {
                         $errorMsg = "Database error: " . $conn->error;
