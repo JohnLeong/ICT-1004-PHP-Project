@@ -144,6 +144,7 @@ and open the template in the editor.-->
                                         <label for="email">Shipping Address:</label>
                                         <input class="form-control" type="text" name="caddress" id="address" value="<?php echo $address ?>">
                                     </div>
+                                    <input type="hidden" name="cart" value="1">
                                     <button class="btn btn-outline-dark mt-2 ml-3" name="updateShipping" type="submit">Update&nbsp;<i class="far fa-edit"></i></button>
 
                                 </form>

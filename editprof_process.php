@@ -37,11 +37,30 @@ and open the template in the editor.
         <?php
         $first_name = $last_name = $email = $gender = $mobile = $country = $city = $address = "";
         $dob_d = $dob_m = $dob_y = "";
-        global $dob_d, $dob_m, $dob_y;
+        $dob = "";
         $errorMsg = "";
         $success = true;
+
+        // Troubleshoot
+//            echo "<script type='text/javascript'>alert('$dob');</script>";
+//            echo "<script type='text/javascript'>alert('$gender');</script>";
+//            echo "<script type='text/javascript'>alert('$first_name');</script>";
+//            echo "<script type='text/javascript'>alert('$last_name');</script>";
+//            echo "<script type='text/javascript'>alert('$mobile');</script>";
+//            echo "<script type='text/javascript'>alert('$city');</script>";
+//            echo "<script type='text/javascript'>alert('$country');</script>";
+        $register = 'register.php';
+        $home = 'index.php';
+        $cart = 0;
         
-        if (isset($_POST['updateShipping'])) {
+        if (!isset($_POST['cart'])) {
+            $cart = 0;
+        } else {
+            $cart = $_POST['cart'];
+        }   
+        // Check if its for Shopping Cart or for General Profile edits
+
+        if ($cart == 1) {
             $id = $_SESSION['zid'];
             // Create connection
             $conn = new mysqli("161.117.122.252", "p5_2", "yzhbGyqP87", "p5_2");
@@ -58,9 +77,28 @@ and open the template in the editor.
                 $sql .= " mobile = '" . $cmobile . "',";
                 $sql .= " address = '" . $caddress . "'";
                 $sql .= " WHERE zmember_id='" . $id . "'";
+                if ($conn->query($sql) == TRUE) {
+                    $success = true;
+                } else {
+                    $error .= $conn->error;
+                    $success = false;
+                }
             }
-            header('Location: ICT1004_PHP_Project/../checkout.php');
+            
+            if ($success) {
+                header('Location: checkout.php');
+            }else{
+             echo "<script type='text/javascript'>alert('Update failed!');</script>";   
+            }
+            
         } else {
+            updateMemberInfo();
+        }
+
+        function getMemberInfo() {
+            global $first_name, $last_name, $email, $gender, $mobile, $country, $city, $address;
+            global $dob, $dob_d, $dob_m, $dob_y;
+
             //first name
             $error = "";
             $first_name = $errorMsg = "";
@@ -81,7 +119,7 @@ and open the template in the editor.
                 $last_name = sanitize_input($_POST["last_name"]);
             }
             $error .= $errorMsg;
-
+            global $success;
             //email
             $email = $errorMsg = "";
             if (empty($_POST["email"])) {
@@ -93,15 +131,6 @@ and open the template in the editor.
                     $errorMsg .= "Invalid email format.";
                     $success = false;
                 }
-            }
-
-            //gender
-            $gender = $errorMsg = "";
-            if (empty($_POST["gender"])) {
-                $errorMsg .= "Gender is required.<br>";
-                $success = false;
-            } else {
-                $gender = sanitize_input($_POST["gender"]);
             }
 
             //mobile
@@ -140,7 +169,14 @@ and open the template in the editor.
             $dob .= $dob_m . "-";
             $dob .= $dob_d;
 
-
+            //gender
+            $gender = $errorMsg = "";
+            if (empty($_POST["gender"])) {
+                $errorMsg .= "Gender is required.<br>";
+                $success = false;
+            } else {
+                $gender = sanitize_input($_POST["gender"]);
+            }
             //address
             $address = $errorMsg = "";
             if (empty($_POST["address"])) {
@@ -149,23 +185,8 @@ and open the template in the editor.
             } else {
                 $address = sanitize_input($_POST["address"]);
             }
-
-
-            // Troubleshoot
-    //        echo "<script type='text/javascript'>alert('$dob');</script>";
-    //        echo "<script type='text/javascript'>alert('$gender');</script>";
-    //        echo "<script type='text/javascript'>alert('$first_name');</script>";
-    //        echo "<script type='text/javascript'>alert('$last_name');</script>";
-    //        echo "<script type='text/javascript'>alert('$mobile');</script>";
-    //        echo "<script type='text/javascript'>alert('$city');</script>";
-    //        echo "<script type='text/javascript'>alert('$country');</script>";
-
-            updateMemberInfo();
-
-            $register = 'register.php';
-            $home = 'index.php';
         }
-        
+
         //Helper function that checks input for malicious or unwanted content.
         function sanitize_input($data) {
             $data = trim($data);
@@ -178,7 +199,7 @@ and open the template in the editor.
             global $id, $email, $first_name, $last_name, $dob;
             global $gender, $mobile, $country, $city, $address, $success, $zid;
             global $day, $month, $year, $error;
-
+            getMemberInfo();
             $id = $_SESSION['zid'];
             // Create connection
             $conn = new mysqli("161.117.122.252", "p5_2", "yzhbGyqP87", "p5_2");
@@ -187,47 +208,44 @@ and open the template in the editor.
                 $errorMsg = "Connection failed: " . $conn->connect_error;
                 $success = false;
             } else {
-//                 UPDATE `p5_2`.`zenith_members` SET `fname` = 'XB', `lname` = 'Po',
-//                  `email` = 'xb@hotmaill.com', `dob` = '1997-07-11', `gender` = 'MALE',
-//                   `mobile` = '12342312',
-//                  `country` = 'SG', `city` = 'SG', `address` = '828 Woodlands Drive 50 #01-123' 
-//                  WHERE (`zmember_id` = '2');
-                    $sql = "UPDATE p5_2.zenith_members SET";
-                    $sql .= " fname = '" . $first_name . "',";
-                    $sql .= " lname = '" . $last_name . "',";
-                    $sql .= " email = '" . $email . "',";
-                    $sql .= " dob = '" . $dob . "',";
-                    $sql .= " gender = '" . $gender . "',";
-                    $sql .= " mobile = '" . $mobile . "',";
-                    $sql .= " country = '" . $country . "',";
-                    $sql .= " city = '" . $city . "',";
-                    $sql .= " address = '" . $address . "'";
-                    $sql .= " WHERE zmember_id='" . $id . "'";
-                    // Execute the query
-                    if ($conn->query($sql) == TRUE) {
-                        $success = true;
-                    } else {
-                        $error .= $conn->error;
-                        $success = false;
-                    }
+                $sql = "UPDATE p5_2.zenith_members SET";
+                $sql .= " fname = '" . $first_name . "',";
+                $sql .= " lname = '" . $last_name . "',";
+                $sql .= " email = '" . $email . "',";
+                $sql .= " dob = '" . $dob . "',";
+                $sql .= " gender = '" . $gender . "',";
+                $sql .= " mobile = '" . $mobile . "',";
+                $sql .= " country = '" . $country . "',";
+                $sql .= " city = '" . $city . "',";
+                $sql .= " address = '" . $address . "'";
+                $sql .= " WHERE zmember_id='" . $id . "'";
+                // Execute the query
+                if ($conn->query($sql) == TRUE) {
+                    $success = true;
+                } else {
+                    $error .= $conn->error;
+                    $success = false;
                 }
-            }$conn->close();
+            }
+        }
+
+        $conn->close();
         ?>
         <main>
             <div class ="container-fluid register">
                 <form method="post">
                     <div class="form-group">
                         <?php
-                        if ($success) {
-//                            echo "<script type='text/javascript'>alert('Your info has been updated :) Thank you!');</script>";
+                        if ($success == 1) {
                             echo "<h2>Your Profile has been updated. </h2>";
                             ?> 
                             <input class="btn btn-default" type="button" value="Return to Shopping" 
                                    onclick="window.location.href = 'index.php'" />
-                            <?php
-                        } else {
-                            echo $error;
-                            ?>
+                                   <?php
+                               } else {
+                                   echo "<h2>Opps! Error Found!</h2>";
+                                   echo $error;
+                                   ?>
                             <input class="btn btn-outline-dark" type="button" value="Return to Edit Profile" 
                                    onclick="window.location.href = 'editprofile.php'" />
                                <?php } ?>
