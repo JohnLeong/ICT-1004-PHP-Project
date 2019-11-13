@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>Zenith - Profile Edited</title>
+        <title>Zenith - Edit Profile</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -38,7 +38,8 @@
         <?php
         include 'inc/header.php';
         if (!isset($_SESSION['name'])) {
-            header('Location: index.php');
+//            header('Location: index.php');
+            echo "<script>window.location.href='index.php'</script>";
         }
         $success = true;
 

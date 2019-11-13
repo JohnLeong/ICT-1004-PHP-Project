@@ -44,7 +44,7 @@ and open the template in the editor.
         </div>
         <div class="col-md">
             <p><i class="fas fa-newspaper"></i> Sign up to our mailing list</p>
-            <form class="form-signin" action="process_mailing.php" method="post">
+            <form class="form-signin" action="inc/process_mailing.php" method="post">
                 <div class="form-label-group">
                     <label for="inputEmail"></label>
                     <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Email address" required>

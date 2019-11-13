@@ -31,7 +31,8 @@ and open the template in the editor.
         <?php
         include 'inc/header.php';
         if (!isset($_SESSION['name'])) {
-            header('Location: index.php');
+//            header('Location: index.php');
+            echo "<script>window.location.href='index.php'</script>";
         }
 
         $success = true;
@@ -164,6 +165,7 @@ and open the template in the editor.
                             </form>
                         </div> <!-- End of Register box-->
                         <div class="text-align-right">
+                            <button type="submit" onclick="window.location = '<?php echo htmlspecialchars('changePW.php') ?>'" class="btn btn-outline-dark" id="editBtn">Change Password</button>
                             <button type="submit" onclick="window.location = '<?php echo htmlspecialchars('editProfile.php') ?>'" class="btn btn-outline-dark" id="editBtn">Edit</button>
                         </div>
                     </div> <!-- Container for the whole of register-->

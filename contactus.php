@@ -27,11 +27,18 @@ and open the template in the editor.-->
     <body>
         <?php
         include 'inc/header.php';
+        
+        if(isset($_GET['error'])){
+            echo '<script type="text/javascript">alert("An error has occured. Please try again later.");</script>';
+        }
+        if (isset($_GET['successful'])) {
+        echo '<script type="text/javascript">alert("Your message has been sent!");</script>';
+        }
         ?>
         <main>
             <div>
                 <h2>Contact Us</h2>
-                <form class="contact-form" action="process_contact.php" method="post">
+                <form class="contact-form" action="inc/process_contact.php" method="post">
                     <div class="form-group">
                         <label for="name">Name (optional)</label>
                         <input class="form-control" id="name" name="name" rows="1"></input>
@@ -43,7 +50,7 @@ and open the template in the editor.-->
                     </div>
                     <div class="form-group">
                         <label for="message">Message</label>
-                        <textarea class="form-control" id="message" name="message" rows="4"></textarea>
+                        <textarea class="form-control" id="message" name="message" rows="4" required="required"></textarea>
                     </div>
                     <button type="submit" class="btn btn-secondary">Submit</button>
                     <br>

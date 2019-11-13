@@ -4,7 +4,7 @@ and open the template in the editor.-->
 
 <html>
     <head>
-        <title>Zenith - MEN</title>
+        <title>Zenith - Search</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -29,15 +29,27 @@ and open the template in the editor.-->
         include 'inc/header.php';
         ?>
         <?php
-        if (isset($_POST["searchbox"])) {
-            
+        if (!isset($_POST["searchbox"])) {
+            $search = "Empty Search";
+            $success=false;
+        }else if($_POST["searchbox"] == "") {
+            $search = "--";
+            $success= false;
         }
-        $search = $_POST["searchbox"];
-        
+        else {
+            $search = sanitize_input($_POST["searchbox"]);
+        }
+
+        function sanitize_input($data) {
+            $data = trim($data);
+            $data = stripslashes($data);
+            $data = htmlspecialchars($data);
+            return $data;
+        }
         ?>
         <main>
             <div>
-                <h2>Search "<?php echo $search?>"</h2>
+                <h2>Search "<?php echo $search ?>"</h2>
                 <div class="row">
                     <!--Filter column-->
                     <div class= "col-md-3"> <!--Hidden on all except XL-->
@@ -164,6 +176,10 @@ and open the template in the editor.-->
                             $result->free_result();
                         }
                         $conn->close();
+                        
+                        if ($success==false) {
+                            echo "<script>alert('Search not found, please try again');</script>";
+                        }
                         ?>
                     </div>
                 </div>
