@@ -94,7 +94,7 @@
                     <div class="col-lg-12">
                         <h2 class="mb-4">Edit My Profile</h2>
                         <div id="profbox">
-                            <form action="<?php echo htmlspecialchars('editprof_process.php') ?>" onsubmit="return validateForm()" name="profForm"  method="POST">
+                            <form action="<?php echo htmlspecialchars('inc/editprof_process.php') ?>" onsubmit="return validateForm()" name="profForm"  method="POST">
                                 <div class="row">
                                     <div class="col-lg-6"> <!-- Start of Profile Settings-->
                                         <h3 class="mb-4">Profile Settings</h3><hr/>

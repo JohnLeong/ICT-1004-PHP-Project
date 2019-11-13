@@ -88,6 +88,15 @@ and open the template in the editor.
         if(isset($_GET['nostock'])) {
             echo '<script type="text/javascript">alert("Unable to add to cart, as there is not enough stock.");</script>';
         }
+        
+        if (isset($_GET['productID'])) {
+            $getparams= $_GET['productID'];
+            if (preg_match("/(RSuccess)/", $getparams)) {
+                echo '<script type="text/javascript">alert("Review Submitted Successfully!");</script>';
+            }else if (preg_match("/(RFailed)/", $getparams)) {
+                echo '<script type="text/javascript">alert("Submission Failed!");</script>';
+            }
+        }
         ?>
         <main>
             <!-- Product Details-->
@@ -285,7 +294,7 @@ and open the template in the editor.
                                                 <?php
                                                 if ($rsuccess == 1) {
                                                     ?>
-                                                    <form name="reviewForm" action="<?php echo htmlspecialchars('review_process.php') ?>" method="POST" onsubmit="return validateForm()">
+                                                    <form name="reviewForm" action="<?php echo htmlspecialchars('inc/review_process.php') ?>" method="POST" onsubmit="return validateForm()">
                                                         <p>Leave your review here! (Max 500 Characters)</p>
                                                         <input type="hidden" name="prodID" value="<?php echo $pid ?>">
                                                         <textarea rows="4" cols="50" name="reviewbox" id="reviewbox"></textarea>

@@ -34,7 +34,12 @@ and open the template in the editor.
 //            header('Location: index.php');
             echo "<script>window.location.href='index.php'</script>";
         }
-
+        if(isset($_GET['UpdateSuccess'])){
+            echo '<script type="text/javascript">alert("Profile Updated Successfully!");</script>';
+        }
+        if (isset($_GET['UpdateFailed'])) {
+        echo '<script type="text/javascript">alert("Update Failed. Please try again.");</script>';
+        }
         $success = true;
 
         getMemberInfo();
