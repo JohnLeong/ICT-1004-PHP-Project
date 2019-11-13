@@ -100,9 +100,42 @@ and open the template in the editor.-->
                                                     echo "<td class='text-right font-weight-semibold align-middle p-4'>SGD $total </td>";
                                                     ?>
                                                 </tr>
+                                     <?php  } ?>
+                                                <tr>
+                                                    <?php 
+                                                        global $discount, $shippingfee, $grandtotal, $final;
+                                                        $disc = $_POST["discount"];
+                                                        $shipfee = $_POST["shippingfee"];
+                                                        $finalp = $_POST["final"];
+                                                    ?>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>
+                                                        <div class="float-right">
+                                                            <h6 class="mb-1">Payment Details</h6>
+                                                            <label class="text-muted font-weight-normal m-0">Discount:&nbsp;</label>
+                                                            <br>
+                                                            <label class="text-muted font-weight-normal m-0">Shipping Fee:&nbsp;</label>
+                                                            <br>
+                                                            <label class="text-muted font-weight-normal m-0">Total price:&nbsp;</label>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="float-left mt-4">
+                                                            <?php
+                                                            echo "<strong>SGD $disc</strong>";
+                                                            ?><br>
+                                                            <?php
+                                                            echo "<span><strong>SGD $shipfee</strong></span>";
+                                                            ?><br>
+                                                            <?php
+                                                            echo "<strong>SGD $finalp</strong>";
+                                                            ?>
+                                                        </div>
+                                                    </td>
+                                                </tr>
                                             </tbody>
                                             <?php
-                                        }
                                     } else {
                                         header("Location: shoppingcart.php?error");
                                     }

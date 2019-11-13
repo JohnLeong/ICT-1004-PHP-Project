@@ -146,6 +146,8 @@ and open the template in the editor.-->
                                 <div class="text-right mt-4 mr-5">
                                     <label class="text-muted font-weight-normal m-0">Discount</label>
                                     <?php
+                                    global $discount, $shippingfee, $grandtotal, $final;
+                                    $discount = 0;
                                     $shippingfee = 18;
                                     if ($grandtotal == 0) {
                                         $shippingfee = 0;
@@ -166,14 +168,15 @@ and open the template in the editor.-->
                                         $final = round($final, 2);
                                         echo "<div class='text-large'><strong>SGD $discount</strong></div>";
                                     } else if (isset($_GET['failure'])) {
+                                        $discount = 0;
                                         ?>
                                         <script type="text/javascript">alert("Invalid Promo Code.");</script>
-                                        <div class='text-large'><strong>SGD 0.00</strong></div>
-                                        <?php } else {
-                                        ?>
-                                        <div class='text-large'><strong>SGD 0.00</strong></div>
-                                        <?php }
-                                        ?>
+                                    <?php
+                                        echo "<div class='text-large'><strong>SGD $discount</strong></div>";
+                                    } else {
+                                        echo "<div class='text-large'><strong>SGD $discount</strong></div>";
+                                    }
+                                    ?>
                                     </div>
                                     <div class="text-right mt-4 mr-5">
                                         <label class="text-muted font-weight-normal m-0">Shipping Fee</label>
@@ -187,12 +190,20 @@ and open the template in the editor.-->
                                         echo "<div class='text-large'><strong>SGD $final</strong></div>";
                                         ?>
                                     </div>
+                                
                                 </div>
                             </div>
 
                             <div class="float-right">
                                 <button type="button" class="btn btn-lg btn-secondary md-btn-flat mt-2 mr-3" onclick="window.location.href = 'index.php'">Back to Shopping</button>
-                                <button type="button" name="checkoutbtn" class="btn btn-lg btn-secondary mt-2" onclick="window.location.href = 'checkout.php'">Checkout</button>
+                                <form class="float-right" action="checkout.php" method="post" name="payment">
+                                    <?php 
+                                    echo "<input type='hidden' value='$discount' name='discount'>";
+                                    echo "<input type='hidden' value='$shippingfee' name='shippingfee'>";
+                                    echo "<input type='hidden' value='$final' name='final'>";
+                                    ?>
+                                    <button type="submit" name="checkoutbtn" class="btn btn-lg btn-secondary mt-2">Checkout</button>
+                                </form>
                             </div>
 
                         </div>
