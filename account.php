@@ -64,11 +64,14 @@ and open the template in the editor.
                 $error = "Connection failed: " . $conn->connect_error;
                 $success = false;
             } else {
-                $sql = "SELECT * FROM p5_2.zenith_members WHERE ";
-                $sql .= "zmember_id='$id'";
+                $stmt = $conn->prepare("SELECT fname,lname FROM p5_2.zenith_members WHERE zmember_id= ?");
+                $stmt->bind_param("i", $id);
 
                 // Execute the query
-                $result = $conn->query($sql);
+                $stmt->execute();
+
+                // Execute the query
+                $result = $stmt->get_result();
                 if ($result->num_rows > 0) {
                     $row = $result->fetch_assoc();
                     $first_name = $row["fname"];
@@ -93,10 +96,10 @@ and open the template in the editor.
                 $errorMsg = "Connection failed: " . $conn->connect_error;
                 $success = false;
             } else {
-                $sql = "DELETE FROM p5_2.zenith_members WHERE ";
-                $sql .= "zmember_id='$id'";
+                $stmt = $conn->prepare("DELETE FROM p5_2.zenith_members WHERE zmember_id= ?");
+                $stmt->bind_param("i", $id);
 
-                if ($conn->query($sql) == TRUE) {
+                if ($stmt->execute()== TRUE) {
                     $success = true;
                 } else {
                     $error .= $conn->error;

@@ -52,13 +52,14 @@ function insertNewReviews() {
     } else {
 
         // SQL Statement
-        $sql = "INSERT INTO p5_2.products_review ";
-        $sql .= "(product_ID, zmember_id, reviews, datetime) VALUES ";
-        $sql .= "('" . $pid . "' , '" . $zid . "' , '" . $reviews . "' , '" . $date . "' ) ";
+        $stmt = $conn->prepare("INSERT INTO p5_2.products_review (product_ID, zmember_id, reviews, datetime) VALUES (?,?,?,?)");
+        $stmt->bind_param("iiss",$pid, $zid, $reviews, $date);
+        
+        $result = $stmt->get_result();
 
 
         // Execute the query
-        if ($conn->query($sql)) {
+        if ($stmt->execute() == true) {
             $success = true;
             header("Location: ../product_detail.php?productID=$pid" . "?RSuccess");
         } else {

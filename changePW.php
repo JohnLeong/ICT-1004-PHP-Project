@@ -49,7 +49,7 @@
     </script>
     <body>
         <?php
-         include 'inc/header.php';
+        include 'inc/header.php';
         if (!isset($_SESSION['zid'])) {
 //            header('Location: index.php');
             echo "<script>window.location.href='index.php'</script>";
@@ -101,10 +101,12 @@
                     $error = "Connection failed: " . $conn->connect_error;
                     $success = false;
                 } else {
-                    $sql = "UPDATE p5_2.zenith_members SET password ='" . $newhash . "'";
-                    $sql .= " WHERE zmember_id='" . $id . "'";
+                    $stmt = $conn->prepare("UPDATE p5_2.zenith_members SET password = ? where zmember_id=?");
+                    $stmt->bind_param("si", $newhash, $id);
 
-                    if ($conn->query($sql) == TRUE) {
+                    $result = $stmt->get_result();
+
+                    if ($stmt->execute() == true) {
                         $success = true;
                     } else {
                         $error .= $conn->error;
@@ -127,11 +129,12 @@
                 $errorMsg = "Connection failed: " . $conn->connect_error;
                 $success = false;
             } else {
-                $sql = "SELECT * FROM p5_2.zenith_members WHERE ";
-                $sql .= "zmember_id='$id'";
+                $stmt = $conn->prepare("SELECT * FROM p5_2.zenith_members WHERE zmember_id= ?");
+                $stmt->bind_param("i", $id);
 
                 // Execute the query
-                $result = $conn->query($sql);
+                $stmt->execute();
+                $result = $stmt->get_result();
                 if ($result->num_rows > 0) {
                     $row = $result->fetch_assoc();
                     $first_name = $row["fname"];
@@ -167,21 +170,21 @@
                                             <div class="col-lg-6">
                                                 <label for="currentpwd">Current Password: </label>
                                                 <input class="form-control" type="password" name="currentpwd" id="currentpwd" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                                   title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required/>
+                                                       title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required/>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-lg-6">
                                                 <label for="newpwd">New Password: </label>
                                                 <input class="form-control" type="password" name="newpwd" id="newpwd" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                                   title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required/>
+                                                       title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required/>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-lg-6">
                                                 <label for="cfmnewpwd">Confirm New Password: </label>
                                                 <input class="form-control "type="password" name="cfmnewpwd" id="cfmnewpwd" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                                   title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required/>
+                                                       title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required/>
                                             </div>
                                         </div>
                                     </div> 

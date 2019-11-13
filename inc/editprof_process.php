@@ -20,7 +20,7 @@ $cart = 0;
 // Check if its for Shopping Cart or for General Profile edits
 if (!isset($_POST['cart'])) {
     $cart = 0;
-    updateMemberInfo();
+    updateMemberInfoPrep();
 } else {
     $cart = $_POST['cart'];
 }
@@ -37,14 +37,14 @@ if ($cart == 1) {
         $cemail = $_POST['cemail'];
         $cmobile = $_POST['cmobile'];
         $caddress = $_POST['caddress'];
-        $sql = "UPDATE p5_2.zenith_members SET";
-        $sql .= " email = '" . $cemail . "',";
-        $sql .= " mobile = '" . $cmobile . "',";
-        $sql .= " address = '" . $caddress . "'";
-        $sql .= " WHERE zmember_id='" . $id . "'";
-        if ($conn->query($sql) == TRUE) {
+
+        // prepare and bind
+        $stmt = $conn->prepare("UPDATE p5_2.zenith_members SET email=?,mobile=?,address=? WHERE zmember_id=?");
+        $stmt->bind_param("ssss", $cemail, $cmobile, $caddress, $id);
+
+        if ($stmt->execute() == true) {
             ?>
-            <script> location.replace("checkout.php?success");</script>
+            <script> location.replace("../checkout.php?success");</script>
             <?php
 
         } else {
@@ -154,7 +154,7 @@ function sanitize_input($data) {
     return $data;
 }
 
-function updateMemberInfo() {
+function updateMemberInfoPrep() {
     global $id, $email, $first_name, $last_name, $dob;
     global $gender, $mobile, $country, $city, $address, $success, $zid;
     global $day, $month, $year, $error;
@@ -167,19 +167,11 @@ function updateMemberInfo() {
         $errorMsg = "Connection failed: " . $conn->connect_error;
         $success = false;
     } else {
-        $sql = "UPDATE p5_2.zenith_members SET";
-        $sql .= " fname = '" . $first_name . "',";
-        $sql .= " lname = '" . $last_name . "',";
-        $sql .= " email = '" . $email . "',";
-        $sql .= " dob = '" . $dob . "',";
-        $sql .= " gender = '" . $gender . "',";
-        $sql .= " mobile = '" . $mobile . "',";
-        $sql .= " country = '" . $country . "',";
-        $sql .= " city = '" . $city . "',";
-        $sql .= " address = '" . $address . "'";
-        $sql .= " WHERE zmember_id='" . $id . "'";
-        // Execute the query
-        if ($conn->query($sql) == TRUE) {
+        // prepare and bind
+        $stmt = $conn->prepare("UPDATE p5_2.zenith_members SET fname= ?, lname=?, email=?, dob=?, gender=?, mobile=?, country=?, city=?, address=? WHERE zmember_id=?");
+        $stmt->bind_param("ssssssssss", $first_name, $last_name, $email, $dob, $gender, $mobile, $country, $city, $address, $id);
+
+        if ($stmt->execute() == true) {
             $success = true;
             header("Location: ../profile.php?UpdateSuccess");
         } else {
@@ -187,8 +179,7 @@ function updateMemberInfo() {
             header("Location: ../profile.php?UpdateFailed");
         }
     }
+    $conn->close();
 }
-
-$conn->close();
 ?>
 

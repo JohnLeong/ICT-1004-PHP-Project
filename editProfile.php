@@ -43,14 +43,14 @@
         }
         $success = true;
 
-        getMemberInfo();
+        getMemberInfoPrep();
 
-        function getMemberInfo() {
+        function getMemberInfoPrep() {
             global $id, $email, $first_name, $last_name, $dob;
             global $gender, $mobile, $country, $city, $address, $success, $zid;
             global $day, $month, $year;
-
             $id = $_SESSION['zid'];
+
             // Create connection
             $conn = new mysqli("161.117.122.252", "p5_2", "yzhbGyqP87", "p5_2");
             // Check connection
@@ -58,11 +58,13 @@
                 $errorMsg = "Connection failed: " . $conn->connect_error;
                 $success = false;
             } else {
-                $sql = "SELECT * FROM p5_2.zenith_members WHERE ";
-                $sql .= "zmember_id='$id'";
 
-                // Execute the query
-                $result = $conn->query($sql);
+                // prepare and bind
+                $stmt = $conn->prepare("SELECT * FROM p5_2.zenith_members WHERE zmember_id = ?");
+                $stmt->bind_param("s", $id);
+                $stmt->execute();
+
+                $result = $stmt->get_result();
                 if ($result->num_rows > 0) {
                     $row = $result->fetch_assoc();
                     $first_name = $row["fname"];
@@ -82,8 +84,9 @@
                 } else {
                     $success = false;
                 }
-                $result->free_result();
             }
+            $result->free_result();
+            $stmt->close();
             $conn->close();
         }
         ?>
