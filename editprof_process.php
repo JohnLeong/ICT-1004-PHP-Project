@@ -53,12 +53,12 @@ and open the template in the editor.
         $home = 'index.php';
         $cart = 0;
         
+        // Check if its for Shopping Cart or for General Profile edits
         if (!isset($_POST['cart'])) {
             $cart = 0;
         } else {
             $cart = $_POST['cart'];
         }   
-        // Check if its for Shopping Cart or for General Profile edits
 
         if ($cart == 1) {
             $id = $_SESSION['zid'];
@@ -77,23 +77,15 @@ and open the template in the editor.
                 $sql .= " mobile = '" . $cmobile . "',";
                 $sql .= " address = '" . $caddress . "'";
                 $sql .= " WHERE zmember_id='" . $id . "'";
-                if ($conn->query($sql) == TRUE) {
-                    $success = true;
+                if ($conn->query($sql) == TRUE) {?>
+                    <script> location.replace("checkout.php?success"); </script>
+                    <?php
                 } else {
                     $error .= $conn->error;
                     $success = false;
                 }
             }
-            
-            if ($success) {
-                header('Location: checkout.php');
-            }else{
-             echo "<script type='text/javascript'>alert('Update failed!');</script>";   
-            }
-            
-        } else {
-            updateMemberInfo();
-        }
+        } 
 
         function getMemberInfo() {
             global $first_name, $last_name, $email, $gender, $mobile, $country, $city, $address;

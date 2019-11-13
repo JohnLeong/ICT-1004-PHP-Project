@@ -72,18 +72,18 @@ and open the template in the editor.
         }
         ?>
             <div>
-                    <p class="loggerNCart">
-                        <b>
-                            <?php
-                            echo "<a href=profile.php>Welcome, {$_SESSION['name']}! </a>"; 
-                            ?>
-                            <i class="fas fa-user-circle"></i> | 
-                                <a href="shoppingcart.php" >Shopping Cart <i class="fas fa-shopping-cart"> 
-                                <?php echo '<span id="cart-item" class="badge badge-danger">'. $noOfitem .'</span></i></a> |'; ?>
-                            <a href="inc/logout.php" >Logout <i class="fas fa-sign-in-alt"></i></a> 
-                        </b>
-                    </p>
-                </div><?php
+                <p class="loggerNCart">
+                    <b>
+                        <?php
+                        echo "<a href=profile.php>Welcome, {$_SESSION['name']}! </a>"; 
+                        ?>
+                        <i class="fas fa-user-circle"></i> | 
+                            <a href="shoppingcart.php" >Shopping Cart <i class="fas fa-shopping-cart"> 
+                            <?php echo '<span id="cart-item" class="badge badge-danger">'. $noOfitem .'</span></i></a> |'; ?>
+                        <a href="inc/logout.php" >Logout <i class="fas fa-sign-in-alt"></i></a> 
+                    </b>
+                </p>
+            </div><?php
     } else {?>
             <div class="backingForPromo">
                 <p class="promoStatment">

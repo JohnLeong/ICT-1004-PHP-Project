@@ -30,6 +30,9 @@ and open the template in the editor.-->
         if (!isset($_SESSION['name'])) {
             header('Location: index.php');
         }
+        if(isset($_GET['success'])) {
+            echo '<script type="text/javascript">alert("Shipping Details have been updated successfully.");</script>';
+        }
         ?>
         <?php
         global $grandtotal, $total;
@@ -99,7 +102,6 @@ and open the template in the editor.-->
                                                 </tr>
                                             </tbody>
                                             <?php
-                                            $grandtotal += $total;
                                         }
                                     } else {
                                         header("Location: shoppingcart.php?error");

@@ -23,14 +23,20 @@ and open the template in the editor.-->
         <!--SEO-->
         <meta name="description" content="Buy high-quality shoes at great prices. Zenith offers a large variety of shoes from popular brands and provides world-wide shipping.">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <script>
+            if (typeof window.history.pushState == 'function') {
+                window.history.pushState({}, "Hide", '<?php echo $_SERVER['PHP_SELF']; ?>');
+            }
+        </script>
     </head>
     <body>
         <?php
         include 'inc/header.php';
         if (!isset($_SESSION['name'])) {
             header('Location: index.php');
-        } 
-        if(isset($_GET['error'])){
+        }
+        if (isset($_GET['error'])) {
             echo '<script type="text/javascript">alert("Your Cart is empty! Please try again after you add a product.");</script>';
         }
         ?>
@@ -83,41 +89,44 @@ and open the template in the editor.-->
                                                                 ?>
                                                                 <small>
                                                                     <?php
-                                                                    echo "<span class='text-muted'>Size: </span> $row[size]";
-                                                                    echo "<span class='text-muted'>&nbsp;&nbsp; Colour: </span> $row[colour]";
+                                                                    echo "<span class='text-muted'>Size: </span> $row[size]"
+                                                                    . "<span class='text-muted'>&nbsp;&nbsp; Colour: </span> $row[colour]";
                                                                     ?>
                                                                 </small>
                                                             </div>
                                                         </div>
                                                     </td>
+                                            <form method='post' name='updatecart' action='inc/update_shoppingcart.php'>
+                                                <?php
+                                                echo "<td class='text-right font-weight-semibold align-middle p-4'>SGD $row[unit_price] </td>";
+                                                ?>
+                                                <td class='align-middle p-4'>
                                                     <?php
-                                                    echo "<form method='post' name='updatecart' action='inc/update_shoppingcart.php'>";
-                                                    echo "<td class='text-right font-weight-semibold align-middle p-4'>SGD $row[unit_price] </td>";
-                                                    echo "<td class='align-middle p-4'>"
-                                                    . "<input type='text' name='qty' class='form-control text-center' value='" . $row['quantity'] . "'>"
-                                                            . "<input type='hidden' name=prodDID value='". $row['productDetail_ID'] ."'>"
-                                                            . "<span><button class='btn btn-sm btn-outline-dark mt-1' type='submit' name='updatecartqty'>Update Quantity</button></span>"
-                                                            . "</td>"
-                                                            . "</form>";
-                                                    
-                                                    $total = $row['unit_price'] * $row['quantity'];
-                                                    echo "<td class='text-right font-weight-semibold align-middle p-4'>SGD $total </td>";
+                                                    echo "<input type='text' name='qty' class='form-control text-center' value='" . $row['quantity'] . "'>"
+                                                    . "<input type='hidden' name=prodDID value='" . $row['productDetail_ID'] . "'>";
                                                     ?>
-                                                    <td class="text-center align-middle px-0">
-                                                        <?php
-                                                        echo "<form method='post' name='deletecartitem' action='inc/update_shoppingcart.php'>"
-                                                                . "<input type='hidden' name=prodDID value='". $row['productDetail_ID'] ."'>"
-                                                                . "<button name='deleteitem' class='btn btn-sm btn btn-outline-danger'>X</a>"
-                                                            . "</form>";
-                                                        ?>
-                                                    </td>
-                                                </tr>
+                                                    <span><button class='btn btn-sm btn-outline-dark mt-1' type='submit' name='updatecartqty'>Update Quantity</button></span>
+                                                </td>
+                                            </form>
+                                            <?php
+                                            $total = $row['unit_price'] * $row['quantity'];
+                                            echo "<td class='text-right font-weight-semibold align-middle p-4'>SGD $total </td>";
+                                            ?>
+                                            <td class="text-center align-middle px-0">
+                                                <form method='post' name='deletecartitem' action='inc/update_shoppingcart.php'>
+                                                    <?php
+                                                    echo "<input type='hidden' name=prodDID value='" . $row['productDetail_ID'] . "'>";
+                                                    ?>
+                                                    <button name='deleteitem' class='btn btn-sm btn btn-outline-danger'>X</a>
+                                                </form>
+                                            </td>
+                                            </tr>
                                             </tbody>
                                             <?php
                                             $grandtotal += $total;
                                         }
                                     } else {
-                                        echo "<span class='cartempty'>Your Cart is Empty!!!</span>";
+                                        echo "<span class='cartempty'>Your Cart is Empty</span>";
                                     }
                                 }
                                 ?>
@@ -127,51 +136,72 @@ and open the template in the editor.-->
 
                         <div class="d-flex flex-wrap justify-content-between align-items-center pb-4">
                             <div class="mt-4">
-                                <label class="text-muted font-weight-normal">Enter Promo Code Here:</label>
-                                <input type="text" placeholder="Promo Code" class="form-control">
+                                <form action="inc/update_shoppingcart.php" method="post" name="promo">
+                                    <label class="text-muted font-weight-normal">Enter Promo Code Here:</label>
+                                    <input type="text" placeholder="Promo Code" class="form-control" name="usercode">
+                                    <button type="submit" name="updatepromo" class="btn btn-xs btn-outline-dark mt-1">Apply Code</button>
+                                </form>
                             </div>
                             <div class="d-flex">
                                 <div class="text-right mt-4 mr-5">
                                     <label class="text-muted font-weight-normal m-0">Discount</label>
-                                    <div class="text-large"><strong>SGD 0.00</strong></div>
-                                </div>
-                                <div class="text-right mt-4 mr-5">
-                                    <label class="text-muted font-weight-normal m-0">Shipping Fee</label>
                                     <?php
                                     $shippingfee = 18;
-                                    if ($grandtotal == 0){
+                                    if ($grandtotal == 0) {
                                         $shippingfee = 0;
-                                        $grandtotal = 0;
-                                    } else if ($grandtotal < 300){
-                                        $grandtotal = $grandtotal + $shippingfee; 
+                                        $final = 0;
+                                    } else if ($grandtotal < 300) {
+                                        $final = $grandtotal + $shippingfee;
+                                        $final = round($final, 2);
                                     } else {
                                         $shippingfee = 0;
-                                        $grandtotal = $grandtotal + $shippingfee;
+                                        $final = $grandtotal + $shippingfee;
+                                        $final = round($final, 2);
                                     }
-                                    echo "<div class='text-large'><strong>SGD $shippingfee</strong></div>";
-                                    ?>
-                                </div>
-                                <div class="text-right mt-4">
-                                    <label class="text-muted font-weight-normal m-0">Total price</label>
-                                    <?php
-                                    echo "<div class='text-large'><strong>SGD $grandtotal</strong></div>";
-                                    ?>
+                                    if (isset($_GET['25'])) {
+                                        $dis = 0.25;
+                                        $discount = $dis * $grandtotal;
+                                        $discount = round($discount, 2);
+                                        $final = $grandtotal - $discount;
+                                        $final = round($final, 2);
+                                        echo "<div class='text-large'><strong>SGD $discount</strong></div>";
+                                    } else if (isset($_GET['failure'])) {
+                                        ?>
+                                        <script type="text/javascript">alert("Invalid Promo Code.");</script>
+                                        <div class='text-large'><strong>SGD 0.00</strong></div>
+                                        <?php } else {
+                                        ?>
+                                        <div class='text-large'><strong>SGD 0.00</strong></div>
+                                        <?php }
+                                        ?>
+                                    </div>
+                                    <div class="text-right mt-4 mr-5">
+                                        <label class="text-muted font-weight-normal m-0">Shipping Fee</label>
+                                        <?php
+                                        echo "<div class='text-large'><strong>SGD $shippingfee</strong></div>";
+                                        ?>
+                                    </div>
+                                    <div class="text-right mt-4">
+                                        <label class="text-muted font-weight-normal m-0">Total price</label>
+                                        <?php
+                                        echo "<div class='text-large'><strong>SGD $final</strong></div>";
+                                        ?>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="float-right">
-                            <button type="button" class="btn btn-lg btn-secondary md-btn-flat mt-2 mr-3" onclick="window.location.href='index.php'">Back to Shopping</button>
-                            <button type="button" name="checkoutbtn" class="btn btn-lg btn-secondary mt-2" onclick="window.location.href='checkout.php'">Checkout</button>
-                        </div>
+                            <div class="float-right">
+                                <button type="button" class="btn btn-lg btn-secondary md-btn-flat mt-2 mr-3" onclick="window.location.href = 'index.php'">Back to Shopping</button>
+                                <button type="button" name="checkoutbtn" class="btn btn-lg btn-secondary mt-2" onclick="window.location.href = 'checkout.php'">Checkout</button>
+                            </div>
 
+                        </div>
                     </div>
                 </div>
-            </div>
-        </main>
-        <?php
-        include 'inc/footer.php';
-        ?>
+            </main>
+            <?php
+            include 'inc/footer.php';
+            ?>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
