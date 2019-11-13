@@ -31,16 +31,27 @@ if ((!isset($_POST['addtocart'])) && (!isset($_POST['updatecartqty'])) && (!isse
             if ($quantity == 0) {
                 $sql = "DELETE FROM p5_2.zshoppingcart WHERE productDetail_ID='$prodDID'";
             } else {
-                $sql = "UPDATE p5_2.zshoppingcart SET quantity='$quantity' WHERE productDetail_ID='$prodDID'";
+                $sql = "SELECT * FROM p5_2.product_details WHERE productDetail_id='$prodDID'";
+                $result = mysqli_query($conn, $sql);
+                if ($result->num_rows > 0) {
+                    $row = $result->fetch_assoc();
+                    $stock = $row["stock"];
+                    
+                    if (($stock - $quantity) < 0) {
+                        $url = $_SERVER['HTTP_REFERER'] . "" . "?nostock";
+                        header('Location: ' . $url);
+                    } else {
+                        $sql = "UPDATE p5_2.zshoppingcart SET quantity='$quantity' WHERE productDetail_ID='$prodDID'";
+                        // Execute the query
+                        if (!$conn->query($sql)) {
+                            $errorMsg = "Database error: " . $conn->error;
+                            $success = false;
+                        }
+                        header('Location: ../shoppingcart.php');
+                    }
+                }
             }
-            // Execute the query
-            if (!$conn->query($sql)) {
-                $errorMsg = "Database error: " . $conn->error;
-                $success = false;
-            }
-            header('Location: ../shoppingcart.php');
-        } 
-        else if (isset($_POST['deleteitem'])) {
+        } else if (isset($_POST['deleteitem'])) {
            $prodDID = $_POST['prodDID'];
             $sql = "DELETE FROM p5_2.zshoppingcart WHERE productDetail_ID='$prodDID'";
             // Execute the query
@@ -52,10 +63,11 @@ if ((!isset($_POST['addtocart'])) && (!isset($_POST['updatecartqty'])) && (!isse
         }
         else {
             $coloursize = $_POST['shoe_select'];
-            $split = explode(':', $coloursize, 3);
+            $split = explode(':', $coloursize, 4);
             $pid = $split[0];
             $colour = $split[1];
             $size = $split[2];
+            $stock = $split[3];
             $pname = $_POST['productname'];
             $price = $_POST['price'];
             $image = $_POST['img'];
@@ -66,21 +78,32 @@ if ((!isset($_POST['addtocart'])) && (!isset($_POST['updatecartqty'])) && (!isse
             if ($dupcheck->num_rows > 0) {
                 $data = $dupcheck->fetch_assoc();
                 $update = $data["quantity"] + 1;
-                $sql = "UPDATE p5_2.zshoppingcart SET quantity='$update' WHERE productDetail_ID='$pid' && zmember_id='$id'";
-                // Execute the query
-                if (!$conn->query($sql)) {
-                    $errorMsg = "Database error: " . $conn->error;
-                    $success = false;
+                if ((($stock - $update) < 0 )) {
+                    $url = $_SERVER['HTTP_REFERER'] . "" . "&nostock";
+                    header('Location: ' . $url);
+                } else {
+                    $sql = "UPDATE p5_2.zshoppingcart SET quantity='$update' WHERE productDetail_ID='$pid' && zmember_id='$id'";
+                    // Execute the query
+                    if (!$conn->query($sql)) {
+                        $errorMsg = "Database error: " . $conn->error;
+                        $success = false;
+                    }
+                    header('Location: ' . $_SERVER['HTTP_REFERER']);
                 }
             } else {
-                $sql = "INSERT INTO p5_2.zshoppingcart (productDetail_ID, zmember_id, product_name, unit_price, colour, size, image, quantity)"
-                        . " VALUES ('$pid', '$id','$pname','$price','$colour','$size', '$image', '1')";
-                // Execute the query
-                if (!$conn->query($sql)) {
-                    $errorMsg = "Database error: " . $conn->error;
-                    $success = false;
-                }
-            } header('Location: ' . $_SERVER['HTTP_REFERER']);
+                if (($stock - $data["quantity"]) < 0 ) {
+                    $url = $_SERVER['HTTP_REFERER'] . "" . "&nostock";
+                    header('Location: ' . $url);
+                } else {
+                    $sql = "INSERT INTO p5_2.zshoppingcart (productDetail_ID, zmember_id, product_name, unit_price, colour, size, image, quantity)"
+                            . " VALUES ('$pid', '$id','$pname','$price','$colour','$size', '$image', '1')";
+                    // Execute the query
+                    if (!$conn->query($sql)) {
+                        $errorMsg = "Database error: " . $conn->error;
+                        $success = false;
+                    }
+                } header('Location: ' . $_SERVER['HTTP_REFERER']);
+            }
         }
     }
 } $conn->close();

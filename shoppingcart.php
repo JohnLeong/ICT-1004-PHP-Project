@@ -39,6 +39,9 @@ and open the template in the editor.-->
         if (isset($_GET['error'])) {
             echo '<script type="text/javascript">alert("Your Cart is empty! Please try again after you add a product.");</script>';
         }
+        if(isset($_GET['nostock'])) {
+            echo '<script type="text/javascript">alert("Unable to add to cart, as there is not enough stock.");</script>';
+        }
         ?>
         <main>
             <div class="container px-3 my-5 clearfix">

@@ -84,7 +84,10 @@ and open the template in the editor.
     </script>
     <body>
         <?php
-        include "inc/header.php"
+        include "inc/header.php";
+        if(isset($_GET['nostock'])) {
+            echo '<script type="text/javascript">alert("Unable to add to cart, as there is not enough stock.");</script>';
+        }
         ?>
         <main>
             <!-- Product Details-->
@@ -143,7 +146,7 @@ and open the template in the editor.
                                 {
                                     $rowDetail = $resultShoe->fetch_assoc();
                                     if((int)$rowDetail["stock"] > 0){
-                                         echo "<option value='" . $rowDetail["productDetail_ID"]. ":" . $rowDetail["colour"]. ":" . $rowDetail["size"] . "'>" . $rowDetail["colour"] . " : " . $rowDetail["size"] . "</option>";
+                                         echo "<option value='" . $rowDetail["productDetail_ID"]. ":" . $rowDetail["colour"]. ":" . $rowDetail["size"]. ":" . $rowDetail["stock"]. "'>" . $rowDetail["colour"] . " : " . $rowDetail["size"] . "</option>";
                                     }
                                 }
                                 
