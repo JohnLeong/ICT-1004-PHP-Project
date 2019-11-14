@@ -42,9 +42,6 @@ if (!isset($_POST['paynow'])) {
         $size_proid = sizeof($proid);
         $loop = 0;
 
-        $zsql = "SELECT * FROM p5_2.order_details";
-        $zresult = mysqli_query($conn, $zsql);
-
         $lastsql = "SELECT order_id FROM p5_2.order_details ORDER BY order_id DESC LIMIT 1";
         $lastresult = mysqli_query($conn, $lastsql);
         $lastrow = mysqli_fetch_assoc($lastresult);

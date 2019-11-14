@@ -32,125 +32,143 @@ and open the template in the editor.
         if (!isset($_SESSION['name'])) {
             header('Location: index.php');
         }
-        if (isset($_GET['success'])) {
-            echo '<script type="text/javascript">alert("You have successfully placed your order!");</script>';
-        } else {
-            header('Location: index.php?404');
-        }
+//        if (isset($_GET['success'])) {
+//            echo '<script type="text/javascript">alert("You have successfully placed your order!");</script>';
+//        } else {
+//            header('Location: index.php?404');
+//        }
         ?>
         <main>
         <?php
-        global $grandtotal, $total;
         $conn = new mysqli("161.117.122.252", "p5_2", "yzhbGyqP87", "p5_2");
         // Check connection
         if ($conn->connect_error) {
             $errorMsg = "Connection failed: " . $conn->connect_error;
-            $success = false;
         } else {
-            $i = 0;
             $id = $_SESSION['zid'];
             $sql = "SELECT * FROM p5_2.zorder WHERE zmember_id =$id";
             $result = mysqli_query($conn, $sql);
-            if (mysqli_num_rows($result) > 0){
-                    $row = mysqli_fetch_assoc($result);
-                    $oid = $row['order_id'];
-                    $date = $row['date'];
-                    $totalamt = $row['total_amt'];
-                    $disc = $row['discount'];
-                    $shipfee = $row['shipping_fee'];
-                    $stats = $row['status'];
-            ?>
-            <div class="container px-3 my-2 clearfix">
-                <!-- Shopping cart table -->
-                <div class="card">
-                    <div class="card-header">
-                        <h2>Order Success!</h2>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <div class="float-left ml-3 mb-2 ls-2">
+            $orderid = array();
+            
+            while ($row = mysqli_fetch_assoc($result)) {
+                array_push($orderid, $row['order_id']);
+            }
+            $forloop = 0;
+            $size_orderid = sizeof($orderid);
+            
+            if ($size_orderid > 0) {
+                while ($forloop < $size_orderid) {
+                    $msql = "SELECT * FROM p5_2.zorder WHERE order_id =$orderid[$forloop]";
+                    $mresult = mysqli_query($conn, $msql);
+                    $mrow = mysqli_fetch_assoc($mresult);
+                    
+                    $oid = $mrow['order_id'];
+                    $date = $mrow['date'];
+                    $totalamt = $mrow['total_amt'];
+                    $disc = $mrow['discount'];
+                    $shipfee = $mrow['shipping_fee'];
+                    $stats = $mrow['status'];
+                    ?>
+                    <div class="container px-3 my-4 clearfix">
+                        <!-- Shopping cart table -->
+                        <div class="card">
+                            <div class="card-header">
                                 <?php
-                                echo "<span><h5>Order ID: $oid</h5></span>";
-                                echo "<span><h5>Date/Time of Purchase: $date</h5></span>";
-                                echo "<span><h5>Shipping Status: $stats</h5></span>";
+                                echo "<h2>Order ID: $oid</h2>";
                                 ?>
                             </div>
-                            <table class="table table-bordered m-0">
-                                <thead>
-                                    <tr>
-                                        <!-- Set columns width -->
-                                        <th class="text-center py-3 px-4" style="width: 300px;">Product Name &amp; Details</th>
-                                        <th class="text-center py-3 px-4" style="width: 100px;">Quantity</th>
-                                    </tr>
-                                </thead>
-                                <?php
-                                $tsql = "SELECT * FROM p5_2.order_details WHERE order_id =$oid";
-                                $tresult = mysqli_query($conn, $tsql);
-                                while ($trow = mysqli_fetch_assoc($tresult)) {
-                                ?>
-                                <tbody id="carttab">
-                                    <tr id="row1">
-                                        <td class="p-4">
-                                            <div class="media align-items-center">
-                                                <?php
-                                                echo "<img src='$trow[image]' class='d-block ui-w-40 ui-bordered mr-4' alt=$trow[product_name]>";
-                                                ?>
-                                                <div class="media-body">
-                                                    <?php
-                                                    echo "<p class='d-block text-dark'>$trow[product_name]</p>";
-                                                    ?>
-                                                    <small>
-                                                        <?php
-                                                        echo "<span class='text-muted'>Size: </span> $trow[size]";
-                                                        echo "<span class='text-muted'>&nbsp;&nbsp; Colour: </span> $trow[colour]";
-                                                        ?>
-                                                    </small>
-                                                </div>
-                                            </div>
-                                        </td>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <div class="float-left ml-3 mb-2 ls-2">
                                         <?php
-                                        echo "<td class='align-middle p-4'>"
-                                        . "<input type='text' disabled name='qty' class='form-control text-center' value='" . $trow['quantity'] . "'>"
-                                        . "</td>";
+                                        echo "<span><h5>Date/Time of Purchase: $date</h5></span>";
+                                        echo "<span><h5>Shipping Status: $stats</h5></span>";
                                         ?>
-                                    </tr>
-                         <?php  } ?>
-                                    <tr>
-                                        <td>
-                                            <div class="float-right">
-                                                <label class="text-muted font-weight-normal m-0">Discount:&nbsp;</label>
-                                                <br>
-                                                <label class="text-muted font-weight-normal m-0">Shipping Fee:&nbsp;</label>
-                                                <br>
-                                                <label class="text-muted font-weight-normal m-0">Total price:&nbsp;</label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="float-left">
+                                    </div>
+                                    <table class="table table-bordered m-0">
+                                        <thead>
+                                            <tr>
+                                                <!-- Set columns width -->
+                                                <th class="text-center py-3 px-4" style="width: 300px;">Product Name &amp; Details</th>
+                                                <th class="text-center py-3 px-4" style="width: 100px;">Quantity</th>
+                                            </tr>
+                                        </thead>
+                                        <?php
+                                        $psql = "SELECT * FROM p5_2.order_details WHERE order_id ='$oid'";
+                                        $presult = mysqli_query($conn, $psql);
+                                        while ($prow = mysqli_fetch_assoc($presult)) {
+                                        ?>
+                                        <tbody id="carttab">
+                                            <tr id="row1">
+                                                <td class="p-4">
+                                                    <div class="media align-items-center">
+                                                        <?php
+                                                        echo "<img src='$prow[image]' class='d-block ui-w-40 ui-bordered mr-4' alt=$prow[product_name]>";
+                                                        ?>
+                                                        <div class="media-body">
+                                                            <?php
+                                                            echo "<p class='d-block text-dark'>$prow[product_name]</p>";
+                                                            ?>
+                                                            <small>
+                                                                <?php
+                                                                echo "<span class='text-muted'>Size: </span> $prow[size]";
+                                                                echo "<span class='text-muted'>&nbsp;&nbsp; Colour: </span> $prow[colour]";
+                                                                ?>
+                                                            </small>
+                                                        </div>
+                                                    </div>
+                                                </td>
                                                 <?php
-                                                echo "<strong>SGD $disc</strong>";
-                                                ?><br>
-                                                <?php
-                                                echo "<span><strong>SGD $shipfee</strong></span>";
-                                                ?><br>
-                                                <?php
-                                                echo "<strong>SGD $totalamt</strong>";
+                                                echo "<td class='align-middle p-4'>"
+                                                . "<input type='text' disabled name='qty' class='form-control text-center' value='" . $prow['quantity'] . "'>"
+                                                . "</td>";
                                                 ?>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div>
-                                <button type="button" class="btn btn-md btn-secondary md-btn-flat float-right my-3 mx-2" onclick="window.location.href = 'orderhistory.php'">Order History </button>
-                                <button type="button" class="btn btn-md btn-secondary md-btn-flat float-right my-3" onclick="window.location.href = 'index.php'">Back Home </button>
-                            </div>
+                                            </tr>
+                                 <?php  } ?>
+                                            <tr>
+                                                <td>
+                                                    <div class="float-right">
+                                                        <label class="text-muted font-weight-normal m-0">Discount:&nbsp;</label>
+                                                        <br>
+                                                        <label class="text-muted font-weight-normal m-0">Shipping Fee:&nbsp;</label>
+                                                        <br>
+                                                        <label class="text-muted font-weight-normal m-0">Total price:&nbsp;</label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="float-left">
+                                                        <?php
+                                                        echo "<strong>SGD $disc</strong>";
+                                                        ?><br>
+                                                        <?php
+                                                        echo "<span><strong>SGD $shipfee</strong></span>";
+                                                        ?><br>
+                                                        <?php
+                                                        echo "<strong>SGD $totalamt</strong>";
+                                                        ?>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <?php 
+                                if ($stats != "Received"){?>
+                                    <form class="float-right mt-3" action="inc/order_process.php" method="post" name="orderreceived">
+                                        <?php 
+                                        echo "<input type='hidden' value='$oid' name='orderid'>";
+                                        ?>
+                                        <button type="submit" name="ordrec" class="btn btn-outline-dark mt-0 ml-3">Order Received&nbsp;<i class="fas fa-people-carry"></i></button>   
+                                    </form>
+                                <?php
+                                }
+                                ?>
+                            </div> <!-- / Shopping cart table -->
                         </div>
-                    </div> <!-- / Shopping cart table -->
-                </div>   
-            </div>
-        <?php } 
-        else {
+                    </div> <?php
+                    $forloop += 1;
+                } // End while loop
+            } else {
                 echo "You have not purchased anything.";
             }
         }?>
