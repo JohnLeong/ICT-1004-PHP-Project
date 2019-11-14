@@ -159,7 +159,7 @@ and open the template in the editor.-->
                             }
                             ?>
                             <div class="row">
-                                <form class="text-left" name="update" action="<?php echo htmlspecialchars("editprof_process.php"); ?>" onsubmit="return validateForm()" method="POST">
+                                <form class="text-left" name="update" action="<?php echo htmlspecialchars("inc/editprof_process.php"); ?>" onsubmit="return validateForm()" method="POST">
                                     <h4 class="mx-3">Shipping Details</h4>
                                     <hr class="mx-3">
                                     <div class="row pt-0">

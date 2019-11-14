@@ -31,13 +31,13 @@ and open the template in the editor.-->
         <?php
         if (!isset($_POST["searchbox"])) {
             $search = "Empty Search";
-            $success=false;
-        }else if($_POST["searchbox"] == "") {
+            $success = false;
+        } else if ($_POST["searchbox"] == "") {
             $search = "--";
-            $success= false;
-        }
-        else {
+            $success = false;
+        } else {
             $search = sanitize_input($_POST["searchbox"]);
+            $searchsql = '%'.sanitize_input($_POST["searchbox"]). '%';
         }
 
         function sanitize_input($data) {
@@ -127,13 +127,17 @@ and open the template in the editor.-->
                             $errorMsg = "Connection failed: " . $conn->connect_error;
                             $success = false;
                         } else {
-                            // SELECT * FROM p5_2.products where product_name like '%Nike%' OR brand like '%%';
-                            $sql = "SELECT * FROM p5_2.products where product_name like '%";
-                            $sql .= $search . "%' OR brand like '%";
-                            $sql .= $search . "%'";
+                            // Prepare and bind
+                            $stmt = $conn->prepare("SELECT * FROM p5_2.products WHERE product_name like ? OR brand like ?");
+                            $stmt->bind_param("ss", $searchsql, $searchsql);
+                            $stmt->execute();
+                            $result = $stmt->get_result();
+//                            // SELECT * FROM p5_2.products where product_name like '%Nike%' OR brand like '%%';
+//                            $sql = "SELECT * FROM p5_2.products where product_name like '%";
+//                            $sql .= $search . "%' OR brand like '%";
+//                            $sql .= $search . "%'";
 
                             // Execute the query
-                            $result = $conn->query($sql);
                             $num_results = $result->num_rows;
                             $num_rows = $num_results / 3;
                             if ($num_results > 0) {
@@ -176,8 +180,8 @@ and open the template in the editor.-->
                             $result->free_result();
                         }
                         $conn->close();
-                        
-                        if ($success==false) {
+
+                        if ($success == false) {
                             echo "<script>alert('Search not found, please try again');</script>";
                         }
                         ?>
