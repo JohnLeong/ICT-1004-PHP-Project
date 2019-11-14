@@ -31,20 +31,28 @@ and open the template in the editor.
         <?php
         include 'inc/header.php';
         if (!isset($_SESSION['name'])) {
-            header('Location: index.php');
+//            header('Location: index.php');
+            echo "<script>window.location.href='index.php'</script>";
         }
-
+        if (isset($_GET['UpdateSuccess'])) {
+            echo '<script type="text/javascript">alert("Profile Updated Successfully!");</script>';
+        }
+        if (isset($_GET['UpdateFailed'])) {
+            echo '<script type="text/javascript">alert("Update Failed. Please try again.");</script>';
+        }
         $success = true;
 
-        getMemberInfo();
-        
+        getMemberInfoPrep();
+
         if ($gender == null || $dob == null || $mobile == null || $country == null || $city == null || $address == null) {
             echo "<script type='text/javascript'>alert('Please complete your profile information :)');</script>";
             echo "<script>window.location.href='editprofile.php'</script>";
         }
-        function getMemberInfo() {
+
+        function getMemberInfoPrep() {
             global $id, $email, $first_name, $last_name, $dob, $gender, $mobile, $country, $city, $address, $success, $zid;
             $id = $_SESSION['zid'];
+
             // Create connection
             $conn = new mysqli("161.117.122.252", "p5_2", "yzhbGyqP87", "p5_2");
             // Check connection
@@ -52,11 +60,13 @@ and open the template in the editor.
                 $errorMsg = "Connection failed: " . $conn->connect_error;
                 $success = false;
             } else {
-                $sql = "SELECT * FROM p5_2.zenith_members WHERE ";
-                $sql .= "zmember_id='$id'";
 
-                // Execute the query
-                $result = $conn->query($sql);
+                // prepare and bind
+                $stmt = $conn->prepare("SELECT * FROM p5_2.zenith_members WHERE zmember_id = ?");
+                $stmt->bind_param("s", $id);
+                $stmt->execute();
+
+                $result = $stmt->get_result();
                 if ($result->num_rows > 0) {
                     $row = $result->fetch_assoc();
                     $first_name = $row["fname"];
@@ -71,8 +81,9 @@ and open the template in the editor.
                 } else {
                     $success = false;
                 }
-                $result->free_result();
             }
+            $result->free_result();
+            $stmt->close();
             $conn->close();
         }
         ?>
@@ -164,6 +175,7 @@ and open the template in the editor.
                             </form>
                         </div> <!-- End of Register box-->
                         <div class="text-align-right">
+                            <button type="submit" onclick="window.location = '<?php echo htmlspecialchars('changePW.php') ?>'" class="btn btn-outline-dark" id="editBtn">Change Password</button>
                             <button type="submit" onclick="window.location = '<?php echo htmlspecialchars('editProfile.php') ?>'" class="btn btn-outline-dark" id="editBtn">Edit</button>
                         </div>
                     </div> <!-- Container for the whole of register-->

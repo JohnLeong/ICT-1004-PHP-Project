@@ -37,10 +37,10 @@ and open the template in the editor.
                 <ul class="nav navbar-nav ml-auto">
                     <li> <!-- Search bar -->
                         <!-- Search form -->
-                        <form class="form-inline active-cyan-3 active-cyan-4">
+                        <form class="form-inline active-cyan-3 active-cyan-4" method="post" action="search.php">
                             <i class="fas fa-search" aria-hidden="true"></i>
-                            <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Search"
-                                   aria-label="Search">
+                            <input class="form-control form-control-sm ml-3 w-75" type="text" name="searchbox" placeholder="Search" aria-label="Search">
+                            <input type="submit" style="position: absolute; left: -9999px"/>
                         </form>
                     </li>
                 </ul>
@@ -52,36 +52,57 @@ and open the template in the editor.
     <!--Promo line-->
     <?php
     if (isset($_SESSION['name'])) {
-        echo '<div>
+        $conn = new mysqli("161.117.122.252", "p5_2", "yzhbGyqP87", "p5_2");
+        // Check connection
+        if ($conn->connect_error) {
+            $errorMsg = "Connection failed: " . $conn->connect_error;
+            $success = false;
+        } else {
+            global $noOfitem;
+            $id = $_SESSION['zid'];
+            $sql = "SELECT * FROM zshoppingcart WHERE zmember_id =$id";
+            $result = mysqli_query($conn, $sql);
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $noOfitem += $row['quantity'];
+                }
+            }
+        }
+    }
+    if (isset($_SESSION['name'])) {?>
+            <div>
                 <p class="loggerNCart">
-                    <b>';
-                        echo "<a href=profile.php>Welcome, {$_SESSION['name']}! </a>";
-                        echo ' <i class="fas fa-user-circle"></i> | 
+                    <b><?php
+                        echo "<a href=account.php>Welcome, {$_SESSION['name']}! </a>";
+                        ?>
+                            <i class="fas fa-user-circle"></i> | 
                             <a href="shoppingcart.php" >Shopping Cart <i class="fas fa-shopping-cart"> 
-                            <span id="cart-item" class="badge badge-danger">3</span></i></a> |
+                            <?php
+                                echo '<span id="cart-item" class="badge badge-danger">'. $noOfitem .'</span></i></a> |'; ?>
                         <a href="inc/logout.php" >Logout <i class="fas fa-sign-in-alt"></i></a> 
                     </b>
                 </p>
-            </div>';
+            </div> <?php
     }
-    else {
-        echo '
+    else {?>
             <div class="backingForPromo">
                 <p class="promoStatment">
                     Too expensive? <a href="../register.php">Sign up</a> with us to get a 10% Discount for your first purchase!
                 </p>
             </div>
-    
+    <?php
+        if(!isset($_GET['log'])) {?>
             <!--Login + Shopping Cart-->
             <div>
                 <p class="loggerNCart">
                     <b>
-                        <a href="ICT1004_PHP_Project/../login.php" >Login <i class="fas fa-sign-in-alt"></i></a>
+                        <a href="ICT1004_PHP_Project/../login.php?log" >Login <i class="fas fa-sign-in-alt"></i></a>
                     </b>
                 </p>
-            </div> ';
-    }
-    ?>
+            </div> <?php
+        }    
+    }?>
+    
     <br>
     <a href="index.php">
         <img class="brandName" src="img/zenith-vector.svg" alt="ZENITH BRAND"/>

@@ -30,6 +30,12 @@ and open the template in the editor.-->
         if(isset($_SESSION['name'])){
             header('Location: index.php');
         }
+        if(isset($_GET['error'])){
+            echo '<script type="text/javascript">alert("Email or Password does not match. Please check again.");</script>';
+        }
+        if (isset($_GET['successful'])) {
+        echo '<script type="text/javascript">alert("Your account have been registered successfully!");</script>';
+        }
         ?>
         <main>
             <!--Main Content-->
@@ -40,7 +46,7 @@ and open the template in the editor.-->
                     <div class="col">
                         <div class="col-lg-10" >
                             <h2>LOGIN</h2>
-                            <form class="form-signin" name="loginForm" action="<?php echo htmlspecialchars("inc/login_process.php"); ?>" name="myForm" onsubmit="return validateForm()" method="POST">
+                            <form class="form-signin" name="loginForm" action="<?php echo htmlspecialchars("inc/login_process.php"); ?>" onsubmit="return validateForm()" method="POST">
                                 <div class="form-group">
                                     <label for="email">Email:</label>
                                     <input type="email" name="email" class="form-control" required id="email" >

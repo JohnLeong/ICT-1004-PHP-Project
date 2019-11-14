@@ -29,6 +29,13 @@ and open the template in the editor.
     <body>
         <?php
         include 'inc/headerMain.php';
+
+        if (isset($_GET['mailing_error'])) {
+            echo '<script type="text/javascript">alert("An error has occured. Please try again.");</script>';
+        }
+        if (isset($_GET['mailing_success'])) {
+            echo '<script type="text/javascript">alert("You have been added to the mailing list!");</script>';
+        }
         ?>
             <!--Header -->
         <main>
@@ -45,7 +52,7 @@ and open the template in the editor.
                                 <p class="productdescription">White/Dynamic Yellow-Black</p>
                             </div>
                             <div class="card-footer">
-                                <a href="productdetails.html" class="btn btn-secondary btn-sm">More Info</a>
+                                <a href="product_detail.php?productID=1" class="btn btn-secondary btn-sm">More Info</a>
                                 <a href="https://sneakernews.com/2019/05/30/air-jordan-1-first-class-flight/">Image source</a> 
                             </div>
                         </div>
@@ -60,7 +67,7 @@ and open the template in the editor.
                                 <p class="productdescription">PURE PLATINUM & BIO GREEN</p>
                             </div>
                             <div class="card-footer">
-                                <a href="productdetails2.html" class="btn btn-secondary btn-sm">More Info</a>
+                                <a href="product_detail.php?productID=2" class="btn btn-secondary btn-sm">More Info</a>
                                 <a href="https://c.static-nike.com/a/images/t_prod_ss/w_960%2Cc_limit%2Cf_auto/jysjd3c50qsqndqoxq0p/air-max-90-new-species-release-date.jpg">Image source</a>
                             </div>
                         </div>
@@ -75,7 +82,7 @@ and open the template in the editor.
                                 <p class="productdescription">BLACK & NATURAL</p>
                             </div>
                             <div class="card-footer">
-                                <a href="productdetails3.html" class="btn btn-secondary btn-sm">More Info</a>
+                                <a href="product_detail.php?productID=3" class="btn btn-secondary btn-sm">More Info</a>
                                 <a href="https://end-features.cdn.prismic.io/end-features/2f0a022a143b6d74a26dc62ff591eb6022ee1c07_dm_hs_03.jpg">Image source</a>
                             </div>
                         </div>

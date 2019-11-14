@@ -35,6 +35,7 @@ and open the template in the editor.
         if ($result->num_rows > 0) {
             echo "<title>Zenith - " . $row["product_name"] . "</title>";
         }
+        $result->free_result();
 
         function sanitize_input($data) {
             $data = trim($data);
@@ -83,7 +84,19 @@ and open the template in the editor.
     </script>
     <body>
         <?php
-        include "inc/header.php"
+        include "inc/header.php";
+        if (isset($_GET['nostock'])) {
+            echo '<script type="text/javascript">alert("Unable to add to cart, as there is not enough stock.");</script>';
+        }
+
+        if (isset($_GET['productID'])) {
+            $getparams = $_GET['productID'];
+            if (preg_match("/(RSuccess)/", $getparams)) {
+                echo '<script type="text/javascript">alert("Review Submitted Successfully!");</script>';
+            } else if (preg_match("/(RFailed)/", $getparams)) {
+                echo '<script type="text/javascript">alert("Submission Failed!");</script>';
+            }
+        }
         ?>
         <main>
             <!-- Product Details-->
@@ -107,11 +120,17 @@ and open the template in the editor.
                                 $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
                                 $url_components = parse_url($url);
                                 parse_str($url_components['query'], $params);
-                                $sql = "SELECT * FROM p5_2.products WHERE product_ID='" . $params['productID'] . "'";
+                                // Prepare
+                                $stmt = $conn->prepare("SELECT * FROM p5_2.products WHERE product_ID =?");
+                                // Bind
+                                $stmt->bind_param("i", $params['productID']);
+                                // Execute
+                                $stmt->execute();
                             }
-                            $result = $conn->query($sql);
-                            $row = $result->fetch_assoc();
+                            $result = $stmt->get_result();
+//                            $row = $result->fetch_assoc();
                             if ($result->num_rows > 0) {
+                                $row = $result->fetch_assoc();
                                 echo "<img class='productimgresize' src='" . $row["image"] . "' alt='Air Jordan 1'/>";
                                 echo "</div><!--End of Product Image--><div class='col-md-6'><!--Product Info-->";
                                 echo "<div class='row'>";
@@ -131,34 +150,40 @@ and open the template in the editor.
                                 echo "</div>";
                                 echo "<div class='col-md-6'>";
                                 echo "<div class='input-group mb-3'>";
-                                
-                                echo "<form>";
-                                         
+
+                                echo "<form method='post' action='inc/update_shoppingcart.php' name='addtocart'>";
+
                                 echo "<select name='shoe_select'>";
-                                $sqlShoe = "SELECT * FROM p5_2.product_details WHERE product_ID='" . $params['productID'] . "'";
-                                $resultShoe = $conn->query($sqlShoe);
-                                
-                                echo "RESULTS:" . $resultShoe->num_rows;
-                                for($i = 0; $i < $resultShoe->num_rows; ++$i)
-                                {
-                                    $row = $resultShoe->fetch_assoc();
-                                    //if($row)
-                                        echo "<option value='1'>" . $row["colour"] . " : " . $row["size"] . "</option>";
+
+                                $stmt = $conn->prepare("SELECT * FROM p5_2.product_details WHERE product_ID =?");
+                                $stmt->bind_param("i", $params['productID']);
+                                $stmt->execute();
+                                $resultShoe = $stmt->get_result();
+
+                                for ($i = 0; $i < $resultShoe->num_rows; ++$i) {
+                                    $rowDetail = $resultShoe->fetch_assoc();
+                                    if ((int) $rowDetail["stock"] > 0) {
+                                        echo "<option value='" . $rowDetail["productDetail_ID"] . ":" . $rowDetail["colour"] . ":" . $rowDetail["size"] . ":" . $rowDetail["stock"] . "'>" . $rowDetail["colour"] . " : " . $rowDetail["size"] . "</option>";
+                                    }
                                 }
-                                
-                                $resultShoe->free_result();
-                                
+
                                 echo "</select>";
                                 echo "<br />";
                                 echo "<br />";
+                                echo "<input type='hidden' name='productDetailID' value='" . $rowDetail['productDetail_ID'] . "' class='form-control'>";
+                                echo "<input type='hidden' name='productname' value='" . $row['product_name'] . "' class='form-control'>";
+                                echo "<input type='hidden' name='price' value='" . $row['unit_price'] . "' class='form-control'>";
+                                echo "<input type='hidden' name='img' value='" . $row['image'] . "' class='form-control'>";
                                 echo "<div class='input-group-append'>";
-                                echo '<button class="btn btn-success btn-md" type="button" id="addcart">'
-                                . '<i class = "fa fa-cart-plus"></i>&nbsp&nbspAdd to Cart!</button>';
+                                echo '<button class="btn btn-success btn-md" name="addtocart" type="submit" id="addcart">'
+                                . '<i class = "fa fa-cart-plus"></i>&nbsp &nbsp Add to Cart!</button>';
                                 echo "</div>";
                                 echo "</form>";
-                                
+
                                 echo "</div>";
                                 echo "</div>";
+
+                                $resultShoe->free_result();
                             } else {
                                 echo "<h4>Product does not exist!</h4>";
                                 ?> 
@@ -192,8 +217,14 @@ and open the template in the editor.
                                        $sql .= "WHERE R.zmember_id = M.zmember_id ";
                                        $sql .= "AND R.product_ID = " . $pid . " ";
                                        $sql .= "ORDER BY datetime ASC";
-                                       // Execute the query                                
-                                       $result = $conn->query($sql);
+                                       $stmt = $conn->prepare("SELECT R.product_ID, M.fname, M.lname, R.reviews, R.datetime "
+                                               . "FROM p5_2.products_review R, p5_2.zenith_members M"
+                                               . " WHERE R.zmember_id = M.zmember_id "
+                                               . "AND R.product_ID = ? "
+                                               . "ORDER BY datetime ASC");
+                                       $stmt->bind_param("i", $params['productID']);
+                                       $stmt->execute();
+                                       $result = $stmt->get_result();
 
                                        if ($result != null) {
                                            $numOfReviews = $result->num_rows;
@@ -208,8 +239,8 @@ and open the template in the editor.
                                            } else {
                                                $success = false;
                                            }
-                                       }else {
-                                           $success =false;
+                                       } else {
+                                           $success = false;
                                        }
                                    }
                                    $conn->close();
@@ -259,25 +290,25 @@ and open the template in the editor.
                                                 </h4>
                                             </div>
                                             <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                                                        <?php
-                                                        if ($rsuccess) {
-                                                            echo "<div class='panel-body'>";
-                                                            for ($i = 0; $i < $numOfReviews; $i++) {
-                                                                echo $reviews[$i];
-                                                                echo "<br>";
-                                                                echo "- " . $zmemb[$i] . " @ " . $date[$i];
-                                                                echo "<hr>";
-                                                            }
-                                                            echo "</div>";
-                                                        }
-                                                        ?>
+                                                <?php
+                                                if ($rsuccess) {
+                                                    echo "<div class='panel-body'>";
+                                                    for ($i = 0; $i < $numOfReviews; $i++) {
+                                                        echo $reviews[$i];
+                                                        echo "<br>";
+                                                        echo "- " . $zmemb[$i] . " @ " . $date[$i];
+                                                        echo "<hr>";
+                                                    }
+                                                    echo "</div>";
+                                                }
+                                                ?>
                                             </div>
                                             <div class="panel-body">
                                                 <br>
                                                 <?php
                                                 if ($rsuccess == 1) {
                                                     ?>
-                                                    <form name="reviewForm" action="<?php echo htmlspecialchars('review_process.php') ?>" method="POST" onsubmit="return validateForm()">
+                                                    <form name="reviewForm" action="<?php echo htmlspecialchars('inc/review_process.php') ?>" method="POST" onsubmit="return validateForm()">
                                                         <p>Leave your review here! (Max 500 Characters)</p>
                                                         <input type="hidden" name="prodID" value="<?php echo $pid ?>">
                                                         <textarea rows="4" cols="50" name="reviewbox" id="reviewbox"></textarea>
@@ -287,9 +318,9 @@ and open the template in the editor.
                                                                 document.getElementById('count').innerHTML = "Characters left: " + (500 - this.value.length);
                                                             };</script>
                                                     </form>
-    <?php
-}
-?>
+                                                    <?php
+                                                }
+                                                ?>
                                             </div>
                                         </div>
                                     </div>
@@ -301,9 +332,9 @@ and open the template in the editor.
                 <!-- End of Product Details-->
             </div>
         </main>
-<?php
-include "inc/footer.php"
-?>
+        <?php
+        include "inc/footer.php"
+        ?>
 
         <!--JavaScript-->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

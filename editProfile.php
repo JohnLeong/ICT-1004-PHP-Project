@@ -1,7 +1,6 @@
 <html>
-
     <head>
-        <title>Zenith - Profile Edited</title>
+        <title>Zenith - Edit Profile</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -21,23 +20,37 @@
         <meta name="description" content="Buy high-quality shoes at great prices. Zenith offers a large variety of shoes from popular brands and provides world-wide shipping.">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
-
+    <script>
+        var namepatt = /^[a-z-][a-z][a-z]+$/i;
+        var emailpatt = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        function validateForm() {
+            var x = document.forms["profForm"]["email"].value;
+            if (x == null || x == "") {
+                alert("Email must be filled out");
+                return false;
+            } else if (emailpatt.test(x) == false) {
+                alert("Invalid email address");
+                return false;
+            }
+        }
+    </script>
     <body>
         <?php
         include 'inc/header.php';
         if (!isset($_SESSION['name'])) {
-            header('Location: index.php');
+//            header('Location: index.php');
+            echo "<script>window.location.href='index.php'</script>";
         }
         $success = true;
 
-        getMemberInfo();
-        
-        function getMemberInfo() {
+        getMemberInfoPrep();
+
+        function getMemberInfoPrep() {
             global $id, $email, $first_name, $last_name, $dob;
             global $gender, $mobile, $country, $city, $address, $success, $zid;
             global $day, $month, $year;
-
             $id = $_SESSION['zid'];
+
             // Create connection
             $conn = new mysqli("161.117.122.252", "p5_2", "yzhbGyqP87", "p5_2");
             // Check connection
@@ -45,11 +58,13 @@
                 $errorMsg = "Connection failed: " . $conn->connect_error;
                 $success = false;
             } else {
-                $sql = "SELECT * FROM p5_2.zenith_members WHERE ";
-                $sql .= "zmember_id='$id'";
 
-                // Execute the query
-                $result = $conn->query($sql);
+                // prepare and bind
+                $stmt = $conn->prepare("SELECT * FROM p5_2.zenith_members WHERE zmember_id = ?");
+                $stmt->bind_param("s", $id);
+                $stmt->execute();
+
+                $result = $stmt->get_result();
                 if ($result->num_rows > 0) {
                     $row = $result->fetch_assoc();
                     $first_name = $row["fname"];
@@ -69,8 +84,9 @@
                 } else {
                     $success = false;
                 }
-                $result->free_result();
             }
+            $result->free_result();
+            $stmt->close();
             $conn->close();
         }
         ?>
@@ -81,7 +97,7 @@
                     <div class="col-lg-12">
                         <h2 class="mb-4">Edit My Profile</h2>
                         <div id="profbox">
-                            <form action="<?php echo htmlspecialchars('editprof_process.php') ?>" name="profForm" onsubmit="return validateForm()" method="POST">
+                            <form action="<?php echo htmlspecialchars('inc/editprof_process.php') ?>" onsubmit="return validateForm()" name="profForm"  method="POST">
                                 <div class="row">
                                     <div class="col-lg-6"> <!-- Start of Profile Settings-->
                                         <h3 class="mb-4">Profile Settings</h3><hr/>
@@ -95,10 +111,10 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-6">
-                                                <input class="form-control" type="text" name="first_name" value="<?php echo $first_name ?>">
+                                                <input class="form-control" type="text" name="first_name" pattern="[a-zA-Z]{1,45}" value="<?php echo $first_name ?>">
                                             </div>
                                             <div class="col-6">
-                                                <input class="form-control" type="text" name="last_name" value="<?php echo $last_name ?>" required>
+                                                <input class="form-control" type="text" name="last_name" pattern="[a-zA-Z]{1,45}" value="<?php echo $last_name ?>" required>
                                             </div>
                                         </div><br/>
                                         <div class="row">
@@ -434,9 +450,9 @@
                 <!-- /.col-md-4 -->
             </div>
         </main>
-<?php
-include "inc/footer.php";
-?>
+        <?php
+        include "inc/footer.php";
+        ?>
 
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
