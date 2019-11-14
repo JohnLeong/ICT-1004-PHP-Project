@@ -1,5 +1,9 @@
 <?php
 include_once("session.php");
-endSession();
-header("Location: ../index.php");
+if (isset($_GET['inactive'])){
+    header("Location: ../index.php?inactive");
+} else {
+    endSession();
+    header("Location: ../index.php");
+}
 ?>

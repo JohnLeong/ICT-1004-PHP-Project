@@ -1,5 +1,30 @@
 <?php
+    ini_set('session.cookie_httponly', true);
+    
     include_once("session.php");
+    
+    if (isset($_SESSION['last_ip']) === false) {
+        $_SESSION['last_ip'] = $_SERVER['REMOTE_ADDR'];
+    }
+    
+    if ($_SESSION['last_ip'] !== $_SERVER['REMOTE_ADDR']) {
+        session_unset();
+        session_destory;
+    }
+    
+    // set timeout period in seconds
+    $inactive = 1200;
+    // check to see if $_SESSION['timeout'] is set
+    if(isset($_SESSION['timeout']) ) {
+        $session_life = time() - $_SESSION['timeout'];
+        if($session_life > $inactive)
+        { 
+            session_unset();
+            session_destroy(); 
+            header("Location: index.php?inactive");
+        }
+    }
+    $_SESSION['timeout'] = time();
 ?>
 <!--
 To change this license header, choose License Headers in Project Properties.
@@ -51,6 +76,9 @@ and open the template in the editor.
     <br>
     <!--Promo line-->
     <?php
+    if (isset($_GET['inactive'])) {
+        echo '<script type="text/javascript">alert("You have been inactive for more than 20 minutes.");</script>';
+    }
     if (isset($_SESSION['name'])) {
         $conn = new mysqli("161.117.122.252", "p5_2", "yzhbGyqP87", "p5_2");
         // Check connection
