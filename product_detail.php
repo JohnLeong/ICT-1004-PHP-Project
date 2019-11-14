@@ -16,7 +16,6 @@ and open the template in the editor.
         $rsuccess = true;
 
         $conn = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
-
         // Check connection
         if ($conn->connect_error) {
             $errorMsg = "Connection failed: " . $conn->connect_error;
@@ -27,11 +26,14 @@ and open the template in the editor.
             parse_str($url_components['query'], $params);
             $params['productID'] = sanitize_input($params['productID']);
             $proID = sanitize_input($params['productID']);
-            $sql = "SELECT * FROM p5_2.products WHERE product_ID='" . $proID . "'";
+            // Prepare
+            $stmt = $conn->prepare("SELECT * FROM p5_2.products WHERE product_ID =?");
+            // Bind
+            $stmt->bind_param("i", $params['productID']);
+            // Execute
+            $stmt->execute();
         }
-        $result = $conn->query($sql);
-        $row = $result->fetch_assoc();
-
+        $result = $stmt->get_result();
         if ($result->num_rows > 0) {
             echo "<title>Zenith - " . $row["product_name"] . "</title>";
         }

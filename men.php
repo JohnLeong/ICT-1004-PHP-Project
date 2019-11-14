@@ -126,11 +126,6 @@ and open the template in the editor.-->
                                             break;
                                         if ($row["gender"] != "Men")
                                             continue;
-
-                                        $colors_result = $conn->query("SELECT * FROM p5_2.product_details WHERE product_ID=" . $row["product_ID"]);
-                                        $num_colors = $colors_result->num_rows;
-                                        $colors_result->free_result();
-
                                         echo "<div class='col-md-4 filterItem " . $row["brand"] . " " . $row["type"] . "'>";
                                         echo "<div class='card h-100'>"; 
                                         echo "<div class='card-body'>";
