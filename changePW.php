@@ -165,7 +165,6 @@
                             <form action="<?php echo htmlspecialchars('changePW.php') ?>" onsubmit="return validatePwd()"method="POST" name="pwdform">  
                                 <div class="row">
                                     <div class="col-lg-6">
-                                        <h3 class="mb-4">User first name: <?php echo $first_name ?></h3>
                                         <div class="row">
                                             <div class="col-lg-6">
                                                 <label for="currentpwd">Current Password: </label>

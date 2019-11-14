@@ -39,6 +39,7 @@ and open the template in the editor.
 //        }
         ?>
         <main>
+            <h2>Order History</h2>
         <?php
         $conn = new mysqli("161.117.122.252", "p5_2", "yzhbGyqP87", "p5_2");
         // Check connection
@@ -68,6 +69,7 @@ and open the template in the editor.
                     $disc = $mrow['discount'];
                     $shipfee = $mrow['shipping_fee'];
                     $stats = $mrow['status'];
+                    $recdate = $mrow['receive_date'];
                     ?>
                     <div class="container px-3 my-4 clearfix">
                         <!-- Shopping cart table -->
@@ -83,6 +85,9 @@ and open the template in the editor.
                                         <?php
                                         echo "<span><h5>Date/Time of Purchase: $date</h5></span>";
                                         echo "<span><h5>Shipping Status: $stats</h5></span>";
+                                        if ($stats == 'Received') {
+                                            echo "<span><h5>Received on $recdate</h5></span>";
+                                        }
                                         ?>
                                     </div>
                                     <table class="table table-bordered m-0">

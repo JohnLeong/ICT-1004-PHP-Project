@@ -9,12 +9,15 @@ if (!isset($_POST['ordrec'])) {
         $success = false;
     } else {
         $orderid = $_POST['orderid'];
-        $sql = "UPDATE p5_2.zorder SET status='Received' WHERE order_id='$orderid'";
+        date_default_timezone_set('Asia/Singapore');
+        $date = date("M,d,Y h:i:s A");
+        $sql = "UPDATE p5_2.zorder SET status='Received', receive_date='$date' WHERE order_id='$orderid'";
         // Execute the query
         if (!$conn->query($sql)) {
             $errorMsg = "Database error: " . $conn->error;
             header('Location: ../orderhistory.php?dbfail');
         }
+        
         header('Location: ../orderhistory.php?success');
     }
 }
