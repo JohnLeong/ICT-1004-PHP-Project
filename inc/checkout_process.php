@@ -25,14 +25,7 @@ if (!isset($_POST['paynow'])) {
         $psql = "SELECT * FROM p5_2.zshoppingcart WHERE zmember_id = $id";
         $presult = mysqli_query($conn, $psql);
         $proid = array();
-
-        while ($prow = mysqli_fetch_assoc($presult)) {
-            array_push($proid, $prow['productDetail_ID']);
-        }
-
-        //store length of array
-        $size_proid = sizeof($proid);
-
+        
         $sql = "INSERT INTO p5_2.zorder (zmember_id, date, total_amt, discount, shipping_fee, status)"
                 . " VALUES ('$id','$date','$finalp','$disc','$shipfee', '$status')";
         // Execute the query
@@ -40,7 +33,13 @@ if (!isset($_POST['paynow'])) {
             $errorMsg = "Database error: " . $conn->error;
             $success = false;
         }
+        
+        while ($prow = mysqli_fetch_assoc($presult)) {
+            array_push($proid, $prow['productDetail_ID']);
+        }
 
+        //store length of array
+        $size_proid = sizeof($proid);
         $loop = 0;
 
         $zsql = "SELECT * FROM p5_2.order_details";
@@ -90,10 +89,14 @@ if (!isset($_POST['paynow'])) {
             }
             $loop += 1;
         }
-    }
-    
-    // Delete products from shopping cart
-    
+        // Delete products from shopping cart
+        $dsql = "DELETE FROM p5_2.zshoppingcart WHERE zmember_id='$id'";
+        // Execute the query
+        if (!$conn->query($dsql)) {
+            $errorMsg = "Database error: " . $conn->error;
+            $success = false;
+        }
+    } 
 } $conn->close();
 header("Location: ../orderconfirmed.php?success");
 

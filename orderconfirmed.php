@@ -6,7 +6,7 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>Zenith</title>
+        <title>Zenith - Order confirmation</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -49,7 +49,7 @@ and open the template in the editor.
         } else {
             $i = 0;
             $id = $_SESSION['zid'];
-            $sql = "SELECT * FROM p5_2.zorder WHERE zmember_id =$id";
+            $sql = "SELECT * FROM p5_2.zorder WHERE zmember_id =$id ORDER BY order_id DESC";
             $result = mysqli_query($conn, $sql);
             if (mysqli_num_rows($result) > 0){
                     $row = mysqli_fetch_assoc($result);
@@ -84,7 +84,11 @@ and open the template in the editor.
                                     </tr>
                                 </thead>
                                 <?php
-                                $tsql = "SELECT * FROM p5_2.order_details WHERE order_id =$oid";
+                                $lastsql = "SELECT order_id FROM p5_2.order_details ORDER BY order_id DESC LIMIT 1";
+                                $lastresult = mysqli_query($conn, $lastsql);
+                                $lastrow = mysqli_fetch_assoc($lastresult);
+                                $lastid = $lastrow['order_id'];
+                                $tsql = "SELECT * FROM p5_2.order_details WHERE order_id =$lastid";
                                 $tresult = mysqli_query($conn, $tsql);
                                 while ($trow = mysqli_fetch_assoc($tresult)) {
                                 ?>
