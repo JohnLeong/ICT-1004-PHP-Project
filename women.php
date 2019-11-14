@@ -125,11 +125,6 @@ and open the template in the editor.-->
                                                 break;
                                         if ($row["gender"] != "Women")
                                             continue;
-
-                                        $colors_result = $conn->query("SELECT * FROM p5_2.product_details WHERE product_ID=" . $row["product_ID"]);
-                                        $num_colors = $colors_result->num_rows;
-                                        $colors_result->free_result();
-
                                         echo "<div class='col-md-4 filterItem " . $row["brand"] . " " . $row["type"] . "'>";
                                         echo "<div class='card h-100'>";   
                                         
@@ -138,7 +133,6 @@ and open the template in the editor.-->
                                         echo "<h3 class='card-title'>" . $row["product_name"] . "</h3>";
                                         echo "<p class='productdescription'>" . $row["type"] . "</p>";
                                         echo "<p class='productdescription'>$" . $row["unit_price"] . "</p>";
-                                        //echo "<p class='productoption'>". $num_colors . " Colour(s)</p>";
                                         echo "</div>";
 
                                         echo "<div class = card-footer>";

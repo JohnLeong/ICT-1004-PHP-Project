@@ -49,10 +49,11 @@ function saveMessageToDB() {
         $success = false;
         header("Location: ../contactus.php?error");   
     } else {
-        $sql = "INSERT INTO p5_2.contact_us_info (email, name, message)";
-        $sql .= " VALUES('$email', '$name', '$message')";
+        $sql = $conn->prepare("INSERT INTO p5_2.contact_us_info (email, name, message) VALUES(?,?,?)");
+        $sql->bind_param("sss", $email, $name, $message);
+
         // Execute the query
-        if (!$conn->query($sql)) {
+        if (!$sql->execute()) {
             $errorMsg = "Database error: " . $conn->error;
             $success = false;
             header("Location: ../contactus.php?error");   
