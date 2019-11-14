@@ -119,6 +119,7 @@ and open the template in the editor.-->
                                                 <form method='post' name='deletecartitem' action='inc/update_shoppingcart.php'>
                                                     <?php
                                                     echo "<input type='hidden' name=prodDID value='" . $row['productDetail_ID'] . "'>";
+                                                    $prodDID=$row['productDetail_ID'];
                                                     ?>
                                                     <button name='deleteitem' class='btn btn-sm btn btn-outline-danger'>X</a>
                                                 </form>

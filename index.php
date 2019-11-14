@@ -36,6 +36,9 @@ and open the template in the editor.
         if (isset($_GET['mailing_success'])) {
             echo '<script type="text/javascript">alert("You have been added to the mailing list!");</script>';
         }
+        if (isset($_GET['404'])) {
+            echo '<script type="text/javascript">alert("No such page exist!");</script>';
+        }
         ?>
             <!--Header -->
         <main>

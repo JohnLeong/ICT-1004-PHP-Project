@@ -29,79 +29,95 @@ and open the template in the editor.
     <body>
         <?php
         include 'inc/header.php';
-
-//        if (isset($_GET['mailing_error'])) {
-//            echo '<script type="text/javascript">alert("An error has occured. Please try again.");</script>';
-//        }
-//        if (isset($_GET['mailing_success'])) {
-//            echo '<script type="text/javascript">alert("You have been added to the mailing list!");</script>';
-//        }
+        if (!isset($_SESSION['name'])) {
+            header('Location: index.php');
+        }
+        if (isset($_GET['success'])) {
+            echo '<script type="text/javascript">alert("You have successfully placed your order!");</script>';
+        } else {
+            header('Location: index.php?404');
+        }
         ?>
         <main>
-            <div class="container px-3 my-5 clearfix">
+        <?php
+        global $grandtotal, $total;
+        $conn = new mysqli("161.117.122.252", "p5_2", "yzhbGyqP87", "p5_2");
+        // Check connection
+        if ($conn->connect_error) {
+            $errorMsg = "Connection failed: " . $conn->connect_error;
+            $success = false;
+        } else {
+            $i = 0;
+            $id = $_SESSION['zid'];
+            $sql = "SELECT * FROM p5_2.zorder WHERE zmember_id =$id";
+            $result = mysqli_query($conn, $sql);
+            if (mysqli_num_rows($result) > 0){
+                    $row = mysqli_fetch_assoc($result);
+                    $oid = $row['order_id'];
+                    $date = $row['date'];
+                    $totalamt = $row['total_amt'];
+                    $disc = $row['discount'];
+                    $shipfee = $row['shipping_fee'];
+                    $stats = $row['status'];
+            ?>
+            <div class="container px-3 my-2 clearfix">
                 <!-- Shopping cart table -->
                 <div class="card">
                     <div class="card-header">
-                        <h2>Order Confirmed</h2>
+                        <h2>Order Success!</h2>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
+                            <div class="float-left ml-3 mb-2 ls-2">
+                                <?php
+                                echo "<span><h5>Order ID: $oid</h5></span>";
+                                echo "<span><h5>Date/Time of Purchase: $date</h5></span>";
+                                echo "<span><h5>Shipping Status: $stats</h5></span>";
+                                ?>
+                            </div>
                             <table class="table table-bordered m-0">
                                 <thead>
                                     <tr>
                                         <!-- Set columns width -->
-                                        <th class="text-center py-3 px-4" style="min-width: 400px;">Product Name &amp; Details</th>
-                                        <th class="text-center py-3 px-4" style="width: 100px;">Price</th>
-                                        <th class="text-center py-3 px-4" style="width: 120px;">Quantity</th>
-                                        <th class="text-center py-3 px-4" style="width: 100px;">Total</th>
+                                        <th class="text-center py-3 px-4" style="width: 300px;">Product Name &amp; Details</th>
+                                        <th class="text-center py-3 px-4" style="width: 100px;">Quantity</th>
                                     </tr>
                                 </thead>
                                 <?php
-                                while ($row = mysqli_fetch_assoc($result)) {
+                                $tsql = "SELECT * FROM p5_2.order_details WHERE order_id =$oid";
+                                $tresult = mysqli_query($conn, $tsql);
+                                while ($trow = mysqli_fetch_assoc($tresult)) {
                                 ?>
                                 <tbody id="carttab">
                                     <tr id="row1">
                                         <td class="p-4">
                                             <div class="media align-items-center">
                                                 <?php
-                                                echo "<img src='$row[image]' class='d-block ui-w-40 ui-bordered mr-4' alt=$row[product_name]>";
+                                                echo "<img src='$trow[image]' class='d-block ui-w-40 ui-bordered mr-4' alt=$trow[product_name]>";
                                                 ?>
                                                 <div class="media-body">
                                                     <?php
-                                                    echo "<p class='d-block text-dark'>$row[product_name]</p>";
+                                                    echo "<p class='d-block text-dark'>$trow[product_name]</p>";
                                                     ?>
                                                     <small>
                                                         <?php
-                                                        echo "<span class='text-muted'>Size: </span> $row[size]";
-                                                        echo "<span class='text-muted'>&nbsp;&nbsp; Colour: </span> $row[colour]";
+                                                        echo "<span class='text-muted'>Size: </span> $trow[size]";
+                                                        echo "<span class='text-muted'>&nbsp;&nbsp; Colour: </span> $trow[colour]";
                                                         ?>
                                                     </small>
                                                 </div>
                                             </div>
                                         </td>
                                         <?php
-                                        echo "<td class='text-right font-weight-semibold align-middle p-4'>SGD $row[unit_price] </td>";
                                         echo "<td class='align-middle p-4'>"
-                                        . "<input type='text' disabled name='qty' class='form-control text-center' value='" . $row['quantity'] . "'>"
+                                        . "<input type='text' disabled name='qty' class='form-control text-center' value='" . $trow['quantity'] . "'>"
                                         . "</td>";
-
-                                        $total = $row['unit_price'] * $row['quantity'];
-                                        echo "<td class='text-right font-weight-semibold align-middle p-4'>SGD $total </td>";
                                         ?>
                                     </tr>
                          <?php  } ?>
                                     <tr>
-                                        <?php 
-                                            global $discount, $shippingfee, $grandtotal, $final;
-                                            $disc = $_POST["discount"];
-                                            $shipfee = $_POST["shippingfee"];
-                                            $finalp = $_POST["final"];
-                                        ?>
-                                        <td></td>
-                                        <td></td>
                                         <td>
                                             <div class="float-right">
-                                                <h6 class="mb-1">Payment Details</h6>
                                                 <label class="text-muted font-weight-normal m-0">Discount:&nbsp;</label>
                                                 <br>
                                                 <label class="text-muted font-weight-normal m-0">Shipping Fee:&nbsp;</label>
@@ -110,7 +126,7 @@ and open the template in the editor.
                                             </div>
                                         </td>
                                         <td>
-                                            <div class="float-left mt-4">
+                                            <div class="float-left">
                                                 <?php
                                                 echo "<strong>SGD $disc</strong>";
                                                 ?><br>
@@ -118,17 +134,26 @@ and open the template in the editor.
                                                 echo "<span><strong>SGD $shipfee</strong></span>";
                                                 ?><br>
                                                 <?php
-                                                echo "<strong>SGD $finalp</strong>";
+                                                echo "<strong>SGD $totalamt</strong>";
                                                 ?>
                                             </div>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
+                            <div>
+                                <button type="button" class="btn btn-md btn-secondary md-btn-flat float-right my-3 mx-2" onclick="window.location.href = 'orderhistory.php'">Order History </button>
+                                <button type="button" class="btn btn-md btn-secondary md-btn-flat float-right my-3" onclick="window.location.href = 'index.php'">Back Home </button>
+                            </div>
                         </div>
                     </div> <!-- / Shopping cart table -->
                 </div>   
             </div>
+        <?php } 
+        else {
+                echo "You have not purchased anything.";
+            }
+        }?>
         </main>
         <?php
         include 'inc/footer.php';
