@@ -19,6 +19,9 @@ main {
     padding: 20px 0 20px 0;
     padding-left: 5%;
     padding-right: 5%;
+    min-width: 50%;
+    border: 10px solid black;
+    margin: 20px;
 }
 
 main .carouselStyle {
@@ -1011,3 +1014,4 @@ form {
 .date-separator{
     font-size: 30px;
 }
+

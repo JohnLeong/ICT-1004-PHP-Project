@@ -121,6 +121,16 @@ if (!isset($_POST['paynow'])) {
             $errorMsg = "Database error: " . $conn->error;
             $success = false;
         }
+        
+        // Remove Promo Code if used.
+        if($disc != 0) {
+            $removesql = "DELETE FROM p5_2.zpromo_code WHERE zmember_id=$id";
+            // Execute the query
+            if (!$conn->query($dsql)) {
+                $errorMsg = "Database error: " . $conn->error;
+                $success = false;
+            }
+        }
     } 
 } $conn->close();
 header("Location: ../orderconfirmed.php?success");
