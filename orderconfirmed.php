@@ -84,12 +84,9 @@ and open the template in the editor.
                                     </tr>
                                 </thead>
                                 <?php
-                                $lastsql = "SELECT order_id FROM p5_2.order_details ORDER BY order_id DESC LIMIT 1";
-                                $lastresult = mysqli_query($conn, $lastsql);
-                                $lastrow = mysqli_fetch_assoc($lastresult);
-                                $lastid = $lastrow['order_id'];
-                                $tsql = "SELECT * FROM p5_2.order_details WHERE order_id =$lastid";
+                                $tsql = "SELECT * FROM p5_2.order_details WHERE order_id =$oid";
                                 $tresult = mysqli_query($conn, $tsql);
+                                
                                 while ($trow = mysqli_fetch_assoc($tresult)) {
                                 ?>
                                 <tbody id="carttab">

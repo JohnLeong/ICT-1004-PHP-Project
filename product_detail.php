@@ -172,10 +172,9 @@ and open the template in the editor.
                                 echo "</select>";
                                 echo "<br />";
                                 echo "<br />";
-                                echo "<input type='hidden' name='productDetailID' value='" . $rowDetail['productDetail_ID'] . "' class='form-control'>";
-                                echo "<input type='hidden' name='productname' value='" . $row['product_name'] . "' class='form-control'>";
-                                echo "<input type='hidden' name='price' value='" . $row['unit_price'] . "' class='form-control'>";
-                                echo "<input type='hidden' name='img' value='" . $row['image'] . "' class='form-control'>";
+                                echo "<input type='hidden' name='productname' value='" . $row["product_name"] . "' class='form-control'>";
+                                echo "<input type='hidden' name='price' value='" . $row["unit_price"] . "' class='form-control'>";
+                                echo "<input type='hidden' name='img' value='" . $row["image"] . "' class='form-control'>";
                                 echo "<div class='input-group-append'>";
                                 echo '<button class="btn btn-success btn-md" name="addtocart" type="submit" id="addcart">'
                                 . '<i class = "fa fa-cart-plus"></i>&nbsp &nbsp Add to Cart!</button>';

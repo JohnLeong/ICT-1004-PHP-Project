@@ -54,7 +54,7 @@ if (!isset($_POST['paynow'])) {
         }
 
         while ($loop < $size_proid) {
-            $iodsql = "INSERT INTO p5_2.order_details (order_id, product_id)"
+            $iodsql = "INSERT INTO p5_2.order_details (order_id, productDetail_ID)"
                     . " VALUES ('$oid', '$proid[$loop]')";
             // Execute the query
             if (!$conn->query($iodsql) == TRUE) {
@@ -64,28 +64,68 @@ if (!isset($_POST['paynow'])) {
             }
 
             $uodsql = "UPDATE p5_2.order_details "
-                    . "SET product_name = (Select product_name from p5_2.zshoppingcart where productDetail_ID = $proid[$loop])"
-                    . "WHERE product_id=$proid[$loop] AND order_id = $oid";
+                    . "SET size = (Select size from p5_2.zshoppingcart where productDetail_ID = $proid[$loop]),"
+                    . "product_name = (Select product_name from p5_2.zshoppingcart where productDetail_ID = $proid[$loop]),"
+                    . "colour = (Select colour from p5_2.zshoppingcart where productDetail_ID = $proid[$loop]),"
+                    . "image = (Select image from p5_2.zshoppingcart where productDetail_ID = $proid[$loop]),"
+                    . "quantity = (Select quantity from p5_2.zshoppingcart where productDetail_ID = $proid[$loop])"
+                    . "WHERE productDetail_ID=$proid[$loop] AND order_id = $oid";
 
             if (!$conn->query($uodsql)) {
 
                 $errorMsg = "Database error: " . $conn->error;
                 $success = false;
             }
-            $ucsodsql = "UPDATE p5_2.order_details "
-                    . "SET colour = (Select colour from p5_2.zshoppingcart where productDetail_ID = $proid[$loop] and zmember_id = $id),"
-                    . "size = (Select size from p5_2.zshoppingcart where productDetail_ID = $proid[$loop] and zmember_id = $id),"
-                    . "image = (Select image from p5_2.zshoppingcart where productDetail_ID = $proid[$loop] and zmember_id = $id),"
-                    . "quantity = (Select quantity from p5_2.zshoppingcart where productDetail_ID = $proid[$loop] and zmember_id = $id)"
-                    . "WHERE product_id=$proid[$loop] AND order_id = $oid";
-
-            if (!$conn->query($ucsodsql)) {
-
-                $errorMsg = "Database error: " . $conn->error;
-                $success = false;
-            }
+//            $ucsodsql = "UPDATE p5_2.order_details "
+//                    . "SET colour = (Select colour from p5_2.zshoppingcart where productDetail_ID = $proid[$loop] and zmember_id = $id),"
+//                    . "size = (Select size from p5_2.zshoppingcart where productDetail_ID = $proid[$loop] and zmember_id = $id),"
+//                    . "image = (Select image from p5_2.zshoppingcart where productDetail_ID = $proid[$loop] and zmember_id = $id),"
+//                    . "quantity = (Select quantity from p5_2.zshoppingcart where productDetail_ID = $proid[$loop] and zmember_id = $id)"
+//                    . "WHERE product_id=$proid[$loop] AND order_id = $oid";
+//
+//            if (!$conn->query($ucsodsql)) {
+//
+//                $errorMsg = "Database error: " . $conn->error;
+//                $success = false;
+//            }
             $loop += 1;
         }
+        
+//        //deducting the stock based on customer purchase
+//        //taking the stock from product detail using ProductDetail_ID
+//        $tssql = "SELECT * FROM p5_2.product_details WHERE productDetail_ID = $proid[$usloop] ORDER BY productDetail_ID ASC";
+//        $tsresult = mysqli_query($conn, $tssql);
+//        $stockqty = array();
+//        
+//        while ($tsrow = mysqli_fetch_assoc($tsresult)) {
+//            array_push($stockqty, $tsrow['stock']);
+//        }
+//        
+//        //taking the quantity that the user bought from shopping cart using zmember_id
+//        $uqsql = "SELECT * FROM p5_2.zshoppingcart WHERE zmember_id ='$id' ORDER BY productDetail_ID ASC";
+//        $uqresult = mysqli_query($conn, $uqsql);
+//        $userqty = array();
+//        
+//        while ($uqrow = mysqli_fetch_assoc($uqresult)) {
+//            array_push($cusqty, $uqrow['quantity']);
+//        }
+//        
+//        //store length of array
+//        $size_stockqty = sizeof($stockqty);
+//        
+//        $usloop = 0;
+//        // while loop to deduct the stock, by taking stock - userqty using productDetail_ID
+//        while ($usloop < $size_proid) {
+//            $dssql = "UPDATE p5_2.product_details "
+//                    . "SET stock = $stockqty[$usloop] - $userqty[$usloop]"
+//                    . "WHERE productDetail_ID=$proid[$usloop]";
+//            if (!$conn->query($dssql)) {
+//                $errorMsg = "Database error: " . $conn->error;
+//                $success = false;
+//            }
+//            $usloop += 1;
+//        }
+        
         // Delete products from shopping cart
         $dsql = "DELETE FROM p5_2.zshoppingcart WHERE zmember_id='$id'";
         // Execute the query
