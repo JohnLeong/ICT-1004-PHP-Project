@@ -152,7 +152,7 @@ and open the template in the editor.-->
                                     <?php
                                     global $discount, $shippingfee, $grandtotal, $final;
                                     $discount = 0;
-                                    $shippingfee = 18;
+                                    $shippingfee = 25;
                                     if ($grandtotal == 0) {
                                         $shippingfee = 0;
                                         $final = 0;
@@ -164,8 +164,8 @@ and open the template in the editor.-->
                                         $final = $grandtotal + $shippingfee;
                                         $final = round($final, 2);
                                     }
-                                    if (isset($_GET['25'])) {
-                                        $dis = 0.25;
+                                    if (isset($_GET['20'])) {
+                                        $dis = 0.20;
                                         $discount = $dis * $grandtotal;
                                         $discount = round($discount, 2);
                                         $final = $grandtotal - $discount;

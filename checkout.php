@@ -61,17 +61,17 @@ and open the template in the editor.-->
                                         <thead>
                                             <tr>
                                                 <!-- Set columns width -->
-                                                <th class="text-center py-3 px-4" style="min-width: 400px;">Product Name &amp; Details</th>
-                                                <th class="text-center py-3 px-4" style="width: 100px;">Price</th>
-                                                <th class="text-center py-3 px-4" style="width: 120px;">Quantity</th>
-                                                <th class="text-center py-3 px-4" style="width: 100px;">Total</th>
+                                                <th scope="col" class="text-center py-3 px-4" style="min-width: 400px;">Product Name &amp; Details</th>
+                                                <th scope="col" class="text-center py-3 px-4" style="width: 100px;">Price</th>
+                                                <th scope="col" class="text-center py-3 px-4" style="width: 120px;">Quantity</th>
+                                                <th scope="col" class="text-center py-3 px-4" style="width: 100px;">Total</th>
                                             </tr>
                                         </thead>
                                         <?php
                                         while ($row = mysqli_fetch_assoc($result)) {
                                             ?>
                                             <tbody id="carttab">
-                                                <tr id="row1">
+                                                <tr id="row1" scope="row">
                                                     <td class="p-4">
                                                         <div class="media align-items-center">
                                                             <?php
@@ -101,7 +101,7 @@ and open the template in the editor.-->
                                                     ?>
                                                 </tr>
                                      <?php  } ?>
-                                                <tr>
+                                                <tr scope="row">
                                                     <?php 
                                                         global $discount, $shippingfee, $grandtotal, $final;
                                                         $disc = $_POST["discount"];
@@ -159,7 +159,7 @@ and open the template in the editor.-->
                             }
                             ?>
                             <div class="row">
-                                <form class="text-left" name="update" action="<?php echo htmlspecialchars("inc/editprof_process.php"); ?>" onsubmit="return validateForm()" method="POST">
+                                <form name="update" action="<?php echo htmlspecialchars("inc/editprof_process.php"); ?>" onsubmit="return validateForm()" method="POST">
                                     <h4 class="mx-3">Shipping Details</h4>
                                     <hr class="mx-3">
                                     <div class="row pt-0">
