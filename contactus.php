@@ -4,7 +4,7 @@ and open the template in the editor.-->
 
 <html>
     <head>
-        <title>Zenith - WOMEN</title>
+        <title>Zenith - Contact Us</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -21,7 +21,7 @@ and open the template in the editor.-->
         <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
         <!--SEO-->
-        <meta name="description" content="Buy high-quality shoes at great prices. Zenith offers a large variety of shoes from popular brands and provides world-wide shipping.">
+        <meta name="description" content="Send us a message! Zenith values the feedback from its customers greatly.">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>

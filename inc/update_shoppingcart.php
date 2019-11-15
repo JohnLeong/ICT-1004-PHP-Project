@@ -30,6 +30,12 @@ if ((!isset($_POST['addtocart'])) && (!isset($_POST['updatecartqty'])) && (!isse
             $prodDID = $_POST['prodDID'];
             if ($quantity == 0) {
                 $sql = "DELETE FROM p5_2.zshoppingcart WHERE productDetail_ID='$prodDID'";
+                // Execute the query
+                if (!$conn->query($sql)) {
+                    $errorMsg = "Database error: " . $conn->error;
+                    $success = false;
+                }
+                header('Location: ../shoppingcart.php');
             } else {
                 $sql = "SELECT * FROM p5_2.product_details WHERE productDetail_id='$prodDID'";
                 $result = mysqli_query($conn, $sql);

@@ -4,7 +4,7 @@ and open the template in the editor.-->
 
 <html>
     <head>
-        <title>Zenith - Shopping Cart</title>
+        <title>Zenith - Checkout</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -245,6 +245,14 @@ and open the template in the editor.-->
                                         <input id="cvc" type="text" class="form-control" placeholder="CVC" pattern="[0-9]{3}" required>
                                     </div>
                                 </div>
+                                <?php
+                                    $disc = $_POST["discount"];
+                                    $shipfee = $_POST["shippingfee"];
+                                    $finalp = $_POST["final"];
+                                    echo "<input type='hidden' value='$disc' name='discount'>";
+                                    echo "<input type='hidden' value='$shipfee' name='shippingfee'>";
+                                    echo "<input type='hidden' value='$finalp' name='final'>";
+                                ?>
                                 <button type="submit" name="paynow" class="btn btn-outline-dark mt-0 ml-3">Pay Now&nbsp;<i class="far fa-money-bill-alt"></i></button>
                             </form>	
                         </div>

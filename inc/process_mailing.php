@@ -40,13 +40,14 @@ function saveMailingListToDB() {
         $success = false;
         header("Location: ../index.php?mailing_error");
     } else {
-        $sql = "INSERT INTO p5_2.mailing_list (email)";
-        $sql .= " VALUES('$email')";
+        $sql = $conn->prepare("INSERT INTO p5_2.mailing_list (email) VALUES(?)");
+        $sql->bind_param("s", $email);
+
         // Execute the query
-        if (!$conn->query($sql)) {
+        if (!$sql->execute()) {
             $errorMsg = "Database error: " . $conn->error;
             $success = false;
-            header("Location: ../index.php?mailing_error");
+            header("Location: ../index.php?mailing_success");
         } else {
             $errorMsg .= "Successfully added to database";
             header("Location: ../index.php?mailing_success");

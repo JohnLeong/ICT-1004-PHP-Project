@@ -16,7 +16,6 @@ and open the template in the editor.
         $rsuccess = true;
 
         $conn = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
-
         // Check connection
         if ($conn->connect_error) {
             $errorMsg = "Connection failed: " . $conn->connect_error;
@@ -27,12 +26,17 @@ and open the template in the editor.
             parse_str($url_components['query'], $params);
             $params['productID'] = sanitize_input($params['productID']);
             $proID = sanitize_input($params['productID']);
-            $sql = "SELECT * FROM p5_2.products WHERE product_ID='" . $proID . "'";
+            // Prepare
+            $stmt = $conn->prepare("SELECT * FROM p5_2.products WHERE product_ID =?");
+            // Bind
+            $stmt->bind_param("i", $params['productID']);
+            // Execute
+            $stmt->execute();
         }
-        $result = $conn->query($sql);
-        $row = $result->fetch_assoc();
-
+        $result = $stmt->get_result();
+        
         if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
             echo "<title>Zenith - " . $row["product_name"] . "</title>";
         }
         $result->free_result();
@@ -170,10 +174,9 @@ and open the template in the editor.
                                 echo "</select>";
                                 echo "<br />";
                                 echo "<br />";
-                                echo "<input type='hidden' name='productDetailID' value='" . $rowDetail['productDetail_ID'] . "' class='form-control'>";
-                                echo "<input type='hidden' name='productname' value='" . $row['product_name'] . "' class='form-control'>";
-                                echo "<input type='hidden' name='price' value='" . $row['unit_price'] . "' class='form-control'>";
-                                echo "<input type='hidden' name='img' value='" . $row['image'] . "' class='form-control'>";
+                                echo "<input type='hidden' name='productname' value='" . $row["product_name"] . "' class='form-control'>";
+                                echo "<input type='hidden' name='price' value='" . $row["unit_price"] . "' class='form-control'>";
+                                echo "<input type='hidden' name='img' value='" . $row["image"] . "' class='form-control'>";
                                 echo "<div class='input-group-append'>";
                                 echo '<button class="btn btn-success btn-md" name="addtocart" type="submit" id="addcart">'
                                 . '<i class = "fa fa-cart-plus"></i>&nbsp &nbsp Add to Cart!</button>';

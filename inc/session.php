@@ -13,6 +13,7 @@ function getID($zid) {
 
 function endSession() {
     $_SESSION = array();
+    session_unset();
     session_destroy();
 }
 ?>

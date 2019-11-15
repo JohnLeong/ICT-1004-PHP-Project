@@ -86,28 +86,6 @@ and open the template in the editor.
             
         }
 
-        function deleteMember() {
-            global $id;
-            $id = $_SESSION['zid'];
-//            DELETE FROM `p5_2`.`zenith_members` WHERE (`zmember_id` = '18');
-            $conn = new mysqli("161.117.122.252", "p5_2", "yzhbGyqP87", "p5_2");
-            // Check connection
-            if ($conn->connect_error) {
-                $errorMsg = "Connection failed: " . $conn->connect_error;
-                $success = false;
-            } else {
-                $stmt = $conn->prepare("DELETE FROM p5_2.zenith_members WHERE zmember_id= ?");
-                $stmt->bind_param("i", $id);
-
-                if ($stmt->execute()== TRUE) {
-                    $success = true;
-                } else {
-                    $error .= $conn->error;
-                    $success = false;
-                }
-            }
-            $conn->close();
-        }
         ?>
         <main>
             <div class="profilepage">
@@ -125,12 +103,6 @@ and open the template in the editor.
                         <div class="row">
                             <button type="submit" onclick="window.location = '<?php echo htmlspecialchars('changePW.php') ?>'" class="btn btn-outline-info" id="pwdBtn">Change Password</button>
                         </div>
-                        <form name="delform" method="POST" action="account.php">
-                            <div class="row">
-                                <input type="hidden" name="delete" value="1"/>
-                                <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Are you sure?')" id="delBtn">Delete Account</button>
-                            </div>
-                        </form>
                     </div> <!-- Container for the whole of register-->
                 </div>
                 <!-- /.col-md-4 -->
