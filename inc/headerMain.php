@@ -12,19 +12,20 @@
         session_destory;
     }
     
-    // set timeout period in seconds
+    // Log user out if inactive for 20minutes
     $inactive = 1200;
-    // check to see if $_SESSION['timeout'] is set
-    if(isset($_SESSION['timeout']) ) {
-        $session_life = time() - $_SESSION['timeout'];
+    // check to see if $_SESSION['Logstatus'] is set
+    if(isset($_SESSION['Logstatus']) ) {
+        $session_life = time() - $_SESSION['Logstatus'];
         if($session_life > $inactive)
         { 
             session_unset();
             session_destroy(); 
             header("Location: index.php?inactive");
+        } else {
+            $_SESSION['Logstatus'] = time();
         }
     }
-    $_SESSION['timeout'] = time();
 ?>
 
 <!-- 

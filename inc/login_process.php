@@ -26,6 +26,7 @@ if (!isset($_POST['login_submit'])) {
             $zid = $row["zmember_id"];
             if (password_verify($cpwd, $dbPw)) {
                 include_once("session.php");
+                $_SESSION['Logstatus'] = time();
                 setLogin($first_name, $last_name);
                 getID($zid);
                 header("Location: ../index.php");
