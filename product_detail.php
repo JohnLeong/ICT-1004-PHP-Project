@@ -34,7 +34,9 @@ and open the template in the editor.
             $stmt->execute();
         }
         $result = $stmt->get_result();
+        
         if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
             echo "<title>Zenith - " . $row["product_name"] . "</title>";
         }
         $result->free_result();
