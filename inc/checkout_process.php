@@ -76,18 +76,6 @@ if (!isset($_POST['paynow'])) {
                 $errorMsg = "Database error: " . $conn->error;
                 $success = false;
             }
-//            $ucsodsql = "UPDATE p5_2.order_details "
-//                    . "SET colour = (Select colour from p5_2.zshoppingcart where productDetail_ID = $proid[$loop] and zmember_id = $id),"
-//                    . "size = (Select size from p5_2.zshoppingcart where productDetail_ID = $proid[$loop] and zmember_id = $id),"
-//                    . "image = (Select image from p5_2.zshoppingcart where productDetail_ID = $proid[$loop] and zmember_id = $id),"
-//                    . "quantity = (Select quantity from p5_2.zshoppingcart where productDetail_ID = $proid[$loop] and zmember_id = $id)"
-//                    . "WHERE product_id=$proid[$loop] AND order_id = $oid";
-//
-//            if (!$conn->query($ucsodsql)) {
-//
-//                $errorMsg = "Database error: " . $conn->error;
-//                $success = false;
-//            }
             $loop += 1;
         }
         
