@@ -22,11 +22,31 @@ and open the template in the editor.
         <!--Icons for Web-->
         <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
+        <!-- JQuery for Shadow Effect -->
+        <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+
         <!--SEO-->
         <meta name="description" content="Buy high-quality shoes at great prices. Zenith offers a large variety of shoes from popular brands and provides world-wide shipping.">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-    </head>
 
+        <script type="text/javascript">
+            $(document).ready(function () {
+                // executes when HTML-Document is loaded and DOM is ready
+                console.log("document is ready");
+
+
+                $(".card").hover(
+                        function () {
+                            $(this).addClass('shadow-lg').css('cursor', 'pointer');
+                        }, function () {
+                    $(this).removeClass('shadow-lg');
+                }
+                );
+
+                // document ready  
+            });
+        </script>
+    </head>
     <body>
         <?php
         include 'inc/header.php';
@@ -37,7 +57,7 @@ and open the template in the editor.
         $success = true;
         $id = $_SESSION['zid'];
         $delete = 0;
-        
+
         getMemberInfo();
 
 
@@ -82,10 +102,7 @@ and open the template in the editor.
                 $result->free_result();
             }
             $conn->close();
-            
-            
         }
-
         ?>
         <main>
             <div class="profilepage">
@@ -93,16 +110,42 @@ and open the template in the editor.
                     <!-- /.col-lg-8 -->
                     <div class="col-lg-12">
                         <h2 class="mb-4">Welcome <?php echo $first_name ?> to your Account Page!</h2>
-                        <?php echo $error?>
-                        <div class="row">
-                            <button type="submit" onclick="window.location = '<?php echo htmlspecialchars('profile.php') ?>'" class="btn btn-outline-warning" id="profBtn">Profile Page</button>
+
+                        <div class="container">
+                            <div class="card-deck">
+                                <div class="card">
+                                    <a class="account-card"href="profile.php">
+                                        <img class="card-img-top" src="img/profile.jpg" alt="View or Change Profile Settings">
+                                        <!-- SOURCE: https://www.kissclipart.com/user-edit-icon-clipart-computer-icons-user-profile-v1ctia/ -->
+                                        <div class="card-body">
+                                            <h5 class="card-title">Profile Settings</h5>
+                                            <p class="card-text">View & Edit Your Profile</p>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="card">
+                                    <a class="account-card" href="orderhistory.php">
+                                        <img class="card-img-top" src="img/order-history.jpg" alt="Order History">
+                                        <!-- SOURCE: https://www.kissclipart.com/purchase-history-icon-clipart-computer-icons-royal-7p5blz/ -->
+                                        <div class="card-body">
+                                            <h5 class="card-title">Order History</h5>
+                                            <p class="card-text">View Your Purchase History</p>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="card">
+                                    <a class="account-card" href="changePW.php">
+                                        <img class="card-img-top" src="img/password-image.jpg" alt="Change Password">
+                                        <!-- SOURCE: https://www.kissclipart.com/password-clipart-password-policy-computer-security-zk32t8/ -->
+                                        <div class="card-body">
+                                            <h5 class="card-title">Change Password</h5>
+                                            <p class="card-text">Change Your Password</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                        <div class="row">
-                            <button type="submit" onclick="window.location = '<?php echo htmlspecialchars('orderhistory.php') ?>'" class="btn btn-outline-primary" id="histBtn">Order History</button>
-                        </div>
-                        <div class="row">
-                            <button type="submit" onclick="window.location = '<?php echo htmlspecialchars('changePW.php') ?>'" class="btn btn-outline-info" id="pwdBtn">Change Password</button>
-                        </div>
+                        <!-- /.container -->
                     </div> <!-- Container for the whole of register-->
                 </div>
                 <!-- /.col-md-4 -->

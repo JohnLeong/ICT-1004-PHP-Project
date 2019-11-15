@@ -7,7 +7,7 @@ $pid = $_POST['prodID'];
 
 
 if (!isset($_SESSION['zid'])) {
-    $zid = 6;
+    $zid = 1;
 } else {
     $zid = $_SESSION['zid'];
 }
