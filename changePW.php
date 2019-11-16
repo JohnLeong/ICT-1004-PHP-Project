@@ -191,12 +191,12 @@
                                 <div class="col-lg-6">
                                     <div class="text-align-right">
                                         <input type="hidden" name="change" value="1"/>
-                                        <button type="submit" onclick="window.location = '<?php echo htmlspecialchars('profile.php') ?>'" class="btn btn-outline-dark" id="editBtn">Cancel</button>
+                                        <button type="submit" onclick="window.history.back()" class="btn btn-outline-dark" id="editBtn">Cancel</button>
                                         <button type="submit" class="btn btn-outline-dark" id="editBtn">Change Password</button>
                                     </div>
                                 </div>
                             </form>
-                        </div> <!-- End of prof box-->
+                        </div> <!-- End of profbox-->
 
                     </div> <!-- Container for the whole of change password-->
                 </div>

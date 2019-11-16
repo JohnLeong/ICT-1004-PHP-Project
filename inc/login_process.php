@@ -1,5 +1,5 @@
 <?php
-
+date_default_timezone_set("Asia/Kuala_Lumpur");
 if (!isset($_POST['login_submit'])) {
     header('Location: ../index.php');
 } else {
@@ -29,6 +29,8 @@ if (!isset($_POST['login_submit'])) {
                 $_SESSION['Logstatus'] = time();
                 setLogin($first_name, $last_name);
                 getID($zid);
+                $currentDateTime = date('Y-m-d H:i:s');
+                $conn->query("UPDATE p5_2.zenith_members SET lastlogin = '$currentDateTime' where zmember_id= $zid");
                 header("Location: ../index.php");
             }
             else{//wrong password
