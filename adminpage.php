@@ -247,27 +247,6 @@ and open the template in the editor.
                     $flag = 1;
                     $checkd = "SELECT * FROM p5_2.zenith_members WHERE email='$email'";
                     $data = $conn->query($checkd);
-                    if ($data->num_rows > 0) {
-                        $row = $data->fetch_assoc();
-                        $mID = $row["zmember_id"];
-                        $main = "z25";
-                        $promocode = $main . "" . random_str(5);
-                        while ($flag == 1) {
-                            $code = "SELECT zmember_id FROM p5_2.zpromo_code WHERE promocode='$promocode'";
-                            $dup = $conn->query($code);
-                            if ($dup->num_rows > 0) {
-                                $promocode = $main . "" . random_str(5);
-                                $flag = 1;
-                            } else {
-                                $in = "INSERT INTO p5_2.zpromo_code (promocode, zmember_id) VALUES ('$promocode', '$mID')";
-                                if (!$conn->query($in)) {
-                                    $error = "Database error: " . $conn->error;
-                                    $success = false;
-                                }
-                                $flag = 0;
-                            }
-                        }
-                    }
                 }
             }
         }
@@ -339,7 +318,16 @@ and open the template in the editor.
             } else {
                 $stmt = $conn->prepare("DELETE FROM p5_2.products WHERE product_id= ?");
                 $stmt->bind_param("s", $delProdID);
-
+                $stmt1 = $conn->prepare("DELETE FROM p5_2.product_details WHERE product_ID = ?");
+                $stmt1->bind_param("s", $delProdID);
+                $stmt2 = $conn->prepare("DELETE FROM p5_2.products_review WHERE product_ID = ?");
+                $stmt2->bind_param("s", $delProdID);
+                
+                // Delete any details linked to product
+                $stmt1->execute();
+                // Delete any reviews linked to product
+                $stmt2->execute();
+                // Execute the delete from products
                 if ($stmt->execute() == TRUE) {
                     // Alter auto_increment back to original number
                     $conn->query("ALTER TABLE p5_2.products AUTO_INCREMENT = $delProdID");
@@ -347,7 +335,7 @@ and open the template in the editor.
                     $dsuccess = true;
                 } else {
                     $error .= $conn->error;
-//                    echo "<main><h1 align='center'>$error</h1></main>";
+                    echo "<main><h1 align='center'>$error</h1></main>";
                     $dsuccess = false;
                 }
             }
@@ -397,35 +385,35 @@ and open the template in the editor.
                                                     <h3><b>Insert Product</b></h3>
                                                     <div class="row">
                                                         <label for="prodname" class="form-label-group">Product Name:</label>
-                                                        <input class="form-control "type="text" name="prodname" id="prodname" placeholder="Flyknit, etc">
+                                                        <input class="form-control "type="text" name="prodname" id="prodname" placeholder="Flyknit, etc" required>
                                                     </div>
                                                     <div class="row">
                                                         <label for="brand" class="form-label-group">Brand:</label>
-                                                        <input class="form-control "type="text" name="brand" id="brand" placeholder="Nike, Adidas, etc">
+                                                        <input class="form-control "type="text" name="brand" id="brand" placeholder="Nike, Adidas, etc" required>
                                                     </div>
                                                     <div class="row">
                                                         <label for="desc" class="form-label-group">Description:</label>
-                                                        <input class="form-control "type="text" name="desc" id="desc" placeholder="Built for intense workouts with a tough ripstop material...">
+                                                        <input class="form-control "type="text" name="desc" id="desc" placeholder="Built for intense workouts with a tough ripstop material..." required>
                                                     </div>
                                                     <div class="row">
                                                         <label for="type" class="form-label-group">Type:</label>
-                                                        <input class="form-control "type="text" name="type" id="type" placeholder="Running, Lifestyle, Training, etc">
+                                                        <input class="form-control "type="text" name="type" id="type" placeholder="Running, Lifestyle, Training, etc" required>
                                                     </div>
                                                     <div class="row">
                                                         <label for="price" class="form-label-group">Unit Price:</label>
-                                                        <input class="form-control "type="number" min="0" step=".01" name="price" id="price" placeholder="199.99">
+                                                        <input class="form-control "type="number" min="0" step=".01" name="price" id="price" placeholder="199.99" required>
                                                     </div>
                                                     <div class="row">
                                                         <label for="gender" class="form-label-group">Gender:</label>
-                                                        <input class="form-control "type="text" name="gender" id="gender" placeholder="Men/Women">
+                                                        <input class="form-control "type="text" name="gender" id="gender" placeholder="Men/Women" required>
                                                     </div>
                                                     <div class="row">
                                                         <label for="image" class="form-label-group">Image Name:</label>
-                                                        <input class="form-control "type="text" name="image" id="image" placeholder="shoes.jpg/shoes.png">
+                                                        <input class="form-control "type="text" name="image" id="image" placeholder="shoes.jpg/shoes.png" required>
                                                     </div>
                                                     <div class="row">
                                                         <label for="imgsrc" class="form-label-group">Image Source:</label>
-                                                        <input class="form-control "type="text" name="imgsrc" id="imgsrc" placeholder="www.adidas.com/image/running/shoes.png">
+                                                        <input class="form-control "type="text" name="imgsrc" id="imgsrc" placeholder="www.adidas.com/image/running/shoes.png" required>
                                                         <!--https://www.adidas.com.sg/continental-80-shoes/EH0173.html-->
                                                     </div>
                                                     <div class="row">
@@ -456,15 +444,15 @@ and open the template in the editor.
                                                     </div>
                                                     <div class="row">
                                                         <label for="colour">Colour: </label>
-                                                        <input type="text" class="form-control" name="colour" id="colour" placeholder="White/Black">
+                                                        <input type="text" class="form-control" name="colour" id="colour" placeholder="White/Black" required>
                                                     </div>
                                                     <div class="row">
                                                         <label for="size">Size: </label>
-                                                        <input type="text" class="form-control" name="size" id="size" placeholder="US 6.5">
+                                                        <input type="text" class="form-control" name="size" id="size" placeholder="US 6.5" required>
                                                     </div>
                                                     <div class="row">
                                                         <label for="stock">Stock: </label>
-                                                        <input type="text" class="form-control" name="stock" id="stock" placeholder="3">
+                                                        <input type="text" class="form-control" name="stock" id="stock" placeholder="3" required>
                                                     </div>
                                                     <div class="row">
                                                         <input type="hidden" name="prodid" value="3">
@@ -594,8 +582,8 @@ and open the template in the editor.
             <!-- **************************************************************************************************************************************************************************************-->
             <!-- **************************************************************************************************************************************************************************************-->
             <?php
-        } else if ($upMemb == 1) {
-            // For updating of Members
+//        } else if ($upMemb == 1) {
+//            // For updating of Members
         } else {
             ?>
             <main>
