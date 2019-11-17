@@ -452,7 +452,7 @@ and open the template in the editor.
                                                     </div>
                                                     <div class="row">
                                                         <label for="stock">Stock: </label>
-                                                        <input type="text" class="form-control" name="stock" id="stock" placeholder="3" required>
+                                                        <input type="number" class="form-control" name="stock" id="stock" placeholder="3" required>
                                                     </div>
                                                     <div class="row">
                                                         <input type="hidden" name="prodid" value="3">
