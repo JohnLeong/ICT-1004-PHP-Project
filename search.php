@@ -2,7 +2,7 @@
 To change this template file, choose Tools | Templates
 and open the template in the editor.-->
 
-<html>
+<html lang="en">
     <head>
         <title>Zenith - Search</title>
         <meta charset="UTF-8">
