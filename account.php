@@ -56,23 +56,13 @@ and open the template in the editor.
 
         $success = true;
         $id = $_SESSION['zid'];
-        $delete = 0;
+        
+        if ($id == 3) {
+            echo "<script>window.location.href='adminpage.php'</script>";
+        }
+        
 
         getMemberInfo();
-
-
-        if (!isset($_POST['delete'])) {
-            $delete = 0;
-        } else {
-            $delete = $_POST["delete"];
-        }
-        if ($delete == 1) {
-            echo "";
-            echo "<script>alert('Goodbye :(');</script>";
-            deleteMember();
-            session_destroy();
-            echo "<script>window.location.reload(true);</script>";
-        }
 
         function getMemberInfo() {
             global $id, $first_name, $last_name, $success, $error;

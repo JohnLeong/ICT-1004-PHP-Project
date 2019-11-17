@@ -1,5 +1,5 @@
 <?php
-
+include "header.php";
 if (!isset($_SESSION['name'])) {
     echo "<script>window.location.href='index.php'</script>";
 }
@@ -11,7 +11,6 @@ $first_name = $last_name = $email = $gender = $mobile = $country = $city = $addr
 $dob_d = $dob_m = $dob_y = "";
 $dob = "";
 $errorMsg = "";
-$success = true;
 
 $cart = 0;
 
@@ -170,7 +169,6 @@ function updateMemberInfoPrep() {
         $stmt->bind_param("ssssssssss", $first_name, $last_name, $email, $dob, $gender, $mobile, $country, $city, $address, $id);
 
         if ($stmt->execute() == true) {
-            $success = true;
             header("Location: ../profile.php?UpdateSuccess");
         } else {
             $error .= $conn->error;
