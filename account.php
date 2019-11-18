@@ -104,7 +104,7 @@ and open the template in the editor.
                         <div class="container">
                             <div class="card-deck">
                                 <div class="card">
-                                    <a class="account-card"href="profile.php">
+                                    <a style="color:black" class="account-card"href="profile.php">
                                         <img class="card-img-top" src="img/profile.jpg" alt="View or Change Profile Settings">
                                         <!-- SOURCE: https://www.kissclipart.com/user-edit-icon-clipart-computer-icons-user-profile-v1ctia/ -->
                                         <div class="card-body">
@@ -114,7 +114,7 @@ and open the template in the editor.
                                     </a>
                                 </div>
                                 <div class="card">
-                                    <a class="account-card" href="orderhistory.php">
+                                    <a style="color:black" class="account-card" href="orderhistory.php">
                                         <img class="card-img-top" src="img/order-history.jpg" alt="Order History">
                                         <!-- SOURCE: https://www.kissclipart.com/purchase-history-icon-clipart-computer-icons-royal-7p5blz/ -->
                                         <div class="card-body">
@@ -124,7 +124,7 @@ and open the template in the editor.
                                     </a>
                                 </div>
                                 <div class="card">
-                                    <a class="account-card" href="changePW.php">
+                                    <a style="color:black" class="account-card" href="changePW.php">
                                         <img class="card-img-top" src="img/password-image.jpg" alt="Change Password">
                                         <!-- SOURCE: https://www.kissclipart.com/password-clipart-password-policy-computer-security-zk32t8/ -->
                                         <div class="card-body">
