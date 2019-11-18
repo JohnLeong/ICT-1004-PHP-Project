@@ -57,6 +57,7 @@ and open the template in the editor.
                             <div class="card-footer">
                                 <a href="product_detail.php?productID=1" class="btn btn-secondary btn-sm">More Info</a>
                                 <a href="https://sneakernews.com/wp-content/uploads/2019/05/air-jordan-1-first-class-flight-555088-170-10.jpg">Image source</a> 
+                                <p>Credits to Air Jordan</p>
                             </div>
                         </div>
                     </div>
@@ -72,6 +73,7 @@ and open the template in the editor.
                             <div class="card-footer">
                                 <a href="product_detail.php?productID=2" class="btn btn-secondary btn-sm">More Info</a>
                                 <a href="https://c.static-nike.com/a/images/t_prod_ss/w_960%2Cc_limit%2Cf_auto/jysjd3c50qsqndqoxq0p/air-max-90-new-species-release-date.jpg">Image source</a>
+                                <p>Credits to Nike</p>
                             </div>
                         </div>
                     </div>
@@ -87,6 +89,7 @@ and open the template in the editor.
                             <div class="card-footer">
                                 <a href="product_detail.php?productID=3" class="btn btn-secondary btn-sm">More Info</a>
                                 <a href="https://media.endclothing.com/end-features/f_auto,q_auto,w_780/prodfeatures/2f0a022a143b6d74a26dc62ff591eb6022ee1c07_dm_hs_03.jpg">Image source</a>
+                                <p>Credits to Dr Martens</p>
                             </div>
                         </div>
                     </div>
