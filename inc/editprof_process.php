@@ -41,7 +41,7 @@ if ($cart == 1) {
 
         if ($stmt->execute() == true) {
             ?>
-            <script> location.replace("../checkout.php?success");</script>
+            <script> location.replace("../shoppingcart.php?success");</script>
             <?php
 
         } else {
