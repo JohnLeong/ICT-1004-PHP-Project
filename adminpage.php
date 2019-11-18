@@ -4,7 +4,7 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
-<html>
+<html lang="en">
     <head>
         <title>Zenith - Admin Page</title>
         <meta charset="UTF-8">
@@ -278,15 +278,15 @@ and open the template in the editor.
         function insertProduct() {
             global $insertProdSuccess, $error;
 //            global $prodid, $prodname, $brand, $desc, $type, $gender, $image, $imgsrc;
-            $prodid = $_POST["prodid"];
-            $prodname = $_POST["prodname"];
-            $brand = $_POST["brand"];
-            $desc = $_POST["desc"];
-            $type = $_POST["type"];
-            $price = $_POST["price"];
-            $gender = $_POST["gender"];
-            $image = "img/" . $_POST["image"];
-            $imgsrc = $_POST["imgsrc"];
+            $prodid = sanitize_input($_POST["prodid"]);
+            $prodname = sanitize_input($_POST["prodname"]);
+            $brand = sanitize_input($_POST["brand"]);
+            $desc = sanitize_input($_POST["desc"]);
+            $type = sanitize_input($_POST["type"]);
+            $price = sanitize_input($_POST["price"]);
+            $gender = sanitize_input($_POST["gender"]);
+            $image = "img/" . sanitize_input($_POST["image"]);
+            $imgsrc = sanitize_input($_POST["imgsrc"]);
 
             $conn = new mysqli("161.117.122.252", "p5_2", "yzhbGyqP87", "p5_2");
             // Check connection
@@ -452,7 +452,7 @@ and open the template in the editor.
                                                     </div>
                                                     <div class="row">
                                                         <label for="stock">Stock: </label>
-                                                        <input type="text" class="form-control" name="stock" id="stock" placeholder="3" required>
+                                                        <input type="number" class="form-control" name="stock" id="stock" placeholder="3" required>
                                                     </div>
                                                     <div class="row">
                                                         <input type="hidden" name="prodid" value="3">
