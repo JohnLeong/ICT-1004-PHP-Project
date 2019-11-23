@@ -53,50 +53,44 @@ and open the template in the editor.
         if (!isset($_SESSION['name'])) {
             echo "<script>window.location.href='index.php'</script>";
         }
-        
+
         $editChoice = 0;
         $success = $getsuccess = $dsuccess = true;
         $prodid = 0;
-        
+
         // Check for valid ID for admins
         if (!isset($_SESSION['zid'])) {
             $id = 0;
         } else {
             $id = $_SESSION['zid'];
         }
-        
+
         // If standard user tries to access, redirect back to index
         if ($id != 3) {
             echo "<script>window.location.href='index.php'</script>";
         }
-        
-        
+
+
         // GET from URL for edit choice for admin Either PROD or MEMB
         if (!isset($_GET['edit'])) {
             $editChoice = "";
         } else {
             $editChoice = $_GET['edit'];
         }
-        
+
         // POST from form to get either value of 1,2,3
         if (!isset($_POST["prodid"])) {
             $prodid = 0;
         } else {
             $prodid = $_POST["prodid"];
         }
-        // Check if membDel if active for admin to delete member
-        if (!isset($_POST["delMembBtn"])) {
-            $membDel = 0;
+//        // Check if membDel if active for admin to delete member
+        if (!isset($_POST["viewHistMembBtn"])) {
+            $membHist = 0;
         } else {
-            $membDel = $_POST["delMembBtn"];
+            $membHist = $_POST["viewHistMembBtn"];
         }
-//        // Check if update is active for admint to update member
-//        if (!isset($_POST["updateMember"])) {
-//            $upMemb = 0;
-//        } else {
-//            $upMemb = 1;
-//        }
-//        
+
         // POST result for PRODID, 1 = Insert, 2 = Delete, 3 = Insert Product Detail
         if ($prodid == 1) {
             insertProduct();
@@ -105,12 +99,11 @@ and open the template in the editor.
         } else if ($prodid == 3) {
             insertProductDetail();
         }
-        
+
         // POST result for MEMBDEL, 1 = delete, 0 = ignore
-        if ($membDel == 1) {
-            deleteMember();
-        }
-        
+//        if ($membDel == 1) {
+//            deleteMember();
+//        }
         // Sanitize Function
         function sanitize_input($data) {
             $data = trim($data);
@@ -118,6 +111,7 @@ and open the template in the editor.
             $data = htmlspecialchars($data);
             return $data;
         }
+
         // Get Zenith Members Info
         function getMembersInfo() {
             global $zidArr, $fnameArr, $lnameArr, $emailArr, $lastloginArr, $getsuccess, $error;
@@ -210,70 +204,30 @@ and open the template in the editor.
             }
             $conn->close();
         }
-        // Not used at the moment
-        function insertMember() {
-            global $isuccess, $error;
 
-            $fname = sanitize_input($_POST["fname"]);
-            $lname = sanitize_input($_POST["lname"]);
-            $email = sanitize_input($_POST["email"]);
-
-
-
-            $first_name = sanitize_input($_POST["first_name"]);
-            $last_name = sanitize_input($_POST["last_name"]);
-
-            $email = sanitize_input($_POST["email"]);
-            $check = "SELECT * FROM p5_2.zenith_members WHERE email='$email'";
-            $dupcheck = $conn->query($check);
-            // to check if this email have been registered before
-            if ($dupcheck->num_rows > 0) {
-                $data = $dupcheck->fetch_assoc();
-                echo '<script type="text/javascript">alert("Email already exist");</script>';
-            } else {
-                //hashing of password and checking if both password matches
-                $password = sanitize_input($_POST["password"]);
-                if ($_POST["password"] != $_POST["confirm_password"]) {
-                    header("Location: ../register.php?pwnotmatch");
-                } else {
-                    $hash = password_hash($password, PASSWORD_DEFAULT);
-                    $sql = "INSERT INTO p5_2.zenith_members (fname, lname, email, password)";
-                    $sql .= " VALUES ('$first_name', '$last_name', '$email', '$hash')";
-                    // Execute the query
-                    if (!$conn->query($sql)) {
-                        $error = "Database error: " . $conn->error;
-                        $success = false;
-                    }
-                    $flag = 1;
-                    $checkd = "SELECT * FROM p5_2.zenith_members WHERE email='$email'";
-                    $data = $conn->query($checkd);
-                }
-            }
-        }
-        
-        function deleteMember() {
-            global $dsuccess, $error;
-            $delzid = $_POST["member_select"];
-            // Create connection
-            $conn = new mysqli("161.117.122.252", "p5_2", "yzhbGyqP87", "p5_2");
-            // Check connection
-            if ($conn->connect_error) {
-                $errorMsg = "Connection failed: " . $conn->connect_error;
-                $dsuccess = false;
-            } else {
-                $stmt = $conn->prepare("DELETE FROM p5_2.zenith_members WHERE zmember_id= ?");
-                $stmt->bind_param("i", $delzid);
-                if ($stmt->execute() == TRUE) {
-                    $conn->query("ALTER TABLE p5_2.zenith_members AUTO_INCREMENT = $delzid");
-                    echo "<main><h1 align='center'>Member Deleted!</h1></main>";
-
-                    $dsuccess = true;
-                } else {
-                    $error .= $conn->error;
-                    $dsuccess = false;
-                }
-            }
-        }
+//        function deleteMember() {
+//            global $dsuccess, $error;
+//            $delzid = $_POST["member_select"];
+//            // Create connection
+//            $conn = new mysqli("161.117.122.252", "p5_2", "yzhbGyqP87", "p5_2");
+//            // Check connection
+//            if ($conn->connect_error) {
+//                $errorMsg = "Connection failed: " . $conn->connect_error;
+//                $dsuccess = false;
+//            } else {
+//                $stmt = $conn->prepare("DELETE FROM p5_2.zenith_members WHERE zmember_id= ?");
+//                $stmt->bind_param("i", $delzid);
+//                if ($stmt->execute() == TRUE) {
+//                    $conn->query("ALTER TABLE p5_2.zenith_members AUTO_INCREMENT = $delzid");
+//                    echo "<main><h1 align='center'>Member Deleted!</h1></main>";
+//
+//                    $dsuccess = true;
+//                } else {
+//                    $error .= $conn->error;
+//                    $dsuccess = false;
+//                }
+//            }
+//        }
 
         function insertProduct() {
             global $insertProdSuccess, $error;
@@ -322,7 +276,7 @@ and open the template in the editor.
                 $stmt1->bind_param("s", $delProdID);
                 $stmt2 = $conn->prepare("DELETE FROM p5_2.products_review WHERE product_ID = ?");
                 $stmt2->bind_param("s", $delProdID);
-                
+
                 // Delete any details linked to product
                 $stmt1->execute();
                 // Delete any reviews linked to product
@@ -515,51 +469,62 @@ and open the template in the editor.
                     <div class="row align-items-center my-5">
                         <!-- /.col-lg-8 -->
                         <div class="col-lg-12">
-                            <h2 class="mb-4">ADMIN PAGE - DELETE Members</h2>
+                            <h2 class="mb-4">ADMIN PAGE - View Members</h2>
                             <div id="updatebox">
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div class="row">
                                             <div class="col-lg-12">
-                                                <form action="<?php echo htmlspecialchars('adminpage.php') ?>" method="POST" name="updMembform">  
+                                                <form action="<?php echo htmlspecialchars('adminorderhist.php') ?>" method="POST" name="Membform">  
                                                     <h3>Existing Members</h3>
-                                                    <!--<select name="member_select" id="product_select" class="form-control">-->
                                                     <?php
                                                     getMembersInfo();
-//                                                    for ($i = 0; $i < sizeof($zidArr); $i++) {
-//                                                        echo "<option value='$zidArr[$i]'" . ">" . $zidArr[$i] . " : " . $fnameArr[$i] . " " . $lnameArr[$i] . " - " . $emailArr[$i] . "</option>";
-//                                                    }
                                                     ?>
-                                                    <table align="center" width="100%">
-                                                        <tr>
-                                                            <th>Member ID</th>
-                                                            <th>First Name</th>
-                                                            <th>Last Name</th>
-                                                            <th>Email</th>
-                                                            <th>Last Login</th>
-                                                        </tr>
-                                                        <?php
-                                                        for ($i = 0; $i < sizeof($zidArr); $i++) {
-//                                                        echo "<option value='$zidArr[$i]'" . ">" . $zidArr[$i] . " : " . $fnameArr[$i] . " " . $lnameArr[$i] . " - " . $emailArr[$i] . "</option>";
-                                                            echo "<tr>";
-                                                            echo "<td>$zidArr[$i]</td>";
-                                                            echo "<td>$fnameArr[$i]</td>";
-                                                            echo "<td>$lnameArr[$i]</td>";
-                                                            echo "<td>$emailArr[$i]</td>";
-                                                            echo "<td>$lastloginArr[$i]</td>";
-                                                            echo "<td><input type='hidden' name='member_select' value='$zidArr[$i]'</td>";
-                                                            echo "<td><button type='submit' value='1' name='delMembBtn'class='btn btn-outline-dark'>Delete </button></td>";
-                                                            echo "</tr>";
-                                                        }
-                                                        ?>
-                                                    </table>
+                                                    <div style="overflow-x: auto">
+                                                        <table align="center" width="100%">
+                                                            <tr>
+                                                                <th>Member ID</th>
+                                                                <th>First Name</th>
+                                                                <th>Last Name</th>
+                                                                <th>Email</th>
+                                                                <th>Last Login</th>
+                                                            </tr>
+                                                            <?php
+                                                            for ($i = 1; $i < sizeof($zidArr); $i++) {
+                                                                echo "<tr>";
+                                                                echo "<td>$zidArr[$i]</td>";
+                                                                echo "<td>$fnameArr[$i]</td>";
+                                                                echo "<td>$lnameArr[$i]</td>";
+                                                                echo "<td>$emailArr[$i]</td>";
+                                                                echo "<td>$lastloginArr[$i]</td>";
+//                                                                echo "<td><input type='hidden' name='member_select' value='" . $zidArr[$i] . "'</td>";
+//                                                                echo "<td><button type='submit' name='viewHistMembBtn'class='btn btn-outline-dark'>View</button></td>";
+                                                                echo "</tr>";
+                                                            }
+                                                            ?>
+                                                        </table>
+                                                        <hr/><br/><br/>
+                                                        <h2>View Order History</h2>
+                                                        <div class="row">
+                                                            <div class="col-lg-3">
+                                                                <select class="form-control" name="member_select">
+                                                                    <?php
+                                                                    for ($i = 1; $i < sizeof($zidArr); $i++) {
+                                                                        echo "<option value='$zidArr[$i]'" . ">" . $zidArr[$i] . " : " . $fnameArr[$i] . " " . $lnameArr[$i] . "</option>";
+                                                                    }
+                                                                    ?>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-lg-1">
+                                                                <button type='submit' name='viewHistMembBtn'class='btn btn-outline-dark'>View</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                     <br/>
-    <!--                                                    <input type="hidden" name="updateMember" value="1">
-                                                    <button type="submit" value="1" name="membBtn" class="btn btn-outline-dark">Update </button>-->
                                                 </form>
                                                 <br/><br/><br/><br/><hr>
                                                 <div class="row">
-                                                    <button style="position:absolute; right:0;" type="submit" onclick="window.history.back()" class="btn btn-outline-dark" id="editBtn">Back</button>
+                                                    <button style="position:absolute; right:0;" type="submit" onclick="window.history.back()" class="btn btn-outline-dark">Back</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -582,8 +547,6 @@ and open the template in the editor.
             <!-- **************************************************************************************************************************************************************************************-->
             <!-- **************************************************************************************************************************************************************************************-->
             <?php
-//        } else if ($upMemb == 1) {
-//            // For updating of Members
         } else {
             ?>
             <main>
@@ -625,7 +588,7 @@ and open the template in the editor.
                                             <img class="card-img-top" src="img/editmember.png" alt="Edit Members">
                                             <!-- SOURCE: https://www.kissclipart.com/password-clipart-password-policy-computer-security-zk32t8/ -->
                                             <div class="card-body">
-                                                <h5 class="card-title">Edit Members</h5>
+                                                <h5 class="card-title">View Members</h5>
                                                 <!--<p class="card-text"></p>-->
                                             </div>
                                         </a>
