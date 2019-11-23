@@ -51,7 +51,8 @@ and open the template in the editor.
         <?php
         include 'inc/header.php';
         if (!isset($_SESSION['name'])) {
-            header('Location: index.php');
+//            header('Location: index.php');
+            echo "<script>window.location.href='index.php'</script>";
         }
 
         $success = true;
