@@ -7,7 +7,7 @@ and open the template in the editor.
 <html lang="en">
     <head>
         <?php
-        //Constants for accessing our DB:
+        //Constants for accessing our DB
         define("DBHOST", "161.117.122.252");
         define("DBNAME", "p5_2");
         define("DBUSER", "p5_2");

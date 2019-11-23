@@ -3,6 +3,9 @@
     
     include_once("session.php");
     
+    //Regenerate new session id everytime user change page.
+    session_regenerate_id(true);
+    
     if (isset($_SESSION['last_ip']) === false) {
         $_SESSION['last_ip'] = $_SERVER['REMOTE_ADDR'];
     }

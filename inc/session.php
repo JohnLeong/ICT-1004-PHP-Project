@@ -11,10 +11,4 @@ function setLogin($first_name, $last_name) {
 function getID($zid) {
     $_SESSION['zid'] = $zid;
 }
-
-function endSession() {
-    $_SESSION = array();
-    session_unset();
-    session_destroy();
-}
 ?>
