@@ -56,7 +56,7 @@ and open the template in the editor.-->
                         </div>
                         <div class="form-group">
                             <label for="email">Email:</label>
-                            <input type="email" name="email" class="form-control" pattern="/^[a-zA-Z0-9]+@[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]{2,4}$" 
+                            <input type="email" name="email" class="form-control" pattern="/^(([^<>()[\]\\.,;:\s@\]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/" 
                                    required id="email" title="Please enter a valid email addresss.">
                         </div>
                         <div class="form-group">

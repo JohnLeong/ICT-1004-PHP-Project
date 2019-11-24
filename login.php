@@ -69,7 +69,7 @@ and open the template in the editor.-->
                         <div class="col-lg-10" >
                             <h2>NOT A MEMBER?</h2>
                             <div class="forRegister">
-                                <p>Create an account right now and receive a 10% promo code! This is for first timers only! Hurry up and register now!</p>
+                                <p>Create an account right now and receive a 20% promo code! This is for first timers only! Hurry up and register now!</p>
                                 <a href="register.php"><button class="btn text-uppercase" type="button">Register <i class="fas fa-user-edit"></i></button></a>
                             </div>
                         </div>

@@ -11,27 +11,31 @@ if ($conn->connect_error) {
     $first_name = sanitize_input($_POST["first_name"]);
     $last_name = sanitize_input($_POST["last_name"]);
 
-    $email = sanitize_input($_POST["email"]);
+    $email = $_POST["email"];
     $check = "SELECT * FROM p5_2.zenith_members WHERE email='$email'";
-    $dupcheck = $conn->query($check);
+    $dupcheck = mysqli_query($conn, $check);
     // to check if this email have been registered before
-    if ($dupcheck->num_rows > 0) {
-        $data = $dupcheck->fetch_assoc();
+    if (mysqli_num_rows($dupcheck) > 0) {
         header("Location: ../register.php?emailexist");
     } else {
+        $email = sanitize_input($_POST["email"]);
         //hashing of password and checking if both password matches
         $password = sanitize_input($_POST["password"]);
         if ($_POST["password"] != $_POST["confirm_password"]) {
             header("Location: ../register.php?pwnotmatch");
         } else {
-            $hash = password_hash($password, PASSWORD_DEFAULT);
-            $sql = "INSERT INTO p5_2.zenith_members (fname, lname, email, password)";
-            $sql .= " VALUES ('$first_name', '$last_name', '$email', '$hash')";
+            
+            $sql = "INSERT INTO p5_2.zenith_members (fname, lname, email, password) VALUES (?, ?, ?, ?)";
+            $stmt = mysqli_stmt_init($conn);
+            
             // Execute the query
-            if (!$conn->query($sql)) {
+            if (!mysqli_stmt_prepare($stmt, $sql)) {
                 $errorMsg = "Database error: " . $conn->error;
                 $success = false;
             }
+            $hash = password_hash($password, PASSWORD_DEFAULT);
+            mysqli_stmt_bind_param($stmt, "ssss", $first_name, $last_name, $email, $hash);
+            mysqli_stmt_execute($stmt);
             $flag = 1;
             $checkd = "SELECT * FROM p5_2.zenith_members WHERE email='$email'";
             $data = $conn->query($checkd);
@@ -55,9 +59,10 @@ if ($conn->connect_error) {
                         $flag = 0;
                     }
                 }
+                header("Location: ../login.php?successful");
             }
         }
-    } header("Location: ../login.php?successful");
+    } 
 }$conn->close();
 
 //Helper function that checks input for malicious or unwanted content.
