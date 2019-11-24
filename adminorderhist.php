@@ -1,3 +1,21 @@
+<?php
+include 'inc/header.php';
+if (!isset($_SESSION['name'])) {
+    header('Location: index.php');
+}
+// Check for valid ID for admins
+if (!isset($_SESSION['zid'])) {
+    $id = 0;
+} else {
+    $id = $_SESSION['zid'];
+}
+
+// If standard user tries to access, redirect back to index
+if ($id != 3) {
+    header('Location: index.php');
+}
+?>
+
 <!DOCTYPE html>
 <!--
 To change this license header, choose License Headers in Project Properties.
@@ -27,23 +45,6 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
-        <?php
-        include 'inc/header.php';
-        if (!isset($_SESSION['name'])) {
-            header('Location: index.php');
-        }
-        // Check for valid ID for admins
-        if (!isset($_SESSION['zid'])) {
-            $id = 0;
-        } else {
-            $id = $_SESSION['zid'];
-        }
-
-        // If standard user tries to access, redirect back to index
-        if ($id != 3) {
-            echo "<script>window.location.href='index.php'</script>";
-        }
-        ?>
         <main>
             <h2>Order History</h2>
             <?php
