@@ -1,3 +1,21 @@
+<?php
+include 'inc/header.php';
+if (!isset($_SESSION['name'])) {
+    header('Location: index.php');
+}
+
+// Check for valid ID for admins
+if (!isset($_SESSION['zid'])) {
+    $id = 0;
+} else {
+    $id = $_SESSION['zid'];
+}
+
+// If standard user tries to access, redirect back to index
+if ($id != 3) {
+    header('Location: account.php');
+}
+?>
 <!DOCTYPE html>
 <!--
 To change this license header, choose License Headers in Project Properties.
@@ -30,6 +48,12 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <script type="text/javascript">
+            function incrementValue(val) {
+                var value = parseInt(document.getElementById('updatestock').value);
+                value = isNaN(value) ? 0 : value;
+                value = value + val;
+                document.getElementById('updatestock').value = value;
+            }
             $(document).ready(function () {
                 // executes when HTML-Document is loaded and DOM is ready
                 console.log("document is ready");
@@ -42,34 +66,16 @@ and open the template in the editor.
                     $(this).removeClass('shadow-lg');
                 }
                 );
-
                 // document ready  
             });
+
         </script>
     </head>
     <body>
         <?php
-        include 'inc/header.php';
-        if (!isset($_SESSION['name'])) {
-            echo "<script>window.location.href='index.php'</script>";
-        }
-
         $editChoice = 0;
         $success = $getsuccess = $dsuccess = true;
         $prodid = 0;
-
-        // Check for valid ID for admins
-        if (!isset($_SESSION['zid'])) {
-            $id = 0;
-        } else {
-            $id = $_SESSION['zid'];
-        }
-
-        // If standard user tries to access, redirect back to index
-        if ($id != 3) {
-            echo "<script>window.location.href='index.php'</script>";
-        }
-
 
         // GET from URL for edit choice for admin Either PROD or MEMB
         if (!isset($_GET['edit'])) {
@@ -98,6 +104,8 @@ and open the template in the editor.
             deleteProduct();
         } else if ($prodid == 3) {
             insertProductDetail();
+        } else if ($prodid == 4) {
+            updateStock();
         }
 
         // POST result for MEMBDEL, 1 = delete, 0 = ignore
@@ -205,33 +213,93 @@ and open the template in the editor.
             $conn->close();
         }
 
-//        function deleteMember() {
-//            global $dsuccess, $error;
-//            $delzid = $_POST["member_select"];
-//            // Create connection
-//            $conn = new mysqli("161.117.122.252", "p5_2", "yzhbGyqP87", "p5_2");
-//            // Check connection
-//            if ($conn->connect_error) {
-//                $errorMsg = "Connection failed: " . $conn->connect_error;
-//                $dsuccess = false;
-//            } else {
-//                $stmt = $conn->prepare("DELETE FROM p5_2.zenith_members WHERE zmember_id= ?");
-//                $stmt->bind_param("i", $delzid);
-//                if ($stmt->execute() == TRUE) {
-//                    $conn->query("ALTER TABLE p5_2.zenith_members AUTO_INCREMENT = $delzid");
-//                    echo "<main><h1 align='center'>Member Deleted!</h1></main>";
-//
-//                    $dsuccess = true;
-//                } else {
-//                    $error .= $conn->error;
-//                    $dsuccess = false;
-//                }
-//            }
-//        }
+        function getProductDet() {
+            global $upidArr, $uprodNameArr, $getsuccess, $error, $pdidArr, $ecolourArr, $esizeArr, $estockArr;
+//            $pid = $_POST["product_select"];
+            $upidArr = $uprodNameArr = $pdidArr = $ecolourArr = $esizeArr = $estockArr = array();
+            define("DBHOST", "161.117.122.252");
+            define("DBNAME", "p5_2");
+            define("DBUSER", "p5_2");
+            define("DBPASS", "yzhbGyqP87");
+
+            $success = true;
+
+            $conn = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
+            // Check connection
+            if ($conn->connect_error) {
+                $error = "Connection failed: " . $conn->connect_error;
+                $getsuccess = false;
+            } else {
+                // Prepare and bind
+                $stmt = $conn->prepare("SELECT D.productDetail_ID, D.product_ID, D.colour, D.size, D.stock, P.product_name FROM p5_2.product_details D , p5_2.products P where P.product_ID = D.product_ID");
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                // Execute the query
+                if ($result != null) {
+                    $numOfDet = $result->num_rows;
+
+                    if ($result->num_rows > 0) {
+                        for ($i = 0; $i < $numOfDet; $i++) {
+                            $row = $result->fetch_assoc();
+                            $pdidArr[$i] = $row["productDetail_ID"];
+                            $uprodNameArr[$i] = $row["product_name"];
+                            $pidArr[$i] = $row["product_ID"];
+                            $ecolourArr[$i] = $row["colour"];
+                            $esizeArr[$i] = $row["size"];
+                            $estockArr[$i] = $row["stock"];
+                        }
+                    } else {
+                        $error .= $conn->error;
+                        $getsuccess = false;
+                    }
+                } else {
+                    $error .= $conn->error;
+                    $getsuccess = false;
+                }
+                $result->free_result();
+            }
+            $conn->close();
+        }
+
+        function updateStock() {
+            global $upsuccess, $error;
+            $pdid = sanitize_input($_POST["product_select"]);
+            $ustock = sanitize_input($_POST["updatestock"]);
+
+            define("DBHOST", "161.117.122.252");
+            define("DBNAME", "p5_2");
+            define("DBUSER", "p5_2");
+            define("DBPASS", "yzhbGyqP87");
+
+            $success = true;
+
+            $conn = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
+            // Check connection
+            if ($conn->connect_error) {
+                $error = "Connection failed: " . $conn->connect_error;
+                $getsuccess = false;
+            } else {
+                // Prepare and bind
+
+                $stmt = $conn->prepare("UPDATE p5_2.product_details SET stock = ? WHERE productDetail_ID = ?");
+                $stmt->bind_param("ii", $ustock, $pdid);
+                $stmt->execute();
+
+                // Execute the query
+                if ($stmt->execute() == true) {
+                    $upsuccess=true;
+                    echo "<main><h1 align='center'>Stock Updated!</h1></main>";
+                } else {
+                    $error .= $conn->error;
+                    $upsuccess=false;;
+                }
+            }
+            $conn->close();
+        }
 
         function insertProduct() {
             global $insertProdSuccess, $error;
-//            global $prodid, $prodname, $brand, $desc, $type, $gender, $image, $imgsrc;
             $prodid = sanitize_input($_POST["prodid"]);
             $prodname = sanitize_input($_POST["prodname"]);
             $brand = sanitize_input($_POST["brand"]);
@@ -339,35 +407,35 @@ and open the template in the editor.
                                                     <h3><b>Insert Product</b></h3>
                                                     <div class="row">
                                                         <label for="prodname" class="form-label-group">Product Name:</label>
-                                                        <input class="form-control "type="text" name="prodname" id="prodname" placeholder="Flyknit, etc" required>
+                                                        <input class="form-control "type="text" name="prodname" id="prodname" pattern=".{1,255}" title="Contains only up to 255 characters" placeholder="Flyknit, etc" required>
                                                     </div>
                                                     <div class="row">
                                                         <label for="brand" class="form-label-group">Brand:</label>
-                                                        <input class="form-control "type="text" name="brand" id="brand" placeholder="Nike, Adidas, etc" required>
+                                                        <input class="form-control "type="text" name="brand" id="brand" pattern=".{1,45}" title="Contains only up to 45 characters" placeholder="Nike, Adidas, etc" required>
                                                     </div>
                                                     <div class="row">
                                                         <label for="desc" class="form-label-group">Description:</label>
-                                                        <input class="form-control "type="text" name="desc" id="desc" placeholder="Built for intense workouts with a tough ripstop material..." required>
+                                                        <input class="form-control "type="text" name="desc" id="desc" pattern=".{1,255}" title="Contains only up to 255 characters" placeholder="Built for intense workouts with a tough ripstop material..." required>
                                                     </div>
                                                     <div class="row">
                                                         <label for="type" class="form-label-group">Type:</label>
-                                                        <input class="form-control "type="text" name="type" id="type" placeholder="Running, Lifestyle, Training, etc" required>
+                                                        <input class="form-control "type="text" name="type" id="type" pattern=".{1,45}" title="Contains only up to 45 characters" placeholder="Running, Lifestyle, Training, etc" required>
                                                     </div>
                                                     <div class="row">
                                                         <label for="price" class="form-label-group">Unit Price:</label>
-                                                        <input class="form-control "type="number" min="0" step=".01" name="price" id="price" placeholder="199.99" required>
+                                                        <input class="form-control" type="number" min="0" step=".01" name="price" id="price" placeholder="199.99" required>
                                                     </div>
                                                     <div class="row">
                                                         <label for="gender" class="form-label-group">Gender:</label>
-                                                        <input class="form-control "type="text" name="gender" id="gender" placeholder="Men/Women" required>
+                                                        <input class="form-control "type="text" name="gender" id="gender" pattern=".{1,45}" title="Contains only up to 45 characters" placeholder="Men/Women" required>
                                                     </div>
                                                     <div class="row">
                                                         <label for="image" class="form-label-group">Image Name:</label>
-                                                        <input class="form-control "type="text" name="image" id="image" placeholder="shoes.jpg/shoes.png" required>
+                                                        <input class="form-control "type="text" name="image" id="image" pattern=".{1,100}" title="Contains only up to 100 characters" placeholder="shoes.jpg/shoes.png" required>
                                                     </div>
                                                     <div class="row">
                                                         <label for="imgsrc" class="form-label-group">Image Source:</label>
-                                                        <input class="form-control "type="text" name="imgsrc" id="imgsrc" placeholder="www.adidas.com/image/running/shoes.png" required>
+                                                        <input class="form-control "type="text" name="imgsrc" id="imgsrc" pattern=".{1,255}" title="Contains only up to 255 characters" placeholder="www.adidas.com/image/running/shoes.png" required>
                                                         <!--https://www.adidas.com.sg/continental-80-shoes/EH0173.html-->
                                                     </div>
                                                     <div class="row">
@@ -398,19 +466,69 @@ and open the template in the editor.
                                                     </div>
                                                     <div class="row">
                                                         <label for="colour">Colour: </label>
-                                                        <input type="text" class="form-control" name="colour" id="colour" placeholder="White/Black" required>
+                                                        <input type="text" class="form-control" name="colour" pattern="[a-zA-Z]{1,50}" title="Contains only up to 50 characters" id="colour" placeholder="White/Black" required>
                                                     </div>
                                                     <div class="row">
                                                         <label for="size">Size: </label>
-                                                        <input type="text" class="form-control" name="size" id="size" placeholder="US 6.5" required>
+                                                        <input type="text" class="form-control" name="size" id="size" pattern=".{1,50}" title="Contains only up to 50 characters" placeholder="US 6.5" required>
                                                     </div>
                                                     <div class="row">
                                                         <label for="stock">Stock: </label>
-                                                        <input type="number" class="form-control" name="stock" id="stock" placeholder="3" required>
+                                                        <input type="number" class="form-control" name="stock" id="stock" pattern="[0-9]{1,50}" title="Contains only up to 50 numbers" placeholder="Qty" required>
                                                     </div>
                                                     <div class="row">
                                                         <input type="hidden" name="prodid" value="3">
                                                         <button class="btn btn-outline-dark" type="submit" name="insBtn" id="insBtn">Insert</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <form action="<?php echo htmlspecialchars('adminpage.php') ?> "method="POST" name="upForm">
+                                                    <h3><b>Update Product Details</b></h3>
+                                                    <br/>
+                                                    <label for="product_sel" class="form-label-group"><b>Choose a Product to Update its STOCK into Database:</b></label>
+                                                    <div class="row">
+                                                        <select name="product_select" id="product_select" class="form-control">
+                                                            <?php
+                                                            getProductDet();
+                                                            for ($i = 0; $i < sizeof($pdidArr); $i++) {
+                                                                echo "<option value='$pdidArr[$i]'" . ">" .
+                                                                $pdidArr[$i] . " | " .
+                                                                $uprodNameArr[$i] . " | Colour: " .
+                                                                $ecolourArr[$i] . " | Size: " .
+                                                                $esizeArr[$i] . " | Qty: " .
+                                                                $estockArr[$i]
+                                                                . "</option>";
+                                                            }
+                                                            ?>
+                                                        </select>
+
+                                                    </div>
+                                                    <div class="row">
+                                                        <label for="stock">Update Stock: </label>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-6">
+                                                            <input type="number" class="form-control" name="updatestock" id="updatestock" placeholder="Qty" required>
+                                                        </div>
+                                                        <div class="col-lg-2">
+                                                            <input class="form-control" type="button" onclick="incrementValue(1)" value="+1">
+                                                            <input class="form-control" type="button" onclick="incrementValue(-1)" value="-1">
+                                                        </div>
+                                                        <div class="col-lg-2">
+                                                            <input class="form-control" type="button" onclick="incrementValue(10)" value="+10">
+                                                            <input class="form-control" type="button" onclick="incrementValue(-10)" value="-10">
+                                                        </div>
+                                                        <div class="col-lg-2">
+                                                            <input class="form-control" type="button" onclick="incrementValue(100)"value="+100">
+                                                            <input class="form-control" type="button" onclick="incrementValue(-100)"value="-100">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <input type="hidden" name="prodid" value="4">
+                                                        <button class="btn btn-outline-dark" type="submit" name="insBtn" id="upBtn">Update</button>
                                                     </div>
                                                 </form>
                                             </div>
