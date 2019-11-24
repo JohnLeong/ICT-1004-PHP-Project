@@ -1,3 +1,11 @@
+<?php
+include 'inc/header.php';
+?>
+<?php
+if (!isset($_SESSION['name'])) {
+    header('Location: index.php');
+}
+?>
 <!DOCTYPE html>
 <!--
 To change this license header, choose License Headers in Project Properties.
@@ -47,22 +55,15 @@ and open the template in the editor.
             });
         </script>
     </head>
-    <body>
+    <body>  
         <?php
-        include 'inc/header.php';
-        if (!isset($_SESSION['name'])) {
-//            header('Location: index.php');
-            echo "<script>window.location.href='index.php'</script>";
-        }
-
         $success = true;
         $id = $_SESSION['zid'];
         
         if ($id == 3) {
             echo "<script>window.location.href='adminpage.php'</script>";
         }
-        
-
+       
         getMemberInfo();
 
         function getMemberInfo() {
