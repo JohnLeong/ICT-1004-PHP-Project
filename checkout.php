@@ -184,23 +184,24 @@ and open the template in the editor.-->
                                 </form>
                             </div>
                         </div>
-
-                        <div class="row ">
-                            <form class="col-7 px-0" action="inc/checkout_process.php" method="post" name="checkoutpayment">
-                                <h4 class="px-3">Credit Card Details</h4>
-                                <hr class="ml-3 mb-0">
-                                <div class="row">
-                                    <div class="form-group col-6">
-                                        <div class="inner-addon right-addon">
-                                            <label>Card Holder</label>
-                                            <i class="far fa-user"></i>
-                                            <input id="card-holder" type="text" placeholder="Name" pattern="[A-Za-z]{1.}" class="form-control" required>
-                                        </div>	
+                            <div class="card-body">
+                                <form class="col-sm-7 px-0" action="inc/checkout_process.php" method="post" name="checkoutpayment">
+                                    <h4>Credit Card Details</h4>
+                                    <hr class="mb-0">
+                                    <div class="row">
+                                        <div class="form-group col-xs-5">
+                                            <div class="inner-addon right-addon">
+                                                <label>Card Holder</label>
+                                                <i class="far fa-user"></i>
+                                                <input id="card-holder" type="text" placeholder="Name" pattern="[A-Za-z]{1.}" class="form-control" required>
+                                            </div>	
+                                        </div>
                                     </div>
-                                    <div class="form-group col-6">
+                                    <div class="form-group row pt-0">
                                         <label>Expiration Date</label>
                                         <div class="input-group">
-                                            <select class="form-control" name="mm" required>
+                                            <span class="col-xs-6">
+                                                <select class="form-control" name="mm" required>
                                                 <option selected="selected">MM</option>
                                                 <?php
                                                 // Populating the month array
@@ -213,54 +214,55 @@ and open the template in the editor.-->
                                                     <?php
                                                 }
                                                 ?>
-                                            </select>
+                                                </select>
+                                            </span>
                                             <h5 class="mt-1">&nbsp;&nbsp;/&nbsp;&nbsp;</h5>
-                                            <select class="form-control" name="yy" required>
-                                                <option selected="selected">YY</option>
-                                                <?php
-                                                // Populating the year array
-                                                $years = array("19", "20", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31");
-
-                                                // Iterating through the YY array
-                                                foreach ($years as $years) {
-                                                    ?>
-                                                    <option value="<?= $years ?>"><?= $years ?></option>
+                                            <span class="col-xs-6">
+                                                <select class="form-control" name="yy" required>
+                                                    <option selected="selected">YY</option>
                                                     <?php
-                                                }
-                                                ?>
-                                            </select>
+                                                    // Populating the year array
+                                                    $years = array("20", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31");
+
+                                                    // Iterating through the YY array
+                                                    foreach ($years as $years) {
+                                                        ?>
+                                                        <option value="<?= $years ?>"><?= $years ?></option>
+                                                        <?php
+                                                    }
+                                                    ?>
+                                                </select>
+                                            </span>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row form-group py-0 mb-0 ">
-                                    <div class="inner-addon right-addon col-6">
-                                        <label>Card Number</label>
-                                        <i class="far fa-credit-card"></i>
-                                        <input id="card-number" type="text" class="form-control" placeholder="Card Number" pattern="[0-9]{16}" required>
-                                    </div>	
-                                    <div class="form-group col-4">
+                                    <div class="col-xs-6 col-md-6 form-group pl-0 ml-0">
+                                        <label>Card Number &nbsp;</label>  
+                                        <i class="far fa-credit-card mt-1"></i>
+                                        <input id="card-number" type="text" class="form-control" placeholder="Card Number" pattern="[0-9]{13,16}" required>
+                                    </div>
+                                    <div class="col-xs-2 col-md-2 form-group pl-0">
                                         <label>CVC</label>
+                                        <i class="fas fa-lock mt-1"></i>
                                         <input id="cvc" type="text" class="form-control" placeholder="CVC" pattern="[0-9]{3}" required>
                                     </div>
-                                </div>
-                                <?php
+                                    <?php
                                     $disc = $_POST["discount"];
                                     $shipfee = $_POST["shippingfee"];
                                     $finalp = $_POST["final"];
                                     echo "<input type='hidden' value='$disc' name='discount'>";
                                     echo "<input type='hidden' value='$shipfee' name='shippingfee'>";
                                     echo "<input type='hidden' value='$finalp' name='final'>";
-                                ?>
-                                <button type="submit" name="paynow" class="btn btn-outline-dark mt-0 ml-3">Pay Now&nbsp;<i class="far fa-money-bill-alt"></i></button>
-                            </form>	
-                        </div>
-                        <hr class="mx-3">
-                        <div class="row mx-3 pt-0">
-                            <button type="button" class="btn btn-md btn-secondary md-btn-flat mt-2 mr-3" onclick="window.location.href = 'shoppingcart.php'">Back to Cart</button>
+                                    ?>
+                                    <button type="submit" name="paynow" class="btn btn-outline-dark mt-0">Pay Now&nbsp;<i class="far fa-money-bill-alt"></i></button>
+                                </form>	
+                            </div>
+                            <hr class="mx-3">
+                            <div class="row mx-3 pt-0">
+                                <button type="button" class="btn btn-md btn-secondary md-btn-flat mt-2 mr-3" onclick="window.location.href = 'shoppingcart.php'">Back to Cart</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
         </main>
         <?php
         include 'inc/footer.php';

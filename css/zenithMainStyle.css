@@ -1024,3 +1024,7 @@ form {
 }
 /* End of adminpage box*/
 
+    .test {
+        width: 100%;
+        object-fit: contain;
+    }

@@ -60,7 +60,7 @@ and open the template in the editor.
                     $shipfee = $row['shipping_fee'];
                     $stats = $row['status'];
             ?>
-            <div class="container px-3 my-2 clearfix">
+            <div class="container px-3 my-2">
                 <!-- Shopping cart table -->
                 <div class="card">
                     <div class="card-header">
@@ -79,8 +79,8 @@ and open the template in the editor.
                                 <thead>
                                     <tr>
                                         <!-- Set columns width -->
-                                        <th class="text-center py-3 px-4" style="width: 300px;">Product Name &amp; Details</th>
-                                        <th class="text-center py-3 px-4" style="width: 100px;">Quantity</th>
+                                        <th class="text-center py-3 px-4 col-md-6 col-xs-6">Product Name &amp; Details</th>
+                                        <th class="text-center py-3 px-4 col-md-6 col-xs-6">Quantity</th>
                                     </tr>
                                 </thead>
                                 <?php
@@ -89,8 +89,8 @@ and open the template in the editor.
                                 
                                 while ($trow = mysqli_fetch_assoc($tresult)) {
                                 ?>
-                                <tbody id="carttab">
-                                    <tr id="row1">
+                                <tbody id="card-body">
+                                    <tr>
                                         <td class="p-4">
                                             <div class="media align-items-center">
                                                 <?php
@@ -142,12 +142,12 @@ and open the template in the editor.
                                     </tr>
                                 </tbody>
                             </table>
-                            <div>
-                                <button type="button" class="btn btn-md btn-secondary md-btn-flat float-right my-3 mx-2" onclick="window.location.href = 'orderhistory.php'">Order History </button>
-                                <button type="button" class="btn btn-md btn-secondary md-btn-flat float-right my-3" onclick="window.location.href = 'index.php'">Back Home </button>
-                            </div>
                         </div>
                     </div> <!-- / Shopping cart table -->
+                    <div>
+                        <button type="button" class="btn btn-md btn-secondary md-btn-flat float-right my-3 mx-2" onclick="window.location.href = 'orderhistory.php'">Order History </button>
+                        <button type="button" class="btn btn-md btn-secondary md-btn-flat float-right my-3" onclick="window.location.href = 'index.php'">Back Home </button>
+                    </div>
                 </div>   
             </div>
         <?php } 
