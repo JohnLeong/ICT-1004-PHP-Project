@@ -176,7 +176,7 @@ and open the template in the editor.
                             </form>
                         </div> <!-- End of Register box-->
                         <div class="text-align-right">
-                            <button type="submit" onclick="window.history.back()" class="btn btn-outline-dark" id="editBtn">Back</button>
+                            <button type="submit" onclick="window.history.go(-1); return false;" class="btn btn-outline-dark" id="editBtn">Back</button>
                             <button type="submit" onclick="window.location = '<?php echo htmlspecialchars('changePW.php') ?>'" class="btn btn-outline-dark" id="editBtn">Change Password</button>
                             <button type="submit" onclick="window.location = '<?php echo htmlspecialchars('editProfile.php') ?>'" class="btn btn-outline-dark" id="editBtn">Edit</button>
                         </div>

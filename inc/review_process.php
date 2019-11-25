@@ -32,12 +32,18 @@ $success = true;
 if (empty($_POST["reviewbox"])) {
     $errorMsg .= "Review  is required.<br>";
     $success = false;
+} else if (preg_match("/^.{1,500}$/", $_POST["reviewbox"]) == false) {
+    $errorMsg .= "Review box can only fit 500 characters";
+    $success = false;
 } else {
     $reviews = sanitize_input($_POST["reviewbox"]);
 }
 $error .= $errorMsg;
-
-insertNewReviews();
+if ($success == true) {
+    insertNewReviews();
+}else {
+    header("Location: ../product_detail.php?productID=$pid" . "?RFailed");
+}
 
 function insertNewReviews() {
     global $zid, $pid, $success, $errorMsg, $date, $reviews, $numOfReviews;
@@ -53,8 +59,8 @@ function insertNewReviews() {
 
         // SQL Statement
         $stmt = $conn->prepare("INSERT INTO p5_2.products_review (product_ID, zmember_id, reviews, datetime) VALUES (?,?,?,?)");
-        $stmt->bind_param("iiss",$pid, $zid, $reviews, $date);
-        
+        $stmt->bind_param("iiss", $pid, $zid, $reviews, $date);
+
         $result = $stmt->get_result();
 
 
@@ -77,4 +83,5 @@ function sanitize_input($data) {
     $data = htmlspecialchars($data);
     return $data;
 }
+
 ?>

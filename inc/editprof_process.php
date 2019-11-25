@@ -1,4 +1,5 @@
 <?php
+
 include "header.php";
 if (!isset($_SESSION['saveBtn'])) {
     header('Location: ../index.php?404');
@@ -53,14 +54,17 @@ if ($cart == 1) {
 
 function getMemberInfo() {
     global $first_name, $last_name, $email, $gender, $mobile, $country, $city, $address;
-    global $dob, $dob_d, $dob_m, $dob_y;
+    global $dob, $dob_d, $dob_m, $dob_y, $getsuccess;
 
     //first name
     $error = "";
     $first_name = $errorMsg = "";
     if (empty($_POST["first_name"])) {
         $errorMsg .= "First name is required.<br>";
-        $success = false;
+        $getsuccess = false;
+    } else if (preg_match("/^[a-zA-Z]{1,45}$/", $_POST["first_name"]) == false) {
+        $errorMsg .= "First Name can only fit 45 alphabets.";
+        $getsuccess = false;
     } else {
         $first_name = sanitize_input($_POST["first_name"]);
     }
@@ -70,22 +74,25 @@ function getMemberInfo() {
     $last_name = $errorMsg = "";
     if (empty($_POST["last_name"])) {
         $errorMsg .= "Last name is required.<br>";
-        $success = false;
+        $getsuccess = false;
+    } else if (preg_match("/^[a-zA-Z]{1,45}$/", $_POST["last_name"]) == false) {
+        $errorMsg .= "Last Name can only fit 45 alphabets.";
+        $getsuccess = false;
     } else {
         $last_name = sanitize_input($_POST["last_name"]);
     }
     $error .= $errorMsg;
-    global $success;
+    global $getsuccess;
     //email
     $email = $errorMsg = "";
     if (empty($_POST["email"])) {
         $errorMsg .= "Email is required.<br>";
-        $success = false;
+        $getsuccess = false;
     } else {
         $email = sanitize_input($_POST["email"]);
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $errorMsg .= "Invalid email format.";
-            $success = false;
+            $getsuccess = false;
         }
     }
 
@@ -93,7 +100,10 @@ function getMemberInfo() {
     $mobile = $errorMsg = "";
     if (empty($_POST["mobile"])) {
         $errorMsg .= "Mobile is required.<br>";
-        $success = false;
+        $getsuccess = false;
+    } else if (preg_match("/^[0-9]{8,12}$/", $_POST["mobile"]) == false) {
+        $errorMsg .= "Mobile can only contain 8 - 12 numbers.";
+        $getsuccess = false;
     } else {
         $mobile = sanitize_input($_POST["mobile"]);
     }
@@ -102,7 +112,7 @@ function getMemberInfo() {
     $country = $errorMsg = "";
     if (empty($_POST["country"])) {
         $errorMsg .= "Country is required.<br>";
-        $success = false;
+        $getsuccess = false;
     } else {
         $country = sanitize_input($_POST["country"]);
     }
@@ -111,7 +121,10 @@ function getMemberInfo() {
     $city = $errorMsg = "";
     if (empty($_POST["city"])) {
         $errorMsg .= "City is required.<br>";
-        $success = false;
+        $getsuccess = false;
+    } else if (preg_match("/^[a-zA-Z]{1,45}$/", $_POST["city"]) == false) {
+        $errorMsg .= "City can only fit 45 alphabets.";
+        $getsuccess = false;
     } else {
         $city = sanitize_input($_POST["city"]);
     }
@@ -129,7 +142,7 @@ function getMemberInfo() {
     $gender = $errorMsg = "";
     if (empty($_POST["gender"])) {
         $errorMsg .= "Gender is required.<br>";
-        $success = false;
+        $getsuccess = false;
     } else {
         $gender = sanitize_input($_POST["gender"]);
     }
@@ -137,7 +150,10 @@ function getMemberInfo() {
     $address = $errorMsg = "";
     if (empty($_POST["address"])) {
         $errorMsg .= "Address is required.<br>";
-        $success = false;
+        $getsuccess = false;
+    } else if (preg_match("/^.{1,45}$/", $_POST["address"]) == false) {
+        $errorMsg .= "Address can only fit 45 alphabets.";
+        $getsuccess = false;
     } else {
         $address = sanitize_input($_POST["address"]);
     }
@@ -153,8 +169,9 @@ function sanitize_input($data) {
 
 function updateMemberInfoPrep() {
     global $id, $email, $first_name, $last_name, $dob;
-    global $gender, $mobile, $country, $city, $address, $success, $zid;
-    global $day, $month, $year, $error;
+    global $gender, $mobile, $country, $city, $address, $updsuccess, $zid;
+    global $day, $month, $year, $error;    
+    
     getMemberInfo();
     $id = $_SESSION['zid'];
     // Create connection
@@ -162,7 +179,7 @@ function updateMemberInfoPrep() {
     // Check connection
     if ($conn->connect_error) {
         $errorMsg = "Connection failed: " . $conn->connect_error;
-        $success = false;
+        $updsuccess = false;
     } else {
         // prepare and bind
         $stmt = $conn->prepare("UPDATE p5_2.zenith_members SET fname= ?, lname=?, email=?, dob=?, gender=?, mobile=?, country=?, city=?, address=? WHERE zmember_id=?");
@@ -175,6 +192,7 @@ function updateMemberInfoPrep() {
             header("Location: ../profile.php?UpdateFailed");
         }
     }
+    $stmt->free_result();
     $conn->close();
 }
 ?>

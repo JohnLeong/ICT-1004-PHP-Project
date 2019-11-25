@@ -5,6 +5,11 @@ include 'inc/header.php';
 if (!isset($_SESSION['name'])) {
     header('Location: index.php');
 }
+$id = $_SESSION['zid'];
+
+if ($id == 3) {
+    header('Location: adminpage.php');
+}
 ?>
 <!DOCTYPE html>
 <!--
@@ -58,12 +63,7 @@ and open the template in the editor.
     <body>  
         <?php
         $success = true;
-        $id = $_SESSION['zid'];
-        
-        if ($id == 3) {
-            echo "<script>window.location.href='adminpage.php'</script>";
-        }
-       
+
         getMemberInfo();
 
         function getMemberInfo() {

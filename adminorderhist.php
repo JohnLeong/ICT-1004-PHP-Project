@@ -174,9 +174,9 @@ and open the template in the editor.
                         </div> <?php
                         $forloop += 1;
                     } // End while loop
-                    echo "<button style='position:absolute; right:25%;' type='submit' onclick='window.history.back()' class='btn btn-outline-dark'>Back</button>";
+                    echo "<button style='position:absolute; right:25%;' type='submit' onclick='window.history.go(-1); return false;' class='btn btn-outline-dark'>Back</button>";
                 } else {
-                    echo "You have not purchased anything.<br/>";
+                    echo "No Order History  Found.<br/>";
                     echo "<button type='submit' onclick='window.history.back()' class='btn btn-outline-dark'>Back</button>";
                 }
             }
