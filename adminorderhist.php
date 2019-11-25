@@ -169,16 +169,6 @@ and open the template in the editor.
                                             </tbody>
                                         </table>
                                     </div>
-                                    <?php if ($stats != "Received") { ?>
-                                        <form class="float-right mt-3" action="inc/order_process.php" method="post" name="orderreceived">
-                                            <?php
-                                            echo "<input type='hidden' value='$oid' name='orderid'>";
-                                            ?>
-                                            <button type="submit" name="ordrec" class="btn btn-outline-dark mt-0 ml-3">Order Received&nbsp;<i class="fas fa-people-carry"></i></button>   
-                                        </form>
-                                        <?php
-                                    }
-                                    ?>
                                 </div> <!-- / Shopping cart table -->
                             </div>
                         </div> <?php

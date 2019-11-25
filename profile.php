@@ -1,3 +1,9 @@
+<?php
+include 'inc/header.php';
+if (!isset($_SESSION['name'])) {
+    header('Location: index.php');
+}
+?>
 <!DOCTYPE html>
 <!--
 To change this license header, choose License Headers in Project Properties.
@@ -29,11 +35,6 @@ and open the template in the editor.
 
     <body>
         <?php
-        include 'inc/header.php';
-        if (!isset($_SESSION['name'])) {
-//            header('Location: index.php');
-            echo "<script>window.location.href='index.php'</script>";
-        }
         if (isset($_GET['UpdateSuccess'])) {
             echo '<script type="text/javascript">alert("Profile Updated Successfully!");</script>';
         }

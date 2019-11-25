@@ -1,3 +1,9 @@
+<?php
+include 'inc/header.php';
+if (!isset($_SESSION['zid'])) {
+    header('Location: index.php');
+}
+?>
 <html lang="en">
     <head>
         <title>Zenith - Change Password</title>
@@ -49,11 +55,6 @@
     </script>
     <body>
         <?php
-        include 'inc/header.php';
-        if (!isset($_SESSION['zid'])) {
-//            header('Location: index.php');
-            echo "<script>window.location.href='index.php'</script>";
-        }
         $id = $first_name = $success = $zid = $oldpwd = $oldhash = $error = "";
         $newpwd = $newhash = "";
         $success = true;
@@ -72,6 +73,7 @@
 
             if ($success == 1) {
                 echo "<script type='text/javascript'>alert('Password Changed Successfully!');</script>";
+                echo "<script>window.location.href='account.php'</script>";
             } else {
                 echo "<script type='text/javascript'>alert('Password changed failed');</script>";
                 echo "<script type='text/javascript'>alert('" . $error . "');</script>";
