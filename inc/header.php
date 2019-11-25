@@ -115,7 +115,7 @@
     else {?>
             <div class="backingForPromo">
                 <p class="promoStatment">
-                    Too expensive? <a href="../register.php">Sign up</a> with us to get a 20% Discount for your first purchase!
+                    Too expensive? <a href="ICT1004_PHP_Project/../register.php">Sign up</a> with us to get a 20% Discount for your first purchase!
                 </p>
             </div>
     <?php
