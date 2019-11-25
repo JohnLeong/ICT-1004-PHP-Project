@@ -1,6 +1,6 @@
 <?php
 if (!isset($_POST['ordrec'])) {
-    header('Location: ../index.php');
+    header('Location: ../index.php?404');
 } else {
     $conn = new mysqli("161.117.122.252", "p5_2", "yzhbGyqP87", "p5_2");
     // Check connection

@@ -31,7 +31,12 @@ and open the template in the editor.-->
             header('Location: index.php');
         }
         if(isset($_GET['error'])){
-            echo '<script type="text/javascript">alert("Email or Password does not match. Please check again.");</script>';
+            if(isset($_GET['incorrectPw'])){
+                echo '<script type="text/javascript">alert("Incorrect Password. Please try again.");</script>';
+            }
+            if(isset($_GET['incorrectEmail'])){
+             echo '<script type="text/javascript">alert("Incorrect Email. Please try again.");</script>';   
+            }
         }
         if (isset($_GET['successful'])) {
         echo '<script type="text/javascript">alert("Your account have been registered successfully!");</script>';
@@ -57,9 +62,6 @@ and open the template in the editor.-->
                                    
                                 </div>
                                 <hr>
-                                <div class="checkbox">
-                                    <label><input type="checkbox"> Remember me</label>
-                                </div>
                                 <button class="btn text-uppercase" name="login_submit" type="submit">LOGIN <i class="fas fa-sign-in-alt"></i></button>
                             </form>
                         </div>

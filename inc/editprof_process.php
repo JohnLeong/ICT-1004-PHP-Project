@@ -1,7 +1,7 @@
 <?php
 include "header.php";
-if (!isset($_SESSION['name'])) {
-    echo "<script>window.location.href='index.php'</script>";
+if (!isset($_SESSION['saveBtn'])) {
+    header('Location: ../index.php?404');
 }
 ?>
 

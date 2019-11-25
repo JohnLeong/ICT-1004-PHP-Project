@@ -52,7 +52,7 @@ and open the template in the editor.-->
                         <label for="message">Message</label>
                         <textarea class="form-control" id="message" name="message" rows="4" required="required"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-secondary">Submit</button>
+                    <button type="submit" name="submitContact" class="btn btn-secondary">Submit</button>
                     <br>
                     <br>
                     <a href="mailto:contact@zenith.com">Email us directly instead</a>

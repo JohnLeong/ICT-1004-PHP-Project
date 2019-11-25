@@ -1,5 +1,9 @@
 <?php
 
+if (!isset($_POST['commit'])) {
+    header('Location: ../index.php?404');
+} 
+
 //Constants for accessing our DB:
 define("DBHOST", "161.117.122.252");
 define("DBNAME", "p5_2");

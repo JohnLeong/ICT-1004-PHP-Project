@@ -1,4 +1,7 @@
 <?php
+if (!isset($_POST['submitContact'])) {
+    header('Location: ../index.php?404');
+} 
 
 //Constants for accessing our DB:
 define("DBHOST", "161.117.122.252");

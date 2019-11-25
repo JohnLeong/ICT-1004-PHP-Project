@@ -1,7 +1,7 @@
 <?php
 
 if (!isset($_POST['paynow'])) {
-    header('Location: ../index.php');
+    header('Location: ../index.php?404');
 } else {
     global $pname, $price, $colour, $size, $image, $qty;
 

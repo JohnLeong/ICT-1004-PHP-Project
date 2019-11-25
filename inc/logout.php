@@ -1,4 +1,5 @@
 <?php
+
 include_once("session.php");
 
 if (isset($_GET['inactive'])){

@@ -202,7 +202,7 @@
                                 </div>
                                 <div class="text-align-right">
                                     <button type="submit" class="btn btn-outline-dark" id="cancelBtn" onclick="window.history.go(-1); return false;">Cancel</button>
-                                    <button type="submit" class="btn btn-outline-dark" id="saveBtn">Save</button>
+                                    <button type="submit" class="btn btn-outline-dark" name="saveBtn" id="saveBtn">Save</button>
                                 </div>
                             </form>
                         </div> <!-- End of Registerbox-->

@@ -135,61 +135,65 @@ and open the template in the editor.
 //                            $row = $result->fetch_assoc();
                             if ($result->num_rows > 0) {
                                 $row = $result->fetch_assoc();
-                                echo "<img class='productimgresize' src='" . $row["image"] . "' alt='Air Jordan 1'/>";
-                                echo "</div><!--End of Product Image--><div class='col-md-6'><!--Product Info-->";
-                                echo "<div class='row'>";
-                                echo "<div class='col-md-12'>";
-                                echo "<h2>" . $row["product_name"] . "</h2>";
-                                echo "</div>";
-                                echo "</div>";
-                                echo "<div class='row'>";
-                                echo "<div class='col-md-12'>";
-                                echo "<p class='description'>" . $row["product_desc"] . "</p>";
-                                echo "</div>";
-                                echo "</div>";
-                                echo "<div class='row'>";
-                                echo "<div class='col-md-12 bottom-rule'>";
-                                echo "<h2 class='product-price'>$" . $row["unit_price"] . "</h2>";
-                                echo "</div>";
-                                echo "</div>";
-                                echo "<div class='col-md-6'>";
-                                echo "<div class='input-group mb-3'>";
+                                echo "<img class='productimgresize' src='" . $row["image"] . "' alt='" . $row["product_name"] . "'/>";
+                                ?>
+                            </div><!--End of Product Image-->
+                            <div class='col-md-6'><!--Product Info-->
+                                <div class='row'>
+                                    <div class='col-md-12'>
+                                        <?php
+                                        echo "<h2>" . $row["product_name"] . "</h2>";
+                                        ?>
+                                    </div>
+                                </div>
+                                <div class='row'>
+                                    <div class='col-md-12'>
+                                        <?php
+                                        echo "<p class='description'>" . $row["product_desc"] . "</p>";
+                                        ?>
+                                    </div>
+                                </div>
+                                <div class='row'>
+                                    <div class='col-md-12 bottom-rule'>
+                                        <?php
+                                        echo "<h2 class='product-price'>$" . $row["unit_price"] . "</h2>";
+                                        ?>
+                                    </div>
+                                </div>
+                                <div class='col-md-6'>
+                                    <div class='input-group mb-3'>
+                                        <form method='post' action='inc/update_shoppingcart.php' name='addtocart'>
+                                            <select name='shoe_select'>
+                                                <?php
+                                                $stmt = $conn->prepare("SELECT * FROM p5_2.product_details WHERE product_ID =?");
+                                                $stmt->bind_param("i", $params['productID']);
+                                                $stmt->execute();
+                                                $resultShoe = $stmt->get_result();
 
-                                echo "<form method='post' action='inc/update_shoppingcart.php' name='addtocart'>";
-
-                                echo "<select name='shoe_select'>";
-
-                                $stmt = $conn->prepare("SELECT * FROM p5_2.product_details WHERE product_ID =?");
-                                $stmt->bind_param("i", $params['productID']);
-                                $stmt->execute();
-                                $resultShoe = $stmt->get_result();
-
-                                for ($i = 0; $i < $resultShoe->num_rows; ++$i) {
-                                    $rowDetail = $resultShoe->fetch_assoc();
-                                    if ((int) $rowDetail["stock"] > 0) {
-                                        echo "<option value='" . $rowDetail["productDetail_ID"] . ":" . $rowDetail["colour"] . ":" . $rowDetail["size"] . ":" . $rowDetail["stock"] . "'>" . $rowDetail["colour"] . " : " . $rowDetail["size"] . "</option>";
-                                    }
-                                }
-
-                                echo "</select>";
-                                echo "<br />";
-                                echo "<br />";
-                                echo "<input type='hidden' name='productname' value='" . $row["product_name"] . "' class='form-control'>";
-                                echo "<input type='hidden' name='price' value='" . $row["unit_price"] . "' class='form-control'>";
-                                echo "<input type='hidden' name='img' value='" . $row["image"] . "' class='form-control'>";
-                                echo "<div class='input-group-append'>";
-                                echo '<button class="btn btn-success btn-md" name="addtocart" type="submit" id="addcart">'
-                                . '<i class = "fa fa-cart-plus"></i>&nbsp &nbsp Add to Cart!</button>';
-                                echo "</div>";
-                                echo "</form>";
-
-                                echo "</div>";
-                                echo "</div>";
-
+                                                for ($i = 0; $i < $resultShoe->num_rows; ++$i) {
+                                                    $rowDetail = $resultShoe->fetch_assoc();
+                                                    if ((int) $rowDetail["stock"] > 0) {
+                                                        echo "<option value='" . $rowDetail["productDetail_ID"] . ":" . $rowDetail["colour"] . ":" . $rowDetail["size"] . ":" . $rowDetail["stock"] . "'>" . $rowDetail["colour"] . " : " . $rowDetail["size"] . "</option>";
+                                                    }
+                                                }
+                                                ?>
+                                            </select>
+                                            <br />
+                                            <br />
+                                            <input type='hidden' name='productname' value='" . $row["product_name"] . "' class='form-control'>
+                                            <input type='hidden' name='price' value='" . $row["unit_price"] . "' class='form-control'>
+                                            <input type='hidden' name='img' value='" . $row["image"] . "' class='form-control'>
+                                            <div class='input-group-append'>
+                                                <button class="btn btn-success btn-md" name="addtocart" type="submit" id="addcart">
+                                                    <i class = "fa fa-cart-plus"></i>&nbsp;&nbsp; Add to Cart!</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <?php
                                 $resultShoe->free_result();
-                            } else {
-                                echo "<h4>Product does not exist!</h4>";
-                                ?> 
+                            } else {?>
+                                <h4>Product does not exist!</h4>
                                 <input class="btn btn-default" type="button" value="Back To Shopping" 
                                        onclick="window.location.href = 'index.php'" /> 
                                        <?php
@@ -249,37 +253,11 @@ and open the template in the editor.
                                    $conn->close();
                                }
                                ?>
-
-                        <!--<div class="row add-to-cart">
-                            <div class="def-number-input number-input safari_only">
-                                <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="minus"></button>
-                                <input class="quantity" min="0" name="quantity" value="1" type="number">
-                                <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus"></button>
-                            </div>
-                            <button type="button" class="btn btn-success btn-block">Add to Cart!</button>
-                        </div>--><!--end of row-->
-
                         <!-- Product Description Collapsible Panel-->
                         <div class="row product-description">
                             <div class="col-md-12">
                                 <div class="wrapper center-block">
                                     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                                        <!--
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading active" role="tab" id="headingOne">
-                                                <h4 class="panel-title">
-                                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                                        Description
-                                                    </a>
-                                                </h4>
-                                            </div>
-                                            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                                                <div class="panel-body">
-                                                    Taking flight this season, step into business class with Air Jordan's latest iteration of the iconic Jordan 1 High OG, the 'First Class Flight'.<br><br>Brimming with character, the white and yellow high-top sneaker offers an aeronautically inspired style replete with model specific detailing.<br><br>Constructed with plush leather uppers and boasting premium under-foot comfort, this style will add the perfect boost of basketball aesthetics to your rotation.
-                                                </div>
-                                            </div>
-                                        </div>
-                                        -->
                                         <div class="panel panel-default">
                                             <div class="panel-heading" role="tab" id="headingTwo">
                                                 <h4 class="panel-title">
@@ -332,8 +310,7 @@ and open the template in the editor.
                         </div><!--End of Product Collapsible Panel-->
                     </div><!--End of row-->
                 </div><!--End of container-->
-                <!-- End of Product Details-->
-            </div>
+            </div><!-- End of Product Details-->
         </main>
         <?php
         include "inc/footer.php"

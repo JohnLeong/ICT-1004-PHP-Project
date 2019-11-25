@@ -1,4 +1,7 @@
 <?php
+if (!isset($_POST['register_submit'])) {
+    header('Location: ../index.php?404');
+}
 
 global $first_name, $last_name, $email, $hash, $errorMsg, $success;
 // Create connection
@@ -63,7 +66,11 @@ if ($conn->connect_error) {
             }
         }
     } 
-}$conn->close();
+}
+
+// Free up stored result memory for the given statement handle.
+mysqli_stmt_free_result($stmt);
+$conn->close();
 
 //Helper function that checks input for malicious or unwanted content.
 function sanitize_input($data) {

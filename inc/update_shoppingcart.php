@@ -1,7 +1,7 @@
 <?php
 
 if ((!isset($_POST['addtocart'])) && (!isset($_POST['updatecartqty'])) && (!isset($_POST['deleteitem'])) && (!isset($_POST['updatepromo']))) {
-    header('Location: ../index.php');
+    header('Location: ../index.php?404');
 } else {
     include_once("session.php");
     $id = $_SESSION['zid'];

@@ -1,7 +1,7 @@
 <?php
 date_default_timezone_set("Asia/Kuala_Lumpur");
 if (!isset($_POST['login_submit'])) {
-    header('Location: ../index.php');
+    header('Location: ../index.php?404');
 } else {
     // Create connection
     $conn = new mysqli("161.117.122.252", "p5_2", "yzhbGyqP87", "p5_2");
@@ -34,10 +34,10 @@ if (!isset($_POST['login_submit'])) {
                 header("Location: ../index.php");
             }
             else{//wrong password
-                header("Location: ../login.php?error");          
+                header("Location: ../login.php?error&incorrectPw");          
             }
         }else{//wrong email
-            header("Location: ../login.php?error");
+            header("Location: ../login.php?error&incorrectEmail");
         }
     }
     $conn->close();
