@@ -103,8 +103,6 @@ p {
 .navbar {
     text-transform: uppercase;
     text-align: center;
-    height: 50px;
-    padding:4px 30px 4px 30px;
 }
 
 .navbar-brand {
