@@ -186,8 +186,12 @@ and open the template in the editor.
                                             echo "<input type='hidden' name='img' value='" . $row["image"] . "' class='form-control'>";
                                             ?>
                                             <div class='input-group-append'>
+                                                <?php if(isset($_SESSION['fname'])) {?>
                                                 <button class="btn btn-success btn-md" name="addtocart" type="submit" id="addcart">
                                                     <i class = "fa fa-cart-plus"></i>&nbsp;&nbsp; Add to Cart!</button>
+                                                <?php } else {?>
+                                                <p><b>Please <a href="login.php">Login</a> to purchase</b></p>
+                                                <?php } ?>
                                             </div>
                                         </form>
                                     </div>
