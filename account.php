@@ -116,6 +116,16 @@ and open the template in the editor.
                                     </a>
                                 </div>
                                 <div class="card">
+                                    <a style="color:black" class="account-card"href="membpromo.php">
+                                        <img class="card-img-top" src="img/promoimg.jpg" alt="View or Change Profile Settings">
+                                        <!-- SOURCE: https://www.kissclipart.com/user-edit-icon-clipart-computer-icons-user-profile-v1ctia/ -->
+                                        <div class="card-body">
+                                            <h5 class="card-title">Promo Code</h5>
+                                            <p class="card-text">View your Promo Codes</p>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="card">
                                     <a style="color:black" class="account-card" href="orderhistory.php">
                                         <img class="card-img-top" src="img/order-history.jpg" alt="Order History">
                                         <!-- SOURCE: https://www.kissclipart.com/purchase-history-icon-clipart-computer-icons-royal-7p5blz/ -->
